@@ -18,73 +18,69 @@ fun getFilePredicate(id: String, type: String) = { fileName: String -> fileName.
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun InitialScreen() {
-    Surface {
-        Box(Modifier.fillMaxSize()) {
-            Column(Modifier.align(Alignment.Center), horizontalAlignment = Alignment.CenterHorizontally) {
-                Text(
-                    modifier = Modifier.padding(10.dp),
-                    text = "Enter event ID",
-                    style = MaterialTheme.typography.headlineLarge
-                )
+    Column(Modifier.fillMaxSize(), horizontalAlignment = Alignment.CenterHorizontally) {
+        Text(
+            modifier = Modifier.padding(10.dp),
+            text = "Enter event ID",
+            style = MaterialTheme.typography.headlineLarge
+        )
 
-                var matchFile by remember { mutableStateOf(SDCard.getFile(getFilePredicate(DEFAULT_EVENT_CODE, "Match"))) }
-                var pitFile by remember { mutableStateOf(SDCard.getFile(getFilePredicate(DEFAULT_EVENT_CODE, "Pit"))) }
+        var matchFile by remember { mutableStateOf(SDCard.getFile(getFilePredicate(DEFAULT_EVENT_CODE, "Match"))) }
+        var pitFile by remember { mutableStateOf(SDCard.getFile(getFilePredicate(DEFAULT_EVENT_CODE, "Pit"))) }
 
-                var currentSearch by remember { mutableStateOf(DEFAULT_EVENT_CODE) }
-                OutlinedTextField(
-                    modifier = Modifier.padding(10.dp),
-                    value = currentSearch,
-                    placeholder = { Text("Event ID") },
-                    onValueChange = { search ->
-                        currentSearch = search
-                        if (search.matches(idRegex)) {
-                            matchFile = SDCard.getFile(getFilePredicate(currentSearch, "Match"))
-                            pitFile = SDCard.getFile(getFilePredicate(currentSearch, "Pit"))
-                        } else {
-                            matchFile = null
-                            pitFile = null
-                        }
-                    }
-                )
-
-                Row(Modifier.padding(10.dp)) {
-                    OutlinedButton(
-                        onClick = {
-                            currentSearch = ""
-                            matchFile = null
-                            pitFile = null
-                        }
-                    ) {
-                        Text(text = "Clear")
-                    }
-                    Spacer(Modifier.fillMaxWidth(0.1F))
-                    FilledTonalButton(
-                        onClick = {
-                            matchScoutingData = matchFile?.let { SDCard.getMatchSchedule(it) }
-                            pitScoutingData = pitFile?.let { SDCard.getPitSchedule(it) }
-                        }
-                    ) {
-                        Text(text = "Select")
-                    }
-                }
-
-                Column(
-                    Modifier
-                        .padding(10.dp)
-                        .align(Alignment.Start)
-                ) {
-                    Text(text = "Match Scouting File", style = MaterialTheme.typography.labelLarge)
-                    Text(text = matchFile?.name ?: "Missing")
-                }
-                Column(
-                    Modifier
-                        .padding(10.dp)
-                        .align(Alignment.Start)
-                ) {
-                    Text(text = "Pit Scouting File", style = MaterialTheme.typography.labelLarge)
-                    Text(text = pitFile?.name ?: "Missing")
+        var currentSearch by remember { mutableStateOf(DEFAULT_EVENT_CODE) }
+        OutlinedTextField(
+            modifier = Modifier.padding(10.dp),
+            value = currentSearch,
+            placeholder = { Text("Event ID") },
+            onValueChange = { search ->
+                currentSearch = search
+                if (search.matches(idRegex)) {
+                    matchFile = SDCard.getFile(getFilePredicate(currentSearch, "Match"))
+                    pitFile = SDCard.getFile(getFilePredicate(currentSearch, "Pit"))
+                } else {
+                    matchFile = null
+                    pitFile = null
                 }
             }
+        )
+
+        Row(Modifier.padding(10.dp)) {
+            OutlinedButton(
+                onClick = {
+                    currentSearch = ""
+                    matchFile = null
+                    pitFile = null
+                }
+            ) {
+                Text(text = "Clear")
+            }
+            Spacer(Modifier.fillMaxWidth(0.1F))
+            FilledTonalButton(
+                onClick = {
+                    matchScoutingData = matchFile?.let { SDCard.getMatchSchedule(it) }
+                    pitScoutingData = pitFile?.let { SDCard.getPitSchedule(it) }
+                }
+            ) {
+                Text(text = "Select")
+            }
+        }
+
+        Column(
+            Modifier
+                .padding(10.dp)
+                .align(Alignment.Start)
+        ) {
+            Text(text = "Match Scouting File", style = MaterialTheme.typography.labelLarge)
+            Text(text = matchFile?.name ?: "Missing")
+        }
+        Column(
+            Modifier
+                .padding(10.dp)
+                .align(Alignment.Start)
+        ) {
+            Text(text = "Pit Scouting File", style = MaterialTheme.typography.labelLarge)
+            Text(text = pitFile?.name ?: "Missing")
         }
     }
 }
