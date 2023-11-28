@@ -12,9 +12,10 @@ var matchScoutingData by mutableStateOf<MatchScoutingSheet?>(null)
 var pitScoutingData by mutableStateOf<PitScoutingSheet?>(null)
 
 data class State(
-    val screen: Screen = Screen.INITIAL_SCREEN,
+    val screen: Screen = Screen.SETTINGS,
 )
 
 enum class Screen {
-    INITIAL_SCREEN
+    INITIAL_SCREEN,
+    SETTINGS
 }

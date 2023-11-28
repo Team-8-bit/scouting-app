@@ -24,23 +24,22 @@ val Typography = Typography(
     bodyLarge = TextStyle(
         fontFamily = poppins,
         fontWeight = FontWeight.Normal,
-        fontSize = 16.sp,
-        lineHeight = 24.sp,
-        letterSpacing = 0.5.sp
+        fontSize = 20.sp,
     ),
     titleLarge = TextStyle(
         fontFamily = silkscreen,
         fontWeight = FontWeight.Normal,
         fontSize = 22.sp,
-        lineHeight = 28.sp,
-        letterSpacing = 0.sp
     ),
     headlineLarge = TextStyle(
         fontFamily = silkscreen,
         fontWeight = FontWeight.Normal,
         textAlign = TextAlign.Center,
         fontSize = 40.sp,
-        lineHeight = 28.sp,
-        letterSpacing = 0.sp
-    )
+    ),
+    labelLarge = TextStyle(
+        fontFamily = poppins,
+        fontWeight = FontWeight.Bold,
+        fontSize = 15.sp
+    ),
 )

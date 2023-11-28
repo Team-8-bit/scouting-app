@@ -8,6 +8,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import org.team9432.scoutingapp.DEFAULT_EVENT_CODE
 import org.team9432.scoutingapp.io.SDCard
+import org.team9432.scoutingapp.io.ScheduleFile
 import org.team9432.scoutingapp.matchScoutingData
 import org.team9432.scoutingapp.pitScoutingData
 
@@ -58,8 +59,8 @@ fun InitialScreen() {
             Spacer(Modifier.fillMaxWidth(0.1F))
             FilledTonalButton(
                 onClick = {
-                    matchScoutingData = matchFile?.let { SDCard.getMatchSchedule(it) }
-                    pitScoutingData = pitFile?.let { SDCard.getPitSchedule(it) }
+                    matchScoutingData = matchFile?.let { ScheduleFile.getMatchSchedule(it) }
+                    pitScoutingData = pitFile?.let { ScheduleFile.getPitSchedule(it) }
                 }
             ) {
                 Text(text = "Select")
