@@ -2,10 +2,14 @@ package org.team9432.scoutingapp
 
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
-import org.team9432.scoutingapp.io.SpreadSheet
+import androidx.compose.runtime.setValue
+import org.team9432.scoutingapp.io.MatchScoutingSheet
+import org.team9432.scoutingapp.io.PitScoutingSheet
 
-val appState by mutableStateOf(State())
-val workingData by mutableStateOf<SpreadSheet>(emptyList())
+const val DEFAULT_EVENT_CODE = "2023azgl"
+var appState by mutableStateOf(State())
+var matchScoutingData by mutableStateOf<MatchScoutingSheet?>(null)
+var pitScoutingData by mutableStateOf<PitScoutingSheet?>(null)
 
 data class State(
     val screen: Screen = Screen.INITIAL_SCREEN,
