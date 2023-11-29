@@ -9,7 +9,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import org.team9432.scoutingapp.Screen
-import org.team9432.scoutingapp.appState
+import org.team9432.scoutingapp.appScreen
 import org.team9432.scoutingapp.io.ScheduleFiles
 import org.team9432.scoutingapp.io.config
 
@@ -23,7 +23,7 @@ fun DebugScreen() {
                 textAlign = TextAlign.Start
             )
             Spacer(Modifier.weight(1F))
-            TextButton(onClick = { appState = appState.copy(screen = Screen.SETTINGS) }) {
+            TextButton(onClick = { appScreen = Screen.SETTINGS }) {
                 Text("back")
             }
         }

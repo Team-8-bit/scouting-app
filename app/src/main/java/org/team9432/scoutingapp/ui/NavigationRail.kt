@@ -7,18 +7,18 @@ import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import org.team9432.scoutingapp.Screen
-import org.team9432.scoutingapp.appState
+import org.team9432.scoutingapp.appScreen
 import org.team9432.scoutingapp.io.config
 import org.team9432.scoutingapp.io.updateConfig
 
 @Composable
 fun NavigationRail() {
-    var selectedItem by remember { mutableStateOf(0) }
+    var selectedItem by remember { mutableIntStateOf(0) }
     NavigationRail {
         NavigationRailItem(
             icon = { Icon(Icons.Filled.Settings, contentDescription = "Settings") },
             selected = selectedItem == 1,
-            onClick = { selectedItem = 1; appState = appState.copy(screen = Screen.SETTINGS) },
+            onClick = { selectedItem = 1; appScreen = Screen.SETTINGS },
             label = { Text(text = "Config", style = MaterialTheme.typography.labelLarge) }
         )
         NavigationRailItem(

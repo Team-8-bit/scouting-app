@@ -28,7 +28,7 @@ class MainActivity: ComponentActivity() {
                             NavigationRail()
                         }
                         Surface(modifier = Modifier.padding(top = 10.dp, end = 10.dp, bottom = 10.dp), shape = MaterialTheme.shapes.large) {
-                            when (appState.screen) {
+                            when (appScreen) {
                                 Screen.DEBUG -> DebugScreen()
                                 Screen.SETTINGS -> SettingsScreen()
                             }

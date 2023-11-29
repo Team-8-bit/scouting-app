@@ -11,7 +11,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.unit.dp
 import org.team9432.scoutingapp.Screen
-import org.team9432.scoutingapp.appState
+import org.team9432.scoutingapp.appScreen
 import org.team9432.scoutingapp.io.config
 import org.team9432.scoutingapp.io.updateConfig
 
@@ -24,7 +24,7 @@ fun SettingsScreen() {
                 style = MaterialTheme.typography.headlineLarge
             )
             Spacer(Modifier.weight(1F))
-            TextButton(onClick = { appState = appState.copy(screen = Screen.DEBUG) }) {
+            TextButton(onClick = { appScreen = Screen.DEBUG }) {
                 Text("debug screen")
             }
         }
