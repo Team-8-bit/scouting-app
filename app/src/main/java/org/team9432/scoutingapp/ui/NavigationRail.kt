@@ -1,21 +1,25 @@
 package org.team9432.scoutingapp.ui
 
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.*
+import androidx.compose.material.icons.filled.DarkMode
+import androidx.compose.material.icons.filled.LightMode
+import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import org.team9432.scoutingapp.Screen
-import org.team9432.scoutingapp.appState
+import org.team9432.scoutingapp.appScreen
+import org.team9432.scoutingapp.io.config
+import org.team9432.scoutingapp.io.updateConfig
 
 @Composable
 fun NavigationRail() {
-    var selectedItem by remember { mutableStateOf(0) }
+    var selectedItem by remember { mutableIntStateOf(0) }
     NavigationRail {
         NavigationRailItem(
-            icon = { Icon(Icons.Filled.FileUpload, contentDescription = "Choose File") },
-            selected = selectedItem == 0,
-            onClick = { selectedItem = 0; appState = appState.copy(screen = Screen.INITIAL_SCREEN) },
-            label = { Text(text = "Open File", style = MaterialTheme.typography.labelLarge)}
+            icon = { Icon(Icons.Filled.Settings, contentDescription = "Settings") },
+            selected = selectedItem == 1,
+            onClick = { selectedItem = 1; appScreen = Screen.SETTINGS },
+            label = { Text(text = "Config", style = MaterialTheme.typography.labelLarge) }
         )
     }
 }
