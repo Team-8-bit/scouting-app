@@ -9,24 +9,31 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalFocusManager
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import org.team9432.scoutingapp.Screen
+import org.team9432.scoutingapp.appState
 import org.team9432.scoutingapp.io.config
 import org.team9432.scoutingapp.io.updateConfig
 
 @Composable
 fun SettingsScreen() {
     Column(Modifier.fillMaxSize(), horizontalAlignment = Alignment.CenterHorizontally) {
-        Text(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(10.dp), text = "Config", style = MaterialTheme.typography.headlineLarge, textAlign = TextAlign.Start
-        )
+        Row(Modifier.fillMaxWidth().padding(10.dp)) {
+            Text(
+                text = "Config",
+                style = MaterialTheme.typography.headlineLarge
+            )
+            Spacer(Modifier.weight(1F))
+            TextButton(onClick = { appState = appState.copy(screen = Screen.DEBUG) }) {
+                Text("debug screen")
+            }
+        }
         ToggleOption(
             initialState = config.darkMode,
             onSet = { updateConfig(config.copy(darkMode = it)) },
             title = "Dark Mode",
         )
+        TextOption(initialState = config.eventID, onSet = { updateConfig(config.copy(eventID = it)) }, title = "Event ID")
     }
 }
 

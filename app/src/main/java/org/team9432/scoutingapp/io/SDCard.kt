@@ -10,10 +10,15 @@ object SDCard {
     private val MAIN_FOLDER = File("/storage/$cardID")
     val CONFIG_FILE = File(MAIN_FOLDER, "config.json")
 
-    fun getFile(predicate: (String) -> Boolean): File? {
-        val potentialFiles = MAIN_FOLDER.listFiles()?.filter { it.isFile } ?: return null
-        return potentialFiles.firstOrNull { predicate(it.name) }
+    fun getFile(name: String): File {
+        return File(MAIN_FOLDER, name)
     }
+
+    val files: List<File>
+        get() = MAIN_FOLDER.listFiles()!!.filter { it.isFile }.toList()
+
+    val fileNames: List<String>
+        get() = files.map { it.name }
 
     private fun getMagicNumbers(): List<String> {
         val magicNumbers = mutableListOf<String>()

@@ -4,13 +4,21 @@ import java.io.File
 
 typealias SpreadSheet = List<List<String>>
 
-object ScheduleFile {
-    fun getMatchSchedule(file: File): MatchScoutingSheet {
-        return parseSpreadsheet(file.readLines()).toMatchScoutingSheet()
+object ScheduleFiles {
+    fun getMatchScheduleFile(eventID: String): File {
+        return SDCard.files.first { it.name.contains(eventID, ignoreCase = true) && it.name.contains("Match", ignoreCase = true) }
     }
 
-    fun getPitSchedule(file: File): PitScoutingSheet {
-        return parseSpreadsheet(file.readLines()).toPitScoutingSheet()
+    fun getPitScheduleFile(eventID: String): File {
+        return SDCard.files.first { it.name.contains(eventID, ignoreCase = true) && it.name.contains("Pit", ignoreCase = true) }
+    }
+
+    fun getMatchSchedule(eventID: String): MatchScoutingSheet {
+        return parseSpreadsheet(getMatchScheduleFile(eventID).readLines()).toMatchScoutingSheet()
+    }
+
+    fun getPitSchedule(eventID: String): PitScoutingSheet {
+        return parseSpreadsheet(getPitScheduleFile(eventID).readLines()).toPitScoutingSheet()
     }
 
     private fun parseSpreadsheet(file: List<String>): SpreadSheet {

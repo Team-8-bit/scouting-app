@@ -34,4 +34,7 @@ private fun readConfig(): Config {
 }
 
 @Serializable
-data class Config(val darkMode: Boolean = true)
+data class Config(
+    val darkMode: Boolean = true,
+    val eventID: String = "2023azgl",
+)
