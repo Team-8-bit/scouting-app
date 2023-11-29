@@ -21,18 +21,5 @@ fun NavigationRail() {
             onClick = { selectedItem = 1; appScreen = Screen.SETTINGS },
             label = { Text(text = "Config", style = MaterialTheme.typography.labelLarge) }
         )
-        NavigationRailItem(
-            icon = {
-                if (config.darkMode) {
-                    Icon(Icons.Filled.LightMode, contentDescription = "Light Mode")
-                } else {
-                    Icon(Icons.Filled.DarkMode, contentDescription = "Dark Mode")
-                }
-            },
-            onClick = {
-                updateConfig(config.copy(darkMode = !config.darkMode))
-            },
-            selected = false
-        )
     }
 }
