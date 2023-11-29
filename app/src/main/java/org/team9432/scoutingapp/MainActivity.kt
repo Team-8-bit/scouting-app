@@ -15,6 +15,7 @@ import org.team9432.scoutingapp.ui.NavigationRail
 import org.team9432.scoutingapp.ui.screens.DebugScreen
 import org.team9432.scoutingapp.ui.screens.MatchSelectionScreen
 import org.team9432.scoutingapp.ui.screens.SettingsScreen
+import org.team9432.scoutingapp.ui.screens.matchscouting.MatchScoutingScreen
 import org.team9432.scoutingapp.ui.theme.AppTheme
 
 
@@ -33,6 +34,7 @@ class MainActivity: ComponentActivity() {
                                 Screen.DEBUG -> DebugScreen()
                                 Screen.SETTINGS -> SettingsScreen()
                                 Screen.MATCH_SELECTION -> MatchSelectionScreen()
+                                Screen.MATCH_SCOUTING_SCREEN -> MatchScoutingScreen()
                             }
                         }
                     }

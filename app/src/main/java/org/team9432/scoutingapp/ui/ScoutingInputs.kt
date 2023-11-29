@@ -1,0 +1,174 @@
+package org.team9432.scoutingapp.ui
+
+import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.*
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.*
+import androidx.compose.material3.*
+import androidx.compose.runtime.*
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.unit.dp
+
+@Composable
+fun BlankInput(modifier: Modifier = Modifier) {
+    Box(modifier.background(MaterialTheme.colorScheme.background, MaterialTheme.shapes.small)) {}
+}
+
+@Composable
+fun PageChanger(modifier: Modifier = Modifier, onNext: () -> Unit, onBack: () -> Unit, nextEnabled: Boolean = true, backEnabled: Boolean = true) {
+    Box(modifier.background(MaterialTheme.colorScheme.background, MaterialTheme.shapes.small)) {
+        Row(Modifier.align(Alignment.Center), verticalAlignment = Alignment.CenterVertically) {
+            IconButton(onClick = onBack, enabled = backEnabled) {
+                Icon(Icons.Filled.NavigateBefore, contentDescription = "Back")
+            }
+            IconButton(onClick = onNext, enabled = nextEnabled) {
+                Icon(Icons.Filled.NavigateNext, contentDescription = "Next")
+            }
+        }
+    }
+}
+
+@Composable
+fun GenericButtonInput(modifier: Modifier = Modifier, title: String, onPressed: () -> Unit, enabled: Boolean = true) {
+    Box(modifier.background(MaterialTheme.colorScheme.background, MaterialTheme.shapes.small)) {
+        OutlinedButton(
+            modifier = Modifier.padding(10.dp).align(Alignment.Center),
+            onClick = onPressed,
+            enabled = enabled
+        ) {
+            Text(
+                text = title,
+                textAlign = TextAlign.Center
+            )
+        }
+    }
+}
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun TextInput(modifier: Modifier = Modifier, title: String, initialValue: String = "", onChange: (String) -> Unit, enabled: Boolean = true) {
+    var currentText by remember { mutableStateOf(initialValue) }
+    Box(modifier.background(MaterialTheme.colorScheme.background, MaterialTheme.shapes.small)) {
+        Column(Modifier.align(Alignment.Center), horizontalAlignment = Alignment.CenterHorizontally) {
+            Text(
+                modifier = Modifier.padding(10.dp),
+                text = title,
+                textAlign = TextAlign.Center
+            )
+            OutlinedTextField(
+                modifier = Modifier.fillMaxSize(),
+                value = currentText,
+                enabled = enabled,
+                onValueChange = {
+                    currentText = it
+                    onChange(it)
+                }
+            )
+        }
+    }
+}
+
+@Composable
+fun NumberInput(modifier: Modifier = Modifier, title: String, onChange: (Int) -> Unit, max: Int = Int.MAX_VALUE, min: Int = 0, enabled: Boolean = true) {
+    var currentNumber by remember { mutableIntStateOf(0) }
+    Box(modifier.background(MaterialTheme.colorScheme.background, MaterialTheme.shapes.small)) {
+        Column(Modifier.align(Alignment.Center), horizontalAlignment = Alignment.CenterHorizontally) {
+            Text(
+                modifier = Modifier.padding(10.dp),
+                text = title,
+                textAlign = TextAlign.Center
+            )
+            Text(
+                modifier = Modifier.padding(start = 10.dp, end = 10.dp),
+                text = currentNumber.toString(),
+                textAlign = TextAlign.Center,
+                fontWeight = FontWeight.Bold
+            )
+            Row(Modifier.padding(start = 10.dp, end = 10.dp, bottom = 10.dp)) {
+                OutlinedIconButton(
+                    modifier = Modifier.fillMaxWidth(0.5F).padding(start = 7.dp, end = 7.dp),
+                    enabled = enabled,
+                    onClick = {
+                        if (currentNumber != min) {
+                            currentNumber -= 1
+                            onChange(currentNumber)
+                        }
+                    }) {
+                    Icon(Icons.Filled.Remove, contentDescription = "Remove")
+                }
+                OutlinedIconButton(
+                    modifier = Modifier.fillMaxWidth().padding(start = 7.dp, end = 7.dp),
+                    enabled = enabled,
+                    onClick = {
+                        if (currentNumber != max) {
+                            currentNumber += 1
+                            onChange(currentNumber)
+                        }
+                    }) {
+                    Icon(Icons.Filled.Add, contentDescription = "Add")
+                }
+            }
+        }
+    }
+}
+
+@Composable
+fun CycleInput(modifier: Modifier = Modifier, title: String, onChange: (String) -> Unit, options: List<String>, enabled: Boolean = true) {
+    var currentOption by remember { mutableStateOf(options[0]) }
+    Box(modifier
+        .background(MaterialTheme.colorScheme.background, MaterialTheme.shapes.small)
+        .clickable(enabled = enabled) {
+            val nextIndex = options.indexOf(currentOption) + 1
+            currentOption = if (nextIndex == options.size) {
+                options[0]
+            } else {
+                options[nextIndex]
+            }
+            onChange(currentOption)
+        }) {
+        Column(Modifier.align(Alignment.Center), horizontalAlignment = Alignment.CenterHorizontally) {
+            Text(
+                modifier = Modifier.padding(10.dp),
+                text = title,
+                textAlign = TextAlign.Center
+            )
+            Text(
+                modifier = Modifier.padding(start = 10.dp, end = 10.dp, bottom = 10.dp),
+                text = currentOption,
+                textAlign = TextAlign.Center,
+                fontWeight = FontWeight.Bold
+            )
+        }
+    }
+}
+
+@Composable
+fun SwitchInput(modifier: Modifier = Modifier, title: String, onChange: (Boolean) -> Unit, initialState: Boolean = false, enabled: Boolean = true) {
+    var checked by remember { mutableStateOf(initialState) }
+    Box(modifier.background(MaterialTheme.colorScheme.background, MaterialTheme.shapes.small)) {
+        Column(Modifier.align(Alignment.Center), horizontalAlignment = Alignment.CenterHorizontally) {
+            Text(
+                modifier = Modifier.padding(10.dp),
+                text = title,
+                textAlign = TextAlign.Center
+            )
+            Switch(
+                modifier = Modifier.padding(start = 10.dp, end = 10.dp, bottom = 10.dp),
+                checked = checked,
+                onCheckedChange = { checked = it; onChange(it) },
+                enabled = enabled,
+                thumbContent = {
+                    if (checked) {
+                        Icon(Icons.Filled.Check, null)
+                    } else {
+                        Icon(Icons.Filled.Close, null)
+                    }
+                }
+            )
+        }
+    }
+}
