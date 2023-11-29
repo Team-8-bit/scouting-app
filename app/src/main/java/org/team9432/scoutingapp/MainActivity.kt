@@ -13,6 +13,7 @@ import androidx.compose.ui.unit.dp
 import org.team9432.scoutingapp.io.config
 import org.team9432.scoutingapp.ui.NavigationRail
 import org.team9432.scoutingapp.ui.screens.DebugScreen
+import org.team9432.scoutingapp.ui.screens.MatchSelectionScreen
 import org.team9432.scoutingapp.ui.screens.SettingsScreen
 import org.team9432.scoutingapp.ui.theme.AppTheme
 
@@ -31,6 +32,7 @@ class MainActivity: ComponentActivity() {
                             when (appScreen) {
                                 Screen.DEBUG -> DebugScreen()
                                 Screen.SETTINGS -> SettingsScreen()
+                                Screen.MATCH_SELECTION -> MatchSelectionScreen()
                             }
                         }
                     }

@@ -10,6 +10,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.unit.dp
+import androidx.core.text.isDigitsOnly
 import org.team9432.scoutingapp.Screen
 import org.team9432.scoutingapp.appScreen
 import org.team9432.scoutingapp.io.config
@@ -33,13 +34,23 @@ fun SettingsScreen() {
             onSet = { updateConfig(config.copy(darkMode = it)) },
             title = "Dark Mode",
         )
-        TextOption(initialState = config.eventID, onSet = { updateConfig(config.copy(eventID = it)) }, title = "Event ID")
+        TextOption(
+            initialState = config.eventID,
+            onSet = { updateConfig(config.copy(eventID = it)) },
+            title = "Event ID"
+        )
+        TextOption(
+            initialState = config.scoutID.toString(),
+            onSet = { updateConfig(config.copy(scoutID = it.toInt())) },
+            title = "Scout ID",
+            predicate = { it.isDigitsOnly() }
+        )
     }
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-private fun TextOption(initialState: String, onSet: (String) -> Unit, title: String, enabled: Boolean = true) {
+private fun TextOption(initialState: String, onSet: (String) -> Unit, title: String, enabled: Boolean = true, predicate: (String) -> Boolean = { true }) {
     Surface(Modifier.padding(10.dp), shape = MaterialTheme.shapes.medium, color = MaterialTheme.colorScheme.background) {
         Row(Modifier.padding(10.dp), verticalAlignment = Alignment.CenterVertically) {
             var currentValue by remember { mutableStateOf(initialState) }
@@ -51,7 +62,11 @@ private fun TextOption(initialState: String, onSet: (String) -> Unit, title: Str
             OutlinedTextField(
                 enabled = enabled,
                 value = currentValue,
-                onValueChange = { currentValue = it },
+                onValueChange = {
+                    if (predicate(it)) {
+                        currentValue = it
+                    }
+                },
                 singleLine = true,
                 trailingIcon = {
                     if (enabled) {

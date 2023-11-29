@@ -1,5 +1,6 @@
 package org.team9432.scoutingapp.io
 
+import org.team9432.scoutingapp.io.data.*
 import java.io.File
 
 typealias SpreadSheet = List<List<String>>
@@ -13,11 +14,11 @@ object ScheduleFiles {
         return SDCard.files.first { it.name.contains(eventID, ignoreCase = true) && it.name.contains("Pit", ignoreCase = true) }
     }
 
-    fun getMatchSchedule(eventID: String): MatchScoutingSheet {
+    fun getMatchSchedule(eventID: String): MatchScoutingSchedule {
         return parseSpreadsheet(getMatchScheduleFile(eventID).readLines()).toMatchScoutingSheet()
     }
 
-    fun getPitSchedule(eventID: String): PitScoutingSheet {
+    fun getPitSchedule(eventID: String): PitScoutingTeams {
         return parseSpreadsheet(getPitScheduleFile(eventID).readLines()).toPitScoutingSheet()
     }
 
@@ -25,51 +26,31 @@ object ScheduleFiles {
         return file.map { it.split(",") }
     }
 
-    private fun SpreadSheet.toMatchScoutingSheet(): MatchScoutingSheet {
-        val matches = mutableListOf<Match>()
+    fun getMatches(scoutID: Int, eventID: String) = getMatchSchedule(eventID).scheduledMatches.filter { it.teams.containsKey(scoutID) }
+
+    private fun SpreadSheet.toMatchScoutingSheet(): MatchScoutingSchedule {
+        val scheduledMatches = mutableListOf<ScheduledMatch>()
         for (i in 1 until this.size) {
             val row = this[i]
-            val teams = mutableListOf<Team>()
+            val teams = mutableMapOf<Int, ScheduledTeamInMatch>()
 
             for (j in 1..6) {
-                teams.add(
-                    Team(
-                        scoutID = j,
-                        teamNumber = row[j].split("; ")[0],
-                        alliance = row[j].split("; ")[1],
-                    )
+                teams[j] = ScheduledTeamInMatch(
+                    teamNumber = row[j].split("; ")[0],
+                    alliance = row[j].split("; ")[1],
                 )
             }
 
-            matches.add(Match(number = row[0].toInt(), teams = teams))
+            scheduledMatches.add(ScheduledMatch(number = row[0].toInt(), teams = teams))
         }
-        return MatchScoutingSheet(matches)
+        return MatchScoutingSchedule(scheduledMatches)
     }
 
-    private fun SpreadSheet.toPitScoutingSheet(): PitScoutingSheet {
+    private fun SpreadSheet.toPitScoutingSheet(): PitScoutingTeams {
         val teams = mutableListOf<String>()
         for (i in 1 until this.size) {
             teams.add(this[i][0])
         }
-        return PitScoutingSheet(teams)
+        return PitScoutingTeams(teams)
     }
 }
-
-data class MatchScoutingSheet(
-    val matches: List<Match>,
-)
-
-data class Match(
-    val number: Int,
-    val teams: List<Team>,
-)
-
-data class Team(
-    val scoutID: Int,
-    val alliance: String,
-    val teamNumber: String,
-)
-
-data class PitScoutingSheet(
-    val teams: List<String>,
-)

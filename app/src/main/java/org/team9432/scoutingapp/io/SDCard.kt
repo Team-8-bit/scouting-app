@@ -7,7 +7,7 @@ import java.util.regex.Pattern
 object SDCard {
     private val cardID = getMagicNumbers()[0]
 
-    private val MAIN_FOLDER = File("/storage/$cardID")
+    val MAIN_FOLDER = File("/storage/$cardID")
     val CONFIG_FILE = File(MAIN_FOLDER, "config.json")
 
     fun getFile(name: String): File {

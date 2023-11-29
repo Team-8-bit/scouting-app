@@ -4,9 +4,10 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 
-var appScreen by mutableStateOf(Screen.SETTINGS)
+var appScreen by mutableStateOf(Screen.MATCH_SELECTION)
 
 enum class Screen {
     SETTINGS,
-    DEBUG
+    DEBUG,
+    MATCH_SELECTION,
 }

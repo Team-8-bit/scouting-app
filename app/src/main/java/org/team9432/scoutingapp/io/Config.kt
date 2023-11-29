@@ -13,7 +13,7 @@ private val json = Json {
     prettyPrint = true
 }
 
-var config by mutableStateOf(readConfig())
+var config by mutableStateOf(readData())
     private set
 
 fun updateConfig(newConfig: Config) {
@@ -23,7 +23,7 @@ fun updateConfig(newConfig: Config) {
     CONFIG_FILE.writeText(jsonString)
 }
 
-private fun readConfig(): Config {
+private fun readData(): Config {
     if (!CONFIG_FILE.exists()) CONFIG_FILE.createNewFile()
     val jsonString = CONFIG_FILE.readText()
     return if (jsonString.isNotBlank()) {
@@ -37,4 +37,5 @@ private fun readConfig(): Config {
 data class Config(
     val darkMode: Boolean = true,
     val eventID: String = "2023azgl",
+    val scoutID: Int = -1
 )
