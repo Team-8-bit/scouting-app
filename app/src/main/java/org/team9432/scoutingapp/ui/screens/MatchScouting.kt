@@ -286,11 +286,14 @@ private fun PreMatch(setScreen: (Screen) -> Unit, updateData: ((MatchScoutingMat
             onChange = { newTeam -> updateData { it.copy(team = newTeam) } },
             predicate = { it.isDigitsOnly() && it.isNotBlank() }
         )
-        PageChanger(
-            Modifier.fillMaxSize().padding(5.dp),
-            onNext = { setScreen(Screen.AUTO) },
-            onBack = {},
-            backEnabled = false
-        )
+        Row {
+            BlankInput(Modifier.fillMaxHeight().fillMaxWidth(0.5F).padding(5.dp))
+            PageChanger(
+                Modifier.fillMaxSize().padding(5.dp),
+                onNext = { setScreen(Screen.AUTO) },
+                onBack = {},
+                backEnabled = false
+            )
+        }
     }
 }
