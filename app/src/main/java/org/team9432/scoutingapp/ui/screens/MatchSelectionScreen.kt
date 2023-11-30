@@ -25,7 +25,7 @@ fun MatchSelectionScreen() {
             item {
                 MatchDisplay(
                     data = it,
-                    enabled = !it.hasBeenScouted(),
+                    hasBeenScouted = it.hasBeenScouted(),
                     onClick = {
                         currentMatch = it.number
                         appScreen = Screen.MATCH_SCOUTING_SCREEN
@@ -37,7 +37,7 @@ fun MatchSelectionScreen() {
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-private fun MatchDisplay(data: ScheduledMatch, onClick: () -> Unit, enabled: Boolean = true) {
+private fun MatchDisplay(data: ScheduledMatch, onClick: () -> Unit, enabled: Boolean = true, hasBeenScouted: Boolean = false) {
     ListItem(
         modifier = Modifier.clickable(enabled = enabled, onClick = onClick),
         headlineText = {
@@ -46,7 +46,7 @@ private fun MatchDisplay(data: ScheduledMatch, onClick: () -> Unit, enabled: Boo
         supportingText = {
             Text("Team to scout: ${data.teams[config.scoutID]?.teamNumber}")
         },
-        colors = if (enabled) {
+        colors = if (enabled && !hasBeenScouted) {
             ListItemDefaults.colors()
         } else {
             val disabledColor = ListItemDefaults.contentColor.copy(0.6F)
