@@ -1,6 +1,9 @@
 package org.team9432.scoutingapp.ui.screens
 
 import androidx.compose.foundation.layout.*
+import androidx.compose.material3.AlertDialog
+import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -20,6 +23,7 @@ private enum class Screen {
 @Composable
 fun MatchScoutingScreen(match: ScheduledMatch, scoutID: Int) {
     var currentScreen by remember { mutableStateOf(Screen.PRE_MATCH) }
+    var saveDialogOpen by remember { mutableStateOf(false) }
     val teamToScout = match.teams[scoutID]!!
 
     var data by remember {
@@ -39,7 +43,17 @@ fun MatchScoutingScreen(match: ScheduledMatch, scoutID: Int) {
             updateScreen,
             updateMatchScoutingData,
             data.data,
-            onSave = { MatchScoutingFile.addTeamToMatch(data.team, data); appScreen = org.team9432.scoutingapp.Screen.MATCH_SELECTION })
+            onSave = { saveDialogOpen = true }
+        )
+    }
+    if (saveDialogOpen) {
+        AlertDialog(
+            title = { Text(text = "Save Data") },
+            text = { Text(text = "This will overwrite any saved data for this match") },
+            onDismissRequest = { saveDialogOpen = false },
+            confirmButton = { TextButton(onClick = { MatchScoutingFile.addTeamToMatch(data.team, data); appScreen = org.team9432.scoutingapp.Screen.MATCH_SELECTION }) { Text("Confirm") } },
+            dismissButton = { TextButton(onClick = { saveDialogOpen = false }) { Text("Cancel") } }
+        )
     }
 }
 
