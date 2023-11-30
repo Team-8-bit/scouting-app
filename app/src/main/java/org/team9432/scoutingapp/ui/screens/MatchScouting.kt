@@ -288,12 +288,15 @@ private fun PreMatch(setScreen: (Screen) -> Unit, updateData: ((MatchScoutingMat
         )
         Row {
             BlankInput(Modifier.fillMaxHeight().fillMaxWidth(0.5F).padding(5.dp))
-            PageChanger(
-                Modifier.fillMaxSize().padding(5.dp),
-                onNext = { setScreen(Screen.AUTO) },
-                onBack = {},
-                backEnabled = false
-            )
+            Column(Modifier.fillMaxSize()) {
+                BlankInput(Modifier.fillMaxWidth().fillMaxHeight(0.5F).padding(5.dp))
+                PageChanger(
+                    Modifier.fillMaxSize().padding(5.dp),
+                    onNext = { setScreen(Screen.AUTO) },
+                    onBack = {},
+                    backEnabled = false
+                )
+            }
         }
     }
 }
