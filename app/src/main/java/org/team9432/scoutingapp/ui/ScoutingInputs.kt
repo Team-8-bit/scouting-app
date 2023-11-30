@@ -64,8 +64,9 @@ fun GenericButtonInput(modifier: Modifier = Modifier, title: String, onPressed: 
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun InlineTextInput(modifier: Modifier = Modifier, title: String, initialValue: String = "", onChange: (String) -> Unit, enabled: Boolean = true) {
+fun InlineTextInput(modifier: Modifier = Modifier, title: String, initialValue: String = "", onChange: (String) -> Unit, enabled: Boolean = true, predicate: (String) -> Boolean = { true }) {
     var currentText by remember { mutableStateOf(initialValue) }
+    var isError by remember { mutableStateOf(false) }
 
     Box(modifier.background(MaterialTheme.colorScheme.background, MaterialTheme.shapes.small)) {
         Row(Modifier.align(Alignment.Center), verticalAlignment = Alignment.CenterVertically) {
@@ -79,9 +80,15 @@ fun InlineTextInput(modifier: Modifier = Modifier, title: String, initialValue: 
                 value = currentText,
                 enabled = enabled,
                 singleLine = true,
+                isError = isError,
                 onValueChange = {
                     currentText = it
-                    onChange(it)
+                    if (predicate(it)) {
+                        isError = false
+                        onChange(it)
+                    } else {
+                        isError = true
+                    }
                 }
             )
         }
@@ -132,8 +139,10 @@ fun DropdownInput(modifier: Modifier = Modifier, title: String, initialValue: St
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun TextInput(modifier: Modifier = Modifier, title: String, initialValue: String = "", onChange: (String) -> Unit, enabled: Boolean = true) {
+fun TextInput(modifier: Modifier = Modifier, title: String, initialValue: String = "", onChange: (String) -> Unit, enabled: Boolean = true, predicate: (String) -> Boolean = { true }) {
     var currentText by remember { mutableStateOf(initialValue) }
+    var isError by remember { mutableStateOf(false) }
+
     Box(modifier.background(MaterialTheme.colorScheme.background, MaterialTheme.shapes.small)) {
         Column(Modifier.align(Alignment.Center), horizontalAlignment = Alignment.CenterHorizontally) {
             Text(
@@ -147,7 +156,12 @@ fun TextInput(modifier: Modifier = Modifier, title: String, initialValue: String
                 enabled = enabled,
                 onValueChange = {
                     currentText = it
-                    onChange(it)
+                    if (predicate(it)) {
+                        isError = false
+                        onChange(it)
+                    } else {
+                        isError = true
+                    }
                 }
             )
         }

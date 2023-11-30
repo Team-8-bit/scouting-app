@@ -5,6 +5,7 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import androidx.core.text.isDigitsOnly
 import org.team9432.scoutingapp.appScreen
 import org.team9432.scoutingapp.io.MatchScoutFile
 import org.team9432.scoutingapp.io.data.ChargedUpMatchScoutingData
@@ -138,19 +139,23 @@ private fun PreMatch(setScreen: (Screen) -> Unit, updateData: ((MatchScoutingMat
             Modifier.fillMaxWidth().padding(5.dp),
             title = "Match Number:",
             initialValue = match.number.toString(),
-            onChange = { newMatchNumber -> updateData { it.copy(matchNumber = newMatchNumber.toInt()) } }
+            onChange = { newMatchNumber -> updateData { it.copy(matchNumber = newMatchNumber.toInt()) } },
+            predicate = { it.isDigitsOnly() && it.isNotBlank() }
         )
         InlineTextInput(
             Modifier.fillMaxWidth().padding(5.dp),
             title = "Scout ID:",
             initialValue = scoutID.toString(),
-            onChange = { newScoutID -> updateData { it.copy(scoutID = newScoutID.toInt()) } }
+            onChange = { newScoutID -> updateData { it.copy(scoutID = newScoutID.toInt()) } },
+            predicate = { it.isDigitsOnly() && it.isNotBlank() }
         )
         InlineTextInput(
             Modifier.fillMaxWidth().padding(5.dp),
             title = "Team to Scout:",
             initialValue = match.teams[scoutID]?.teamNumber.toString(),
-            onChange = { newTeam -> updateData { it.copy(team = newTeam) } })
+            onChange = { newTeam -> updateData { it.copy(team = newTeam) } },
+            predicate = { it.isDigitsOnly() && it.isNotBlank() }
+        )
         PageChanger(
             Modifier.fillMaxSize().padding(5.dp),
             onNext = { setScreen(Screen.AUTO) },
