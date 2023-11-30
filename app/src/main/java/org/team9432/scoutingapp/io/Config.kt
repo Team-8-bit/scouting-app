@@ -11,6 +11,7 @@ import org.team9432.scoutingapp.io.SDCard.CONFIG_FILE
 private val json = Json {
     ignoreUnknownKeys = true
     prettyPrint = true
+    encodeDefaults = true
 }
 
 var config by mutableStateOf(readData())

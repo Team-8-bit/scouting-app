@@ -14,6 +14,7 @@ object MatchScoutFile {
     private val json = Json {
         ignoreUnknownKeys = true
         prettyPrint = true
+        encodeDefaults = true
     }
 
     private val EVENT_DATA_DIR = File(SDCard.MAIN_FOLDER, config.eventID)
@@ -27,7 +28,7 @@ object MatchScoutFile {
     }
 
     fun ScheduledMatch.hasBeenScouted(): Boolean {
-        return data.matches[this.number]?.data != null
+        return data.matches[this.number] != null
     }
 
     fun updateData(data: MatchScoutingData) {
@@ -48,8 +49,8 @@ object MatchScoutFile {
     }
 
     private fun createFiles() {
-        if (!MATCH_SCOUTING_DATA_FILE.exists()) MATCH_SCOUTING_DATA_FILE.createNewFile()
         if (!EVENT_DATA_DIR.exists()) EVENT_DATA_DIR.mkdirs()
+        if (!MATCH_SCOUTING_DATA_FILE.exists()) MATCH_SCOUTING_DATA_FILE.createNewFile()
     }
 }
 

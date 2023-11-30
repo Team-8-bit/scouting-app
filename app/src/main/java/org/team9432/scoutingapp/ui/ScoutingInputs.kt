@@ -19,6 +19,20 @@ fun BlankInput(modifier: Modifier = Modifier) {
 }
 
 @Composable
+fun SubmitButton(modifier: Modifier = Modifier, onPressed: () -> Unit, enabled: Boolean = true) {
+    Box(modifier.background(MaterialTheme.colorScheme.primaryContainer, MaterialTheme.shapes.small).clickable(enabled = enabled, onClick = onPressed)) {
+        Column(Modifier.align(Alignment.Center), horizontalAlignment = Alignment.CenterHorizontally) {
+            Text(
+                modifier = Modifier.padding(10.dp),
+                text = "Submit Data",
+                textAlign = TextAlign.Center
+            )
+            Icon(Icons.Filled.Save, contentDescription = "Save", modifier = Modifier.fillMaxSize(0.3F), tint = MaterialTheme.colorScheme.contentColorFor(MaterialTheme.colorScheme.primaryContainer))
+        }
+    }
+}
+
+@Composable
 fun PageChanger(modifier: Modifier = Modifier, onNext: () -> Unit, onBack: () -> Unit, nextEnabled: Boolean = true, backEnabled: Boolean = true) {
     Box(modifier.background(MaterialTheme.colorScheme.background, MaterialTheme.shapes.small)) {
         Row(Modifier.align(Alignment.Center), verticalAlignment = Alignment.CenterVertically) {
@@ -44,6 +58,74 @@ fun GenericButtonInput(modifier: Modifier = Modifier, title: String, onPressed: 
                 text = title,
                 textAlign = TextAlign.Center
             )
+        }
+    }
+}
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun InlineTextInput(modifier: Modifier = Modifier, title: String, initialValue: String = "", onChange: (String) -> Unit, enabled: Boolean = true) {
+    var currentText by remember { mutableStateOf(initialValue) }
+
+    Box(modifier.background(MaterialTheme.colorScheme.background, MaterialTheme.shapes.small)) {
+        Row(Modifier.align(Alignment.Center), verticalAlignment = Alignment.CenterVertically) {
+            Text(
+                modifier = Modifier.padding(10.dp),
+                text = title,
+                textAlign = TextAlign.Center
+            )
+            OutlinedTextField(
+                modifier = Modifier.fillMaxWidth(),
+                value = currentText,
+                enabled = enabled,
+                singleLine = true,
+                onValueChange = {
+                    currentText = it
+                    onChange(it)
+                }
+            )
+        }
+    }
+}
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun DropdownInput(modifier: Modifier = Modifier, title: String, initialValue: String = "", onChange: (String) -> Unit, enabled: Boolean = true, options: List<String>) {
+    var currentText by remember { mutableStateOf(initialValue) }
+    var expanded by remember { mutableStateOf(false) }
+
+    Box(modifier.background(MaterialTheme.colorScheme.background, MaterialTheme.shapes.small)) {
+        Row(Modifier.align(Alignment.Center), verticalAlignment = Alignment.CenterVertically) {
+            Text(
+                modifier = Modifier.padding(10.dp),
+                text = title,
+                textAlign = TextAlign.Center
+            )
+            ExposedDropdownMenuBox(expanded = expanded, onExpandedChange = { expanded = !expanded }) {
+                OutlinedTextField(
+                    modifier = Modifier.fillMaxWidth().menuAnchor(),
+                    readOnly = true,
+                    value = currentText,
+                    enabled = enabled,
+                    trailingIcon = { ExposedDropdownMenuDefaults.TrailingIcon(expanded = expanded) },
+                    singleLine = true,
+                    onValueChange = {
+                        currentText = it
+                        onChange(it)
+                    }
+                )
+                ExposedDropdownMenu(expanded = expanded, onDismissRequest = { expanded = false }) {
+                    options.forEach {
+                        DropdownMenuItem(
+                            text = { Text(it) },
+                            onClick = {
+                                currentText = it
+                                expanded = false
+                            }
+                        )
+                    }
+                }
+            }
         }
     }
 }

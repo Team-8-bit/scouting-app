@@ -10,6 +10,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import org.team9432.scoutingapp.io.ScheduleFiles
 import org.team9432.scoutingapp.io.config
 import org.team9432.scoutingapp.ui.NavigationRail
 import org.team9432.scoutingapp.ui.screens.DebugScreen
@@ -34,7 +35,7 @@ class MainActivity: ComponentActivity() {
                                 Screen.DEBUG -> DebugScreen()
                                 Screen.SETTINGS -> SettingsScreen()
                                 Screen.MATCH_SELECTION -> MatchSelectionScreen()
-                                Screen.MATCH_SCOUTING_SCREEN -> MatchScoutingScreen()
+                                Screen.MATCH_SCOUTING_SCREEN -> MatchScoutingScreen(ScheduleFiles.getMatches(config.scoutID, config.eventID)[currentMatch - 1], config.scoutID)
                             }
                         }
                     }
