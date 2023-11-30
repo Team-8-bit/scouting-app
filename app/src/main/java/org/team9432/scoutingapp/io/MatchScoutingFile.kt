@@ -23,6 +23,14 @@ object MatchScoutingFile {
     var data by mutableStateOf(readData())
         private set
 
+    fun deleteMatch(teamScouted: String, matchNumber: Int) {
+        val newMatches = data.matches.toMutableMap()
+        val newMatchData = newMatches[matchNumber]?.toMutableMap() ?: mutableMapOf()
+        newMatchData.remove(teamScouted)
+        newMatches[matchNumber] = newMatchData
+        updateData(data.copy(matches = newMatches))
+    }
+
     fun addTeamToMatch(teamScouted: String, match: MatchScoutingMatchData) {
         val newMatches = data.matches.toMutableMap()
         val newMatchData = newMatches[match.matchNumber]?.toMutableMap() ?: mutableMapOf()
