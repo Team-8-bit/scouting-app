@@ -34,13 +34,33 @@ fun SubmitButton(modifier: Modifier = Modifier, onPressed: () -> Unit, enabled: 
 
 @Composable
 fun PageChanger(modifier: Modifier = Modifier, onNext: () -> Unit, onBack: () -> Unit, nextEnabled: Boolean = true, backEnabled: Boolean = true) {
+    val enabledBackground = MaterialTheme.colorScheme.tertiaryContainer
+    val disabledBackground = MaterialTheme.colorScheme.tertiaryContainer.copy(0.7F)
+    val icon = MaterialTheme.colorScheme.contentColorFor(MaterialTheme.colorScheme.tertiaryContainer)
+
     Box(modifier.background(MaterialTheme.colorScheme.background, MaterialTheme.shapes.small)) {
         Row(Modifier.align(Alignment.Center), verticalAlignment = Alignment.CenterVertically) {
-            IconButton(onClick = onBack, enabled = backEnabled) {
-                Icon(Icons.Filled.NavigateBefore, contentDescription = "Back")
+            Box(
+                Modifier
+                    .fillMaxHeight()
+                    .fillMaxWidth(0.5F)
+                    .padding(top = 5.dp, end = 2.5.dp, bottom = 5.dp, start = 5.dp)
+                    .background(if (backEnabled) enabledBackground else disabledBackground, MaterialTheme.shapes.small)
+                    .clickable(onClick = onBack, enabled = backEnabled),
+                contentAlignment = Alignment.Center
+            ) {
+                Icon(Icons.Filled.NavigateBefore, contentDescription = "Back", tint = icon)
             }
-            IconButton(onClick = onNext, enabled = nextEnabled) {
-                Icon(Icons.Filled.NavigateNext, contentDescription = "Next")
+            Box(
+                Modifier
+                    .fillMaxHeight()
+                    .fillMaxWidth()
+                    .padding(top = 5.dp, end = 2.5.dp, bottom = 5.dp, start = 5.dp)
+                    .background(if (nextEnabled) enabledBackground else disabledBackground, MaterialTheme.shapes.small)
+                    .clickable(onClick = onNext, enabled = nextEnabled),
+                contentAlignment = Alignment.Center
+            ) {
+                Icon(Icons.Filled.NavigateNext, contentDescription = "Next", tint = icon)
             }
         }
     }
