@@ -13,7 +13,7 @@ import androidx.compose.ui.Modifier
 import org.team9432.scoutingapp.Screen
 import org.team9432.scoutingapp.appScreen
 import org.team9432.scoutingapp.currentMatch
-import org.team9432.scoutingapp.io.MatchScoutFile.hasBeenScouted
+import org.team9432.scoutingapp.io.MatchScoutingFile.hasBeenScouted
 import org.team9432.scoutingapp.io.ScheduleFiles
 import org.team9432.scoutingapp.io.config
 import org.team9432.scoutingapp.io.data.ScheduledMatch

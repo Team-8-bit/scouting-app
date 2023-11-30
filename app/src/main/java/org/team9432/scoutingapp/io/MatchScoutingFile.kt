@@ -10,7 +10,7 @@ import org.team9432.scoutingapp.io.data.MatchScoutingMatchData
 import org.team9432.scoutingapp.io.data.ScheduledMatch
 import java.io.File
 
-object MatchScoutFile {
+object MatchScoutingFile {
     private val json = Json {
         ignoreUnknownKeys = true
         prettyPrint = true

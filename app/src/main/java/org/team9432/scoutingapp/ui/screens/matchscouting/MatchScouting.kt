@@ -7,7 +7,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.core.text.isDigitsOnly
 import org.team9432.scoutingapp.appScreen
-import org.team9432.scoutingapp.io.MatchScoutFile
+import org.team9432.scoutingapp.io.MatchScoutingFile
 import org.team9432.scoutingapp.io.data.ChargedUpMatchScoutingData
 import org.team9432.scoutingapp.io.data.MatchScoutingMatchData
 import org.team9432.scoutingapp.io.data.ScheduledMatch
@@ -24,7 +24,7 @@ fun MatchScoutingScreen(match: ScheduledMatch, scoutID: Int) {
 
     var data by remember {
         mutableStateOf(
-            MatchScoutFile.data.matches.get(match.number)?.get(teamToScout.teamNumber) ?: MatchScoutingMatchData(match.number, teamToScout.teamNumber, scoutID, ChargedUpMatchScoutingData())
+            MatchScoutingFile.data.matches.get(match.number)?.get(teamToScout.teamNumber) ?: MatchScoutingMatchData(match.number, teamToScout.teamNumber, scoutID, ChargedUpMatchScoutingData())
         )
     }
 
@@ -39,7 +39,7 @@ fun MatchScoutingScreen(match: ScheduledMatch, scoutID: Int) {
             updateScreen,
             updateMatchScoutingData,
             data.data,
-            onSave = { MatchScoutFile.addTeamToMatch(data.team, data); appScreen = org.team9432.scoutingapp.Screen.MATCH_SELECTION })
+            onSave = { MatchScoutingFile.addTeamToMatch(data.team, data); appScreen = org.team9432.scoutingapp.Screen.MATCH_SELECTION })
     }
 }
 
