@@ -1,4 +1,4 @@
-package org.team9432.scoutingapp.ui.screens.matchscouting
+package org.team9432.scoutingapp.ui.screens
 
 import androidx.compose.foundation.layout.*
 import androidx.compose.runtime.*

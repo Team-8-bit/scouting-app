@@ -16,7 +16,7 @@ import org.team9432.scoutingapp.ui.NavigationRail
 import org.team9432.scoutingapp.ui.screens.DebugScreen
 import org.team9432.scoutingapp.ui.screens.MatchSelectionScreen
 import org.team9432.scoutingapp.ui.screens.SettingsScreen
-import org.team9432.scoutingapp.ui.screens.matchscouting.MatchScoutingScreen
+import org.team9432.scoutingapp.ui.screens.MatchScoutingScreen
 import org.team9432.scoutingapp.ui.theme.AppTheme
 
 
