@@ -28,7 +28,7 @@ fun MatchScoutingScreen(match: ScheduledMatch, scoutID: Int) {
         Screen.PRE_MATCH -> PreMatch(updateScreen, updateData, match, scoutID)
         Screen.AUTO -> Auto(updateScreen, updateMatchScoutingData)
         Screen.TELEOP -> Teleop(updateScreen, updateMatchScoutingData)
-        Screen.NOTES -> Notes(updateScreen, updateMatchScoutingData, onSave = { MatchScoutFile.addMatch(data); appScreen = org.team9432.scoutingapp.Screen.MATCH_SELECTION })
+        Screen.NOTES -> Notes(updateScreen, updateMatchScoutingData, onSave = { MatchScoutFile.addTeamToMatch(data.team, data); appScreen = org.team9432.scoutingapp.Screen.MATCH_SELECTION })
     }
 }
 

@@ -23,12 +23,16 @@ object MatchScoutFile {
     var data by mutableStateOf(readData())
         private set
 
-    fun addMatch(match: MatchScoutingMatchData) {
-        updateData(data.copy(matches = data.matches.toMutableMap().also { it[match.matchNumber] = match }))
+    fun addTeamToMatch(teamScouted: String, match: MatchScoutingMatchData) {
+        val newMatches = data.matches.toMutableMap()
+        val newMatchData = newMatches[match.matchNumber]?.toMutableMap() ?: mutableMapOf()
+        newMatchData[teamScouted] = match
+        newMatches[match.matchNumber] = newMatchData
+        updateData(data.copy(matches = newMatches))
     }
 
-    fun ScheduledMatch.hasBeenScouted(): Boolean {
-        return data.matches[this.number] != null
+    fun ScheduledMatch.hasBeenScouted(team: String): Boolean {
+        return data.matches[this.number]?.get(team) != null
     }
 
     fun updateData(data: MatchScoutingData) {

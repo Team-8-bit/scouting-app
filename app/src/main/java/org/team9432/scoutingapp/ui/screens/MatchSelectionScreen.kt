@@ -25,7 +25,7 @@ fun MatchSelectionScreen() {
             item {
                 MatchDisplay(
                     data = it,
-                    hasBeenScouted = it.hasBeenScouted(),
+                    hasBeenScouted = it.hasBeenScouted(it.teams[config.scoutID]!!.teamNumber),
                     onClick = {
                         currentMatch = it.number
                         appScreen = Screen.MATCH_SCOUTING_SCREEN

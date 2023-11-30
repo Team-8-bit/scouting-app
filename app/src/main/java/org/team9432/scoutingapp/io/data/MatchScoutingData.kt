@@ -4,7 +4,7 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 data class MatchScoutingData(
-    val matches: Map<Int, MatchScoutingMatchData>,
+    val matches: Map<Int, Map<String, MatchScoutingMatchData>>, // Match number to (tTeam number to data)
 )
 
 @Serializable
