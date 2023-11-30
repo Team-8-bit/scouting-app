@@ -169,8 +169,10 @@ fun TextInput(modifier: Modifier = Modifier, title: String, initialValue: String
 }
 
 @Composable
-fun NumberInput(modifier: Modifier = Modifier, title: String, onChange: (Int) -> Unit, max: Int = Int.MAX_VALUE, min: Int = 0, enabled: Boolean = true) {
-    var currentNumber by remember { mutableIntStateOf(0) }
+fun NumberInput(modifier: Modifier = Modifier, title: String, onChange: (Int) -> Unit, max: Int = Int.MAX_VALUE, min: Int = 0, initialValue: Int = 0, enabled: Boolean = true) {
+    assert(initialValue in min..max)
+    var currentNumber by remember { mutableIntStateOf(initialValue) }
+
     Box(modifier.background(MaterialTheme.colorScheme.background, MaterialTheme.shapes.small)) {
         Column(Modifier.align(Alignment.Center), horizontalAlignment = Alignment.CenterHorizontally) {
             Text(
@@ -213,8 +215,8 @@ fun NumberInput(modifier: Modifier = Modifier, title: String, onChange: (Int) ->
 }
 
 @Composable
-fun CycleInput(modifier: Modifier = Modifier, title: String, onChange: (String) -> Unit, options: List<String>, enabled: Boolean = true) {
-    var currentOption by remember { mutableStateOf(options[0]) }
+fun CycleInput(modifier: Modifier = Modifier, title: String, onChange: (String) -> Unit, options: List<String>, initialOption: String = options[0], enabled: Boolean = true) {
+    var currentOption by remember { mutableStateOf(initialOption) }
     Box(modifier
         .background(MaterialTheme.colorScheme.background, MaterialTheme.shapes.small)
         .clickable(enabled = enabled) {
