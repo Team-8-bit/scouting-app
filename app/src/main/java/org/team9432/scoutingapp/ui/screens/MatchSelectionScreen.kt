@@ -102,7 +102,7 @@ private fun MatchDisplay(match: ScheduledMatch, onClick: () -> Unit, enabled: Bo
             title = { Text(text = "Delete Data") },
             text = { Text(text = "This will permanently delete any saved data for this match") },
             onDismissRequest = { showDeleteDialog = false },
-            confirmButton = { TextButton(onClick = { MatchScoutingFile.deleteMatch(teamToScout, match.number) }) { Text("Confirm") } },
+            confirmButton = { TextButton(onClick = { MatchScoutingFile.deleteMatch(teamToScout, match.number); showDeleteDialog = false }) { Text("Confirm") } },
             dismissButton = { TextButton(onClick = { showDeleteDialog = false }) { Text("Cancel") } }
         )
     }
