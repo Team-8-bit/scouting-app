@@ -14,18 +14,17 @@ import org.team9432.scoutingapp.io.updateConfig
 
 @Composable
 fun NavigationRail() {
-    var selectedItem by remember { mutableIntStateOf(0) }
     NavigationRail {
         NavigationRailItem(
             icon = { Icon(Icons.Filled.GridView, contentDescription = "Matches") },
-            selected = selectedItem == 1,
-            onClick = { selectedItem = 1; appScreen = Screen.MATCH_SELECTION },
+            selected = appScreen == Screen.MATCH_SELECTION,
+            onClick = { appScreen = Screen.MATCH_SELECTION },
             label = { Text(text = "Matches", style = MaterialTheme.typography.labelLarge) }
         )
         NavigationRailItem(
             icon = { Icon(Icons.Filled.Settings, contentDescription = "Settings") },
-            selected = selectedItem == 2,
-            onClick = { selectedItem = 2; appScreen = Screen.SETTINGS },
+            selected = appScreen == Screen.SETTINGS || appScreen == Screen.DEBUG,
+            onClick = { appScreen = Screen.SETTINGS },
             label = { Text(text = "Config", style = MaterialTheme.typography.labelLarge) }
         )
     }
