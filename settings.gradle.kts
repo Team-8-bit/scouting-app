@@ -15,3 +15,4 @@ dependencyResolutionManagement {
 
 rootProject.name = "Scouting App"
 include(":app")
+include(":annotation")
