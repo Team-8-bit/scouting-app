@@ -14,9 +14,9 @@ import org.team9432.scoutingapp.io.ScheduleFiles
 import org.team9432.scoutingapp.io.config
 import org.team9432.scoutingapp.ui.NavigationRail
 import org.team9432.scoutingapp.ui.screens.DebugScreen
+import org.team9432.scoutingapp.ui.screens.MatchScoutingScreen
 import org.team9432.scoutingapp.ui.screens.MatchSelectionScreen
 import org.team9432.scoutingapp.ui.screens.SettingsScreen
-import org.team9432.scoutingapp.ui.screens.MatchScoutingScreen
 import org.team9432.scoutingapp.ui.theme.AppTheme
 
 
@@ -34,8 +34,12 @@ class MainActivity: ComponentActivity() {
                             when (appScreen) {
                                 Screen.DEBUG -> DebugScreen()
                                 Screen.SETTINGS -> SettingsScreen()
-                                Screen.MATCH_SELECTION -> MatchSelectionScreen(ScheduleFiles.getMatches(config.scoutID, config.eventID), config.scoutID)
-                                Screen.MATCH_SCOUTING_SCREEN -> MatchScoutingScreen(ScheduleFiles.getMatches(config.scoutID, config.eventID)[currentMatch - 1], config.scoutID)
+                                Screen.MATCH_SELECTION -> MatchSelectionScreen(ScheduleFiles.getMatches(config.scoutID, config.eventID).values, config.scoutID)
+                                Screen.MATCH_SCOUTING_SCREEN -> {
+                                    val matchNumber = currentMatch
+                                    val scoutID = config.scoutID
+                                    MatchScoutingScreen(ScheduleFiles.getTeamToScout(config.eventID, matchNumber, scoutID).teamNumber, matchNumber, scoutID = scoutID)
+                                }
                             }
                         }
                     }

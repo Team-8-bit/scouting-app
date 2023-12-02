@@ -4,21 +4,20 @@ import kotlinx.serialization.Serializable
 import org.team9432.scoutingapp.annotation.*
 
 @Serializable
-data class MatchScoutingData(
-    val matches: Map<Int, Map<String, MatchScoutingMatchData>>, // Match number to (Team number to data)
-)
-
-@Serializable
-data class MatchScoutingMatchData(
-    val matchNumber: Int,
-    val team: String,
-    val scoutID: Int,
-    val data: ChargedUpMatchScoutingData,
+data class MatchScoutingFile(
+    val matches: Map<Int, Map<String, MatchScoutingData>>, // Match number to (Team number to data)
 )
 
 @Serializable
 @DataScreen
-data class ChargedUpMatchScoutingData(
+data class MatchScoutingData(
+    @InlineTextInputField(numberOnly = true)
+    val matchNumber: String,
+    @InlineTextInputField(numberOnly = true)
+    val teamNumber: String,
+    @InlineTextInputField(numberOnly = true)
+    val scoutID: String,
+
     @SwitchInputField
     val autoMobility: Boolean = false,
     @CycleInputField("Success", "Fail", "Docked")

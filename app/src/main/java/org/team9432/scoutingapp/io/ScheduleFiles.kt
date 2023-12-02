@@ -14,6 +14,10 @@ object ScheduleFiles {
         return SDCard.files.first { it.name.contains(eventID, ignoreCase = true) && it.name.contains("Pit", ignoreCase = true) }
     }
 
+    fun getTeamToScout(eventID: String, matchNumber: Int, scoutID: Int): ScheduledTeamInMatch {
+        return getMatchSchedule(eventID).scheduledMatches[matchNumber]!!.teams[scoutID]!!
+    }
+
     fun getMatchSchedule(eventID: String): MatchScoutingSchedule {
         return parseSpreadsheet(getMatchScheduleFile(eventID).readLines()).toMatchScoutingSheet()
     }
@@ -26,10 +30,10 @@ object ScheduleFiles {
         return file.map { it.split(",") }
     }
 
-    fun getMatches(scoutID: Int, eventID: String) = getMatchSchedule(eventID).scheduledMatches.filter { it.teams.containsKey(scoutID) }
+    fun getMatches(scoutID: Int, eventID: String) = getMatchSchedule(eventID).scheduledMatches.filter { it.value.teams.containsKey(scoutID) }
 
     private fun SpreadSheet.toMatchScoutingSheet(): MatchScoutingSchedule {
-        val scheduledMatches = mutableListOf<ScheduledMatch>()
+        val scheduledMatches = mutableMapOf<Int, ScheduledMatch>()
         for (i in 1 until this.size) {
             val row = this[i]
             val teams = mutableMapOf<Int, ScheduledTeamInMatch>()
@@ -41,7 +45,8 @@ object ScheduleFiles {
                 )
             }
 
-            scheduledMatches.add(ScheduledMatch(number = row[0].toInt(), teams = teams))
+            val matchNumber = row[0].toInt()
+            scheduledMatches[matchNumber] = ScheduledMatch(number = matchNumber, teams = teams)
         }
         return MatchScoutingSchedule(scheduledMatches)
     }

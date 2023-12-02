@@ -8,15 +8,11 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import androidx.core.text.isDigitsOnly
 import org.team9432.scoutingapp.appScreen
 import org.team9432.scoutingapp.io.MatchScoutingFile
-import org.team9432.scoutingapp.io.data.ChargedUpMatchScoutingData
-import org.team9432.scoutingapp.io.data.ChargedUpMatchScoutingDataInputs
-import org.team9432.scoutingapp.io.data.MatchScoutingMatchData
-import org.team9432.scoutingapp.io.data.ScheduledMatch
+import org.team9432.scoutingapp.io.data.MatchScoutingData
+import org.team9432.scoutingapp.io.data.MatchScoutingDataInputs
 import org.team9432.scoutingapp.ui.BlankInput
-import org.team9432.scoutingapp.ui.InlineTextInput
 import org.team9432.scoutingapp.ui.PageChanger
 import org.team9432.scoutingapp.ui.SubmitButton
 
@@ -25,43 +21,40 @@ enum class Screen {
 }
 
 @Composable
-fun MatchScoutingScreen(match: ScheduledMatch, scoutID: Int) {
+fun MatchScoutingScreen(teamToScout: String, matchNumber: Int, scoutID: Int) {
     var currentScreen by remember { mutableStateOf(Screen.PRE_MATCH) }
     var saveDialogOpen by remember { mutableStateOf(false) }
-    val teamToScout = match.teams[scoutID]!!
 
     var data by remember {
         mutableStateOf(
-            MatchScoutingFile.data.matches.get(match.number)?.get(teamToScout.teamNumber) ?: MatchScoutingMatchData(match.number, teamToScout.teamNumber, scoutID, ChargedUpMatchScoutingData())
+            MatchScoutingFile.dataFile.matches.get(matchNumber)?.get(teamToScout) ?: MatchScoutingData(matchNumber = matchNumber.toString(), teamNumber = teamToScout, scoutID = scoutID.toString())
         )
     }
-    val updateScreen = { it: Screen -> currentScreen = it }
-    val updateMatchScoutingData = { updateData: (ChargedUpMatchScoutingData) -> ChargedUpMatchScoutingData -> data = data.copy(data = updateData(data.data)) }
-    val updateData = { updateData: (MatchScoutingMatchData) -> MatchScoutingMatchData -> data = updateData(data) }
+    val changeScreen = { it: Screen -> currentScreen = it }
+    val updateData = { updateData: (MatchScoutingData) -> MatchScoutingData -> data = updateData(data) }
 
     val inputs by remember {
-
         mutableStateOf(
-            ChargedUpMatchScoutingDataInputs(
+            MatchScoutingDataInputs(
                 onNext = {},
                 onBack = {},
-                updateData = updateMatchScoutingData,
-                initialData = data.data
+                updateData = updateData,
+                initialData = data
             )
         )
     }
     when (currentScreen) {
-        Screen.PRE_MATCH -> PreMatch(inputs, updateScreen, updateData, match, scoutID)
-        Screen.AUTO -> Auto(inputs, updateScreen)
-        Screen.TELEOP -> Teleop(inputs, updateScreen)
-        Screen.NOTES -> Notes(inputs, updateScreen) { saveDialogOpen = true }
+        Screen.PRE_MATCH -> PreMatch(inputs, changeScreen)
+        Screen.AUTO -> Auto(inputs, changeScreen)
+        Screen.TELEOP -> Teleop(inputs, changeScreen)
+        Screen.NOTES -> Notes(inputs, changeScreen) { saveDialogOpen = true }
     }
     if (saveDialogOpen) {
         AlertDialog(
             title = { Text(text = "Save Data") },
             text = { Text(text = "This will overwrite any saved data for this match") },
             onDismissRequest = { saveDialogOpen = false },
-            confirmButton = { TextButton(onClick = { MatchScoutingFile.addTeamToMatch(data.team, data); appScreen = org.team9432.scoutingapp.Screen.MATCH_SELECTION }) { Text("Confirm") } },
+            confirmButton = { TextButton(onClick = { MatchScoutingFile.addMatchData(data); appScreen = org.team9432.scoutingapp.Screen.MATCH_SELECTION }) { Text("Confirm") } },
             dismissButton = { TextButton(onClick = { saveDialogOpen = false }) { Text("Cancel") } }
         )
     }
@@ -69,7 +62,7 @@ fun MatchScoutingScreen(match: ScheduledMatch, scoutID: Int) {
 }
 
 @Composable
-private fun Notes(inputs: ChargedUpMatchScoutingDataInputs, setScreen: (Screen) -> Unit, onSave: () -> Unit) {
+private fun Notes(inputs: MatchScoutingDataInputs, setScreen: (Screen) -> Unit, onSave: () -> Unit) {
     Column(Modifier.fillMaxSize()) {
         Row(Modifier.padding(5.dp).fillMaxHeight(0.6F).fillMaxWidth(), verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.SpaceEvenly) {
             Column(Modifier.fillMaxHeight().width(250.dp).padding(5.dp)) {
@@ -93,7 +86,7 @@ private fun Notes(inputs: ChargedUpMatchScoutingDataInputs, setScreen: (Screen) 
 }
 
 @Composable
-private fun Teleop(inputs: ChargedUpMatchScoutingDataInputs, setScreen: (Screen) -> Unit) {
+private fun Teleop(inputs: MatchScoutingDataInputs, setScreen: (Screen) -> Unit) {
     Column(Modifier.fillMaxSize()) {
         Row(Modifier.padding(5.dp).fillMaxHeight(0.33F).fillMaxWidth(), verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.SpaceEvenly) {
             inputs.TeleConesTop(Modifier.fillMaxHeight().width(175.dp).padding(5.dp))
@@ -120,7 +113,7 @@ private fun Teleop(inputs: ChargedUpMatchScoutingDataInputs, setScreen: (Screen)
 }
 
 @Composable
-private fun Auto(inputs: ChargedUpMatchScoutingDataInputs, setScreen: (Screen) -> Unit) {
+private fun Auto(inputs: MatchScoutingDataInputs, setScreen: (Screen) -> Unit) {
     Column(Modifier.fillMaxSize()) {
         Row(Modifier.padding(5.dp).fillMaxHeight(0.5F).fillMaxWidth(), verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.SpaceEvenly) {
             inputs.AutoMobility(Modifier.fillMaxHeight().width(100.dp).padding(5.dp))
@@ -140,45 +133,17 @@ private fun Auto(inputs: ChargedUpMatchScoutingDataInputs, setScreen: (Screen) -
 }
 
 @Composable
-private fun PreMatch(
-    inputs: ChargedUpMatchScoutingDataInputs,
-    setScreen: (Screen) -> Unit,
-    updateData: ((MatchScoutingMatchData) -> MatchScoutingMatchData) -> Unit,
-    match: ScheduledMatch,
-    scoutID: Int,
-) {
+private fun PreMatch(inputs: MatchScoutingDataInputs, setScreen: (Screen) -> Unit) {
     Column(Modifier.fillMaxSize()) {
-        InlineTextInput(
-            Modifier.fillMaxWidth().padding(5.dp),
-            title = "Match Number:",
-            initialValue = match.number.toString(),
-            onChange = { newMatchNumber -> updateData { it.copy(matchNumber = newMatchNumber.toInt()) } },
-            predicate = { it.isDigitsOnly() && it.isNotBlank() }
-        )
-        InlineTextInput(
-            Modifier.fillMaxWidth().padding(5.dp),
-            title = "Scout ID:",
-            initialValue = scoutID.toString(),
-            onChange = { newScoutID -> updateData { it.copy(scoutID = newScoutID.toInt()) } },
-            predicate = { it.isDigitsOnly() && it.isNotBlank() }
-        )
-        InlineTextInput(
-            Modifier.fillMaxWidth().padding(5.dp),
-            title = "Team to Scout:",
-            initialValue = match.teams[scoutID]?.teamNumber.toString(),
-            onChange = { newTeam -> updateData { it.copy(team = newTeam) } },
-            predicate = { it.isDigitsOnly() && it.isNotBlank() }
-        )
+        inputs.MatchNumber(Modifier.fillMaxWidth().padding(5.dp))
+        inputs.ScoutID(Modifier.fillMaxWidth().padding(5.dp), title = "Scout ID")
+        inputs.TeamNumber(Modifier.fillMaxWidth().padding(5.dp), title = "Team to Scout")
+
         Row {
             BlankInput(Modifier.fillMaxHeight().fillMaxWidth(0.5F).padding(5.dp))
             Column(Modifier.fillMaxSize()) {
                 BlankInput(Modifier.fillMaxWidth().fillMaxHeight(0.5F).padding(5.dp))
-                PageChanger(
-                    Modifier.fillMaxSize().padding(5.dp),
-                    onNext = { setScreen(Screen.AUTO) },
-                    onBack = {},
-                    backEnabled = false
-                )
+                PageChanger(Modifier.fillMaxSize().padding(5.dp), onNext = { setScreen(Screen.AUTO) }, onBack = {}, backEnabled = false)
             }
         }
     }

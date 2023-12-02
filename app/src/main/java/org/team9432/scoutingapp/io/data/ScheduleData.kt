@@ -1,7 +1,7 @@
 package org.team9432.scoutingapp.io.data
 
 data class MatchScoutingSchedule(
-    val scheduledMatches: List<ScheduledMatch>,
+    val scheduledMatches: Map<Int, ScheduledMatch>, // Match number to match
 )
 
 data class ScheduledMatch(

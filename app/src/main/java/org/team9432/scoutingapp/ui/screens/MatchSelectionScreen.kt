@@ -21,7 +21,7 @@ import org.team9432.scoutingapp.io.config
 import org.team9432.scoutingapp.io.data.ScheduledMatch
 
 @Composable
-fun MatchSelectionScreen(matches: List<ScheduledMatch>, scoutID: Int) {
+fun MatchSelectionScreen(matches: Collection<ScheduledMatch>, scoutID: Int) {
     val alreadyScoutedMatches = matches.filter { it.hasBeenScouted(it.teams[scoutID]!!.teamNumber) }
     val toBeScoutedMatches = matches.filter { !alreadyScoutedMatches.contains(it) }
 
@@ -102,7 +102,7 @@ private fun MatchDisplay(match: ScheduledMatch, onClick: () -> Unit, enabled: Bo
             title = { Text(text = "Delete Data") },
             text = { Text(text = "This will permanently delete any saved data for this match") },
             onDismissRequest = { showDeleteDialog = false },
-            confirmButton = { TextButton(onClick = { MatchScoutingFile.deleteMatch(teamToScout, match.number); showDeleteDialog = false }) { Text("Confirm") } },
+            confirmButton = { TextButton(onClick = { MatchScoutingFile.deleteMatchData(teamToScout, match.number); showDeleteDialog = false }) { Text("Confirm") } },
             dismissButton = { TextButton(onClick = { showDeleteDialog = false }) { Text("Cancel") } }
         )
     }
