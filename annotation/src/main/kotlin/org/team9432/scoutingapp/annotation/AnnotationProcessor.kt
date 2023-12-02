@@ -10,7 +10,7 @@ import com.squareup.kotlinpoet.*
 import com.squareup.kotlinpoet.ksp.toClassName
 import com.squareup.kotlinpoet.ksp.writeTo
 
-class AnnotationProcessor(private val codeGenerator: CodeGenerator, val logger: KSPLogger): SymbolProcessor {
+class AnnotationProcessor(private val codeGenerator: CodeGenerator): SymbolProcessor {
     private val modifierType = ClassName("androidx.compose.ui", "Modifier")
 
     private val inputTypes = listOf(
@@ -82,8 +82,7 @@ class AnnotationProcessor(private val codeGenerator: CodeGenerator, val logger: 
 
         when (annotation.shortName.getShortName()) {
             "TextInputField" -> {
-                val initialValue = annotation.arguments[0].value as String
-                val isNumberOnly = annotation.arguments[1].value as Boolean
+                val isNumberOnly = annotation.arguments[0].value as Boolean
                 builder.addCode(
                     """
                         TextInput(
@@ -100,8 +99,7 @@ class AnnotationProcessor(private val codeGenerator: CodeGenerator, val logger: 
             }
 
             "InlineTextInputField" -> {
-                val initialValue = annotation.arguments[0].value as String
-                val isNumberOnly = annotation.arguments[1].value as Boolean
+                val isNumberOnly = annotation.arguments[0].value as Boolean
                 builder.addCode(
                     """
                         InlineTextInput(
@@ -118,9 +116,7 @@ class AnnotationProcessor(private val codeGenerator: CodeGenerator, val logger: 
             }
 
             "DropdownInputField" -> {
-                val initialValue = annotation.arguments[0].value as String
-                val options = (annotation.arguments[1].value as ArrayList<*>).map { it as String }.toMutableList()
-                options.add(initialValue)
+                val options = (annotation.arguments[0].value as ArrayList<*>).map { it as String }
                 builder.addCode(
                     """
                         DropdownInput(
@@ -137,9 +133,8 @@ class AnnotationProcessor(private val codeGenerator: CodeGenerator, val logger: 
             }
 
             "NumberInputField" -> {
-                val initialValue = annotation.arguments[0].value as Int
-                val max = annotation.arguments[1].value as Int
-                val min = annotation.arguments[2].value as Int
+                val max = annotation.arguments[0].value as Int
+                val min = annotation.arguments[1].value as Int
                 builder.addCode(
                     """
                         NumberInput(
@@ -157,9 +152,7 @@ class AnnotationProcessor(private val codeGenerator: CodeGenerator, val logger: 
             }
 
             "CycleInputField" -> {
-                val initialValue = annotation.arguments[0].value as String
-                val options = (annotation.arguments[1].value as ArrayList<*>).map { it as String }.toMutableList()
-                options.add(initialValue)
+                val options = (annotation.arguments[0].value as ArrayList<*>).map { it as String }
                 builder.addCode(
                     """
                         CycleInput(
@@ -176,7 +169,6 @@ class AnnotationProcessor(private val codeGenerator: CodeGenerator, val logger: 
             }
 
             "SwitchInputField" -> {
-                val initialValue = annotation.arguments[0].value as Boolean
                 builder.addCode(
                     """
                         SwitchInput(
@@ -215,8 +207,6 @@ class AnnotationProcessor(private val codeGenerator: CodeGenerator, val logger: 
 
 class Provider: SymbolProcessorProvider {
     override fun create(environment: SymbolProcessorEnvironment) = AnnotationProcessor(
-        codeGenerator = environment.codeGenerator,
-        logger = environment.logger,
-//        print = environment.
+        codeGenerator = environment.codeGenerator
     )
 }

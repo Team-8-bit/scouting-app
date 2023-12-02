@@ -19,62 +19,62 @@ data class MatchScoutingMatchData(
 @Serializable
 @DataScreen
 data class ChargedUpMatchScoutingData(
-    @SwitchInputField(false)
+    @SwitchInputField
     val autoMobility: Boolean = false,
-    @CycleInputField("No attempt", "Success", "Fail", "Docked")
+    @CycleInputField("Success", "Fail", "Docked")
     val autoEngage: String = "No attempt",
-    @NumberInputField(0)
+    @NumberInputField
     val autoConesTop: Int = 0,
-    @NumberInputField(0)
+    @NumberInputField
     val autoConesMid: Int = 0,
-    @NumberInputField(0)
+    @NumberInputField
     val autoConesLow: Int = 0,
-    @NumberInputField(0)
+    @NumberInputField
     val autoCubesTop: Int = 0,
-    @NumberInputField(0)
+    @NumberInputField
     val autoCubesMid: Int = 0,
-    @NumberInputField(0)
+    @NumberInputField
     val autoCubesLow: Int = 0,
-    @NumberInputField(0)
+    @NumberInputField
     val teleConesTop: Int = 0,
-    @NumberInputField(0)
+    @NumberInputField
     val teleConesMid: Int = 0,
-    @NumberInputField(0)
+    @NumberInputField
     val teleConesLow: Int = 0,
-    @NumberInputField(0)
+    @NumberInputField
     val teleCubesTop: Int = 0,
-    @NumberInputField(0)
+    @NumberInputField
     val teleCubesMid: Int = 0,
-    @NumberInputField(0)
+    @NumberInputField
     val teleCubesLow: Int = 0,
-    @SwitchInputField(false)
+    @SwitchInputField
     val defended: Boolean = false,
-    @SwitchInputField(false)
+    @SwitchInputField
     val disabled: Boolean = false,
-    @NumberInputField(0)
+    @NumberInputField
     val penalties: Int = 0,
-    @CycleInputField("No attempt", "Success", "Fail", "Docked")
+    @CycleInputField("Success", "Fail", "Docked")
     val teleEngage: String = "No attempt",
-    @NumberInputField(0)
+    @NumberInputField
     val conesDropped: Int = 0,
-    @NumberInputField(0)
+    @NumberInputField
     val cubesDropped: Int = 0,
-    @NumberInputField(0)
+    @NumberInputField
     val conesMissed: Int = 0,
-    @NumberInputField(0)
+    @NumberInputField
     val cubesMissed: Int = 0,
-    @CycleInputField("N/A", "Scoring", "Defence", "Shuttle")
+    @CycleInputField("Scoring", "Defence", "Shuttle")
     val robotRole: String = "N/A",
-    @CycleInputField("N/A", "Double", "Single", "Both")
+    @CycleInputField("Double", "Single", "Both")
     val substationPreference: String = "N/A",
-    @CycleInputField("N/A", "Cube", "Cone")
+    @CycleInputField("Cube", "Cone")
     val gamePiecePreference: String = "N/A",
-    @CycleInputField("N/A", "Excellent", "Acceptable", "Subpar", "Abysmal")
+    @CycleInputField("Excellent", "Acceptable", "Subpar", "Abysmal")
     val defenceQuality: String = "N/A",
-    @CycleInputField("N/A", "good", "ok-ish", "not ok", "no")
+    @CycleInputField("good", "ok-ish", "not ok", "no")
     val drivingQuality: String = "N/A",
-    @CycleInputField("N/A", "No", "First Pick", "Second Pick")
+    @CycleInputField("No", "First Pick", "Second Pick")
     val wouldPick: String = "N/A",
-    @TextInputField("")
+    @TextInputField
     val notes: String = "",
 )
