@@ -42,8 +42,6 @@ class AnnotationProcessor(private val codeGenerator: CodeGenerator): SymbolProce
         val functions = parameters?.map { generateComposable(it) }!!
 
         val constructor = FunSpec.constructorBuilder()
-            .addParameter("onNext", Runnable::class)
-            .addParameter("onBack", Runnable::class)
             .addParameter("updateData", LambdaTypeName.get(returnType = ClassName("kotlin", "Unit"), parameters = arrayOf(LambdaTypeName.get(returnType = classType, parameters = arrayOf(classType)))))
             .addParameter("initialData", classType)
             .addParameter(ParameterSpec.builder("enabled", Boolean::class).defaultValue("true").build())
@@ -51,8 +49,6 @@ class AnnotationProcessor(private val codeGenerator: CodeGenerator): SymbolProce
 
         val type = TypeSpec.classBuilder(newClassName)
             .primaryConstructor(constructor)
-            .addProperty(PropertySpec.builder("onNext", Runnable::class).initializer("onNext").build())
-            .addProperty(PropertySpec.builder("onBack", Runnable::class).initializer("onBack").build())
             .addProperty(
                 PropertySpec.builder(
                     "updateData",

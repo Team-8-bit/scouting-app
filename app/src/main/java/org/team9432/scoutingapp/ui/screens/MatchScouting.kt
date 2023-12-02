@@ -36,8 +36,6 @@ fun MatchScoutingScreen(teamToScout: String, matchNumber: Int, scoutID: Int) {
     val inputs by remember {
         mutableStateOf(
             MatchScoutingDataInputs(
-                onNext = {},
-                onBack = {},
                 updateData = updateData,
                 initialData = data
             )
