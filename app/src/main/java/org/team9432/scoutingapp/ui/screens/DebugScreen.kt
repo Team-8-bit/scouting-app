@@ -10,6 +10,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import org.team9432.scoutingapp.Screen
 import org.team9432.scoutingapp.appScreen
+import org.team9432.scoutingapp.io.SDCard
 import org.team9432.scoutingapp.io.ScheduleFiles
 import org.team9432.scoutingapp.io.config
 
@@ -29,11 +30,11 @@ fun DebugScreen() {
         }
         Column(Modifier.padding(10.dp)) {
             Text(text = "Match Scouting File", style = MaterialTheme.typography.labelLarge)
-            Text(text = ScheduleFiles.getMatchScheduleFile().absolutePath)
+            Text(text = SDCard.getMatchScheduleFile().absolutePath)
         }
         Column(Modifier.padding(10.dp)) {
             Text(text = "Pit Scouting File", style = MaterialTheme.typography.labelLarge)
-            Text(text = ScheduleFiles.getPitScheduleFile().absolutePath)
+            Text(text = SDCard.getPitScheduleFile().absolutePath)
         }
     }
 }

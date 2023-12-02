@@ -4,31 +4,9 @@ import org.team9432.scoutingapp.io.data.MatchScoutingSchedule
 import org.team9432.scoutingapp.io.data.PitScoutingTeams
 import java.io.File
 
-typealias SpreadSheet = List<List<String>>
-
 object ScheduleFiles {
-    fun getMatchScheduleFile(): File {
-        return SDCard.files.first { it.name.contains(config.eventID, ignoreCase = true) && it.name.contains("Match", ignoreCase = true) }
-    }
-
-    fun getPitScheduleFile(): File {
-        return SDCard.files.first { it.name.contains(config.eventID, ignoreCase = true) && it.name.contains("Pit", ignoreCase = true) }
-    }
-
     fun getTeamToScout(matchNumber: Int): String {
         return getMatchSchedule()[matchNumber]!![config.scoutID]!!
-    }
-
-    fun getMatchSchedule(): MatchScoutingSchedule {
-        return parseSpreadsheet(getMatchScheduleFile().readLines()).toMatchScoutingSheet()
-    }
-
-    fun getPitSchedule(): PitScoutingTeams {
-        return parseSpreadsheet(getPitScheduleFile().readLines()).toPitScoutingSheet()
-    }
-
-    private fun parseSpreadsheet(file: List<String>): SpreadSheet {
-        return file.map { it.split(",") }
     }
 
     fun getMatches(): Map<Int, String> {
@@ -36,10 +14,12 @@ object ScheduleFiles {
         return getMatchSchedule().filterValues { it.containsKey(scoutID) }.mapValues { it.value[scoutID]!! }
     }
 
-    private fun SpreadSheet.toMatchScoutingSheet(): MatchScoutingSchedule {
+    private fun getMatchSchedule(): MatchScoutingSchedule {
+        val lines = SDCard.getMatchScheduleFile().readCSV()
+
         val matches = mutableMapOf<Int, Map<Int, String>>()
-        for (i in 1 until this.size) {
-            val row = this[i]
+        for (i in 1 until lines.size) {
+            val row = lines[i]
             val scoutsToTeams = mutableMapOf<Int, String>()
 
             for (j in 1..6) {
@@ -52,11 +32,15 @@ object ScheduleFiles {
         return matches
     }
 
-    private fun SpreadSheet.toPitScoutingSheet(): PitScoutingTeams {
+    private fun getPitSchedule(): PitScoutingTeams {
+        val lines = SDCard.getPitScheduleFile().readCSV()
+
         val teams = mutableListOf<String>()
-        for (i in 1 until this.size) {
-            teams.add(this[i][0])
+        for (i in 1 until lines.size) {
+            teams.add(lines[i][0])
         }
         return teams
     }
+
+    private fun File.readCSV() = readLines().map { it.split(",") }
 }

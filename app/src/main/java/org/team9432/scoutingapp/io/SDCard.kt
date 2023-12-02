@@ -10,14 +10,22 @@ object SDCard {
     val MAIN_FOLDER = File("/storage/$cardID")
     val CONFIG_FILE = File(MAIN_FOLDER, "config.json")
 
-    fun getFile(name: String): File {
+    fun getMatchScheduleFile(): File {
+        return files.first { it.name.contains(config.eventID, ignoreCase = true) && it.name.contains("Match", ignoreCase = true) }
+    }
+
+    fun getPitScheduleFile(): File {
+        return files.first { it.name.contains(config.eventID, ignoreCase = true) && it.name.contains("Pit", ignoreCase = true) }
+    }
+
+    private fun getFile(name: String): File {
         return File(MAIN_FOLDER, name)
     }
 
-    val files: List<File>
+    private val files: List<File>
         get() = MAIN_FOLDER.listFiles()!!.filter { it.isFile }.toList()
 
-    val fileNames: List<String>
+    private val fileNames: List<String>
         get() = files.map { it.name }
 
     private fun getMagicNumbers(): List<String> {
