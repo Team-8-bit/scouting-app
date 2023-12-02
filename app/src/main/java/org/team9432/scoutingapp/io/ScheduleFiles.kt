@@ -16,7 +16,7 @@ object ScheduleFiles {
     }
 
     fun getTeamToScout(matchNumber: Int): String {
-        return getMatchSchedule().scheduledMatches[matchNumber]!![config.scoutID]!!
+        return getMatchSchedule()[matchNumber]!![config.scoutID]!!
     }
 
     fun getMatchSchedule(): MatchScoutingSchedule {
@@ -33,7 +33,7 @@ object ScheduleFiles {
 
     fun getMatches(): Map<Int, String> {
         val scoutID = config.scoutID
-        return getMatchSchedule().scheduledMatches.filterValues { it.containsKey(scoutID) }.mapValues { it.value[scoutID]!! }
+        return getMatchSchedule().filterValues { it.containsKey(scoutID) }.mapValues { it.value[scoutID]!! }
     }
 
     private fun SpreadSheet.toMatchScoutingSheet(): MatchScoutingSchedule {
@@ -49,7 +49,7 @@ object ScheduleFiles {
             val matchNumber = row[0].toInt()
             matches[matchNumber] = scoutsToTeams
         }
-        return MatchScoutingSchedule(matches)
+        return matches
     }
 
     private fun SpreadSheet.toPitScoutingSheet(): PitScoutingTeams {
@@ -57,6 +57,6 @@ object ScheduleFiles {
         for (i in 1 until this.size) {
             teams.add(this[i][0])
         }
-        return PitScoutingTeams(teams)
+        return teams
     }
 }
