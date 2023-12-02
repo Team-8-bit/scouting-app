@@ -10,8 +10,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import org.team9432.scoutingapp.appScreen
 import org.team9432.scoutingapp.io.MatchScoutingFile
-import org.team9432.scoutingapp.io.data.MatchScoutingData
-import org.team9432.scoutingapp.io.data.MatchScoutingDataInputs
+import org.team9432.scoutingapp.io.json.MatchScoutingData
+import org.team9432.scoutingapp.io.json.MatchScoutingDataInputs
 import org.team9432.scoutingapp.ui.BlankInput
 import org.team9432.scoutingapp.ui.PageChanger
 import org.team9432.scoutingapp.ui.SubmitButton

@@ -1,4 +1,4 @@
-package org.team9432.scoutingapp.io.data
+package org.team9432.scoutingapp.io.json
 
 import kotlinx.serialization.Serializable
 import org.team9432.scoutingapp.annotation.*

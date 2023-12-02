@@ -1,10 +1,12 @@
 package org.team9432.scoutingapp.io
 
-import org.team9432.scoutingapp.io.data.MatchScoutingSchedule
-import org.team9432.scoutingapp.io.data.PitScoutingTeams
 import java.io.File
 
+typealias MatchScoutingSchedule = Map<Int, Map<Int, String>> // Match number to (scout ID to team)
+typealias PitScoutingTeams = List<String>
+
 object ScheduleFiles {
+
     fun getTeamToScout(matchNumber: Int): String {
         return getMatchSchedule()[matchNumber]!![config.scoutID]!!
     }

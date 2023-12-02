@@ -7,8 +7,8 @@ import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
 import org.team9432.scoutingapp.io.SDCard.EVENT_DATA_DIR
 import org.team9432.scoutingapp.io.SDCard.MATCH_SCOUTING_DATA_FILE
-import org.team9432.scoutingapp.io.data.MatchScoutingData
-import org.team9432.scoutingapp.io.data.MatchScoutingFile
+import org.team9432.scoutingapp.io.json.MatchScoutingData
+import org.team9432.scoutingapp.io.json.MatchScoutingFile
 
 object MatchScoutingFile {
     private val json = Json {
