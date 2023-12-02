@@ -6,7 +6,7 @@ import org.team9432.scoutingapp.io.config
 
 @Serializable
 data class MatchScoutingFile(
-    val matches: Map<Int, Map<String, MatchScoutingData>>, // Match number to (Team number to data)
+    val matches: Map<Int, Map<String, MatchScoutingData>>, // Match number to (team number to data)
 ) {
     fun getMatchOrNull(matchNumber: Int, team: String) = matches[matchNumber]?.get(team)
     fun getMatchOrNew(matchNumber: Int, team: String) = getMatchOrNull(matchNumber, team) ?: MatchScoutingData(matchNumber.toString(), team, config.scoutID.toString())

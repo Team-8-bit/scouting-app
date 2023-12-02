@@ -7,7 +7,6 @@ import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
 import org.team9432.scoutingapp.io.data.MatchScoutingData
 import org.team9432.scoutingapp.io.data.MatchScoutingFile
-import org.team9432.scoutingapp.io.data.ScheduledMatch
 import java.io.File
 
 object MatchScoutingFile {
@@ -40,8 +39,8 @@ object MatchScoutingFile {
         updateDataFile(dataFile.copy(matches = newData))
     }
 
-    fun ScheduledMatch.hasBeenScouted(team: String): Boolean {
-        return dataFile.matches[this.number]?.get(team) != null
+    fun hasBeenScouted(matchNumber: Int, team: String): Boolean {
+        return dataFile.matches[matchNumber]?.get(team) != null
     }
 
     private fun updateDataFile(data: MatchScoutingFile) {

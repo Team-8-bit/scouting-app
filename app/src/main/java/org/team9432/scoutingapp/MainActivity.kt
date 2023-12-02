@@ -34,11 +34,11 @@ class MainActivity: ComponentActivity() {
                             when (appScreen) {
                                 Screen.DEBUG -> DebugScreen()
                                 Screen.SETTINGS -> SettingsScreen()
-                                Screen.MATCH_SELECTION -> MatchSelectionScreen(ScheduleFiles.getMatches().values, config.scoutID)
+                                Screen.MATCH_SELECTION -> MatchSelectionScreen(ScheduleFiles.getMatches())
                                 Screen.MATCH_SCOUTING_SCREEN -> {
                                     val matchNumber = currentMatch
                                     val scoutID = config.scoutID
-                                    MatchScoutingScreen(ScheduleFiles.getTeamToScout(matchNumber).teamNumber, matchNumber)
+                                    MatchScoutingScreen(ScheduleFiles.getTeamToScout(matchNumber), matchNumber)
                                 }
                             }
                         }

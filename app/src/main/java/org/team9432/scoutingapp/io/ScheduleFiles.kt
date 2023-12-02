@@ -1,6 +1,7 @@
 package org.team9432.scoutingapp.io
 
-import org.team9432.scoutingapp.io.data.*
+import org.team9432.scoutingapp.io.data.MatchScoutingSchedule
+import org.team9432.scoutingapp.io.data.PitScoutingTeams
 import java.io.File
 
 typealias SpreadSheet = List<List<String>>
@@ -14,8 +15,8 @@ object ScheduleFiles {
         return SDCard.files.first { it.name.contains(config.eventID, ignoreCase = true) && it.name.contains("Pit", ignoreCase = true) }
     }
 
-    fun getTeamToScout(matchNumber: Int): ScheduledTeamInMatch {
-        return getMatchSchedule().scheduledMatches[matchNumber]!!.teams[config.scoutID]!!
+    fun getTeamToScout(matchNumber: Int): String {
+        return getMatchSchedule().scheduledMatches[matchNumber]!![config.scoutID]!!
     }
 
     fun getMatchSchedule(): MatchScoutingSchedule {
@@ -30,25 +31,25 @@ object ScheduleFiles {
         return file.map { it.split(",") }
     }
 
-    fun getMatches() = getMatchSchedule().scheduledMatches.filter { it.value.teams.containsKey(config.scoutID) }
+    fun getMatches(): Map<Int, String> {
+        val scoutID = config.scoutID
+        return getMatchSchedule().scheduledMatches.filterValues { it.containsKey(scoutID) }.mapValues { it.value[scoutID]!! }
+    }
 
     private fun SpreadSheet.toMatchScoutingSheet(): MatchScoutingSchedule {
-        val scheduledMatches = mutableMapOf<Int, ScheduledMatch>()
+        val matches = mutableMapOf<Int, Map<Int, String>>()
         for (i in 1 until this.size) {
             val row = this[i]
-            val teams = mutableMapOf<Int, ScheduledTeamInMatch>()
+            val scoutsToTeams = mutableMapOf<Int, String>()
 
             for (j in 1..6) {
-                teams[j] = ScheduledTeamInMatch(
-                    teamNumber = row[j].split("; ")[0],
-                    alliance = row[j].split("; ")[1],
-                )
+                scoutsToTeams[j] = row[j]
             }
 
             val matchNumber = row[0].toInt()
-            scheduledMatches[matchNumber] = ScheduledMatch(number = matchNumber, teams = teams)
+            matches[matchNumber] = scoutsToTeams
         }
-        return MatchScoutingSchedule(scheduledMatches)
+        return MatchScoutingSchedule(matches)
     }
 
     private fun SpreadSheet.toPitScoutingSheet(): PitScoutingTeams {
