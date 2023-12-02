@@ -91,7 +91,7 @@ class AnnotationProcessor(private val codeGenerator: CodeGenerator): SymbolProce
                             initialValue = initialData.$parameterName,
                             onChange = { newValue -> updateData { it.copy($parameterName = newValue) } },
                             enabled = enabled,
-                            predicate = ${if (isNumberOnly) "{ it.isDigitsOnly() }" else "{ true }"}
+                            predicate = ${if (isNumberOnly) "{ it.isDigitsOnly() && it.isNotBlank() }" else "{ true }"}
                         )   
                     """.trimIndent()
                 )
@@ -108,7 +108,7 @@ class AnnotationProcessor(private val codeGenerator: CodeGenerator): SymbolProce
                             initialValue = initialData.$parameterName,
                             onChange = { newValue -> updateData { it.copy($parameterName = newValue) } },
                             enabled = enabled,
-                            predicate = ${if (isNumberOnly) "{ it.isDigitsOnly() }" else "{ true }"}
+                            predicate = ${if (isNumberOnly) "{ it.isDigitsOnly() && it.isNotBlank() }" else "{ true }"}
                         )   
                     """.trimIndent()
                 )
