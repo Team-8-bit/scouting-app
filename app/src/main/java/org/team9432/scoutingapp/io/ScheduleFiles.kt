@@ -6,31 +6,31 @@ import java.io.File
 typealias SpreadSheet = List<List<String>>
 
 object ScheduleFiles {
-    fun getMatchScheduleFile(eventID: String): File {
-        return SDCard.files.first { it.name.contains(eventID, ignoreCase = true) && it.name.contains("Match", ignoreCase = true) }
+    fun getMatchScheduleFile(): File {
+        return SDCard.files.first { it.name.contains(config.eventID, ignoreCase = true) && it.name.contains("Match", ignoreCase = true) }
     }
 
-    fun getPitScheduleFile(eventID: String): File {
-        return SDCard.files.first { it.name.contains(eventID, ignoreCase = true) && it.name.contains("Pit", ignoreCase = true) }
+    fun getPitScheduleFile(): File {
+        return SDCard.files.first { it.name.contains(config.eventID, ignoreCase = true) && it.name.contains("Pit", ignoreCase = true) }
     }
 
-    fun getTeamToScout(eventID: String, matchNumber: Int, scoutID: Int): ScheduledTeamInMatch {
-        return getMatchSchedule(eventID).scheduledMatches[matchNumber]!!.teams[scoutID]!!
+    fun getTeamToScout(matchNumber: Int): ScheduledTeamInMatch {
+        return getMatchSchedule().scheduledMatches[matchNumber]!!.teams[config.scoutID]!!
     }
 
-    fun getMatchSchedule(eventID: String): MatchScoutingSchedule {
-        return parseSpreadsheet(getMatchScheduleFile(eventID).readLines()).toMatchScoutingSheet()
+    fun getMatchSchedule(): MatchScoutingSchedule {
+        return parseSpreadsheet(getMatchScheduleFile().readLines()).toMatchScoutingSheet()
     }
 
-    fun getPitSchedule(eventID: String): PitScoutingTeams {
-        return parseSpreadsheet(getPitScheduleFile(eventID).readLines()).toPitScoutingSheet()
+    fun getPitSchedule(): PitScoutingTeams {
+        return parseSpreadsheet(getPitScheduleFile().readLines()).toPitScoutingSheet()
     }
 
     private fun parseSpreadsheet(file: List<String>): SpreadSheet {
         return file.map { it.split(",") }
     }
 
-    fun getMatches(scoutID: Int, eventID: String) = getMatchSchedule(eventID).scheduledMatches.filter { it.value.teams.containsKey(scoutID) }
+    fun getMatches() = getMatchSchedule().scheduledMatches.filter { it.value.teams.containsKey(config.scoutID) }
 
     private fun SpreadSheet.toMatchScoutingSheet(): MatchScoutingSchedule {
         val scheduledMatches = mutableMapOf<Int, ScheduledMatch>()

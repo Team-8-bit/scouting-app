@@ -29,11 +29,11 @@ fun DebugScreen() {
         }
         Column(Modifier.padding(10.dp)) {
             Text(text = "Match Scouting File", style = MaterialTheme.typography.labelLarge)
-            Text(text = ScheduleFiles.getMatchScheduleFile(config.eventID).absolutePath)
+            Text(text = ScheduleFiles.getMatchScheduleFile().absolutePath)
         }
         Column(Modifier.padding(10.dp)) {
             Text(text = "Pit Scouting File", style = MaterialTheme.typography.labelLarge)
-            Text(text = ScheduleFiles.getPitScheduleFile(config.eventID).absolutePath)
+            Text(text = ScheduleFiles.getPitScheduleFile().absolutePath)
         }
     }
 }

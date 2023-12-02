@@ -16,47 +16,44 @@ import org.team9432.scoutingapp.ui.BlankInput
 import org.team9432.scoutingapp.ui.PageChanger
 import org.team9432.scoutingapp.ui.SubmitButton
 
-enum class Screen {
+private enum class Screen {
     PRE_MATCH, AUTO, TELEOP, NOTES
 }
 
 @Composable
-fun MatchScoutingScreen(teamToScout: String, matchNumber: Int, scoutID: Int) {
+fun MatchScoutingScreen(teamToScout: String, matchNumber: Int) {
     var currentScreen by remember { mutableStateOf(Screen.PRE_MATCH) }
     var saveDialogOpen by remember { mutableStateOf(false) }
 
-    var data by remember {
-        mutableStateOf(
-            MatchScoutingFile.dataFile.matches.get(matchNumber)?.get(teamToScout) ?: MatchScoutingData(matchNumber = matchNumber.toString(), teamNumber = teamToScout, scoutID = scoutID.toString())
-        )
-    }
-    val changeScreen = { it: Screen -> currentScreen = it }
-    val updateData = { updateData: (MatchScoutingData) -> MatchScoutingData -> data = updateData(data) }
+    var matchData by remember { mutableStateOf(MatchScoutingFile.dataFile.getMatchOrNew(matchNumber, teamToScout)) }
+    val changeScreen = { screen: Screen -> currentScreen = screen }
+    val updateData = { updateData: (MatchScoutingData) -> MatchScoutingData -> matchData = updateData(matchData) }
 
     val inputs by remember {
         mutableStateOf(
             MatchScoutingDataInputs(
                 updateData = updateData,
-                initialData = data
+                initialData = matchData,
             )
         )
     }
+
     when (currentScreen) {
         Screen.PRE_MATCH -> PreMatch(inputs, changeScreen)
         Screen.AUTO -> Auto(inputs, changeScreen)
         Screen.TELEOP -> Teleop(inputs, changeScreen)
         Screen.NOTES -> Notes(inputs, changeScreen) { saveDialogOpen = true }
     }
+
     if (saveDialogOpen) {
         AlertDialog(
             title = { Text(text = "Save Data") },
             text = { Text(text = "This will overwrite any saved data for this match") },
             onDismissRequest = { saveDialogOpen = false },
-            confirmButton = { TextButton(onClick = { MatchScoutingFile.addMatchData(data); appScreen = org.team9432.scoutingapp.Screen.MATCH_SELECTION }) { Text("Confirm") } },
+            confirmButton = { TextButton(onClick = { MatchScoutingFile.addMatchData(matchData); appScreen = org.team9432.scoutingapp.Screen.MATCH_SELECTION }) { Text("Confirm") } },
             dismissButton = { TextButton(onClick = { saveDialogOpen = false }) { Text("Cancel") } }
         )
     }
-
 }
 
 @Composable
