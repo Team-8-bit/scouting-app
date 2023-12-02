@@ -10,6 +10,9 @@ object SDCard {
     val MAIN_FOLDER = File("/storage/$cardID")
     val CONFIG_FILE = File(MAIN_FOLDER, "config.json")
 
+    val EVENT_DATA_DIR get() = File(MAIN_FOLDER, config.eventID)
+    val MATCH_SCOUTING_DATA_FILE get() = File(EVENT_DATA_DIR, "MatchScoutingData.json")
+
     fun getMatchScheduleFile(): File {
         return files.first { it.name.contains(config.eventID, ignoreCase = true) && it.name.contains("Match", ignoreCase = true) }
     }

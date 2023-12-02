@@ -5,9 +5,10 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
+import org.team9432.scoutingapp.io.SDCard.EVENT_DATA_DIR
+import org.team9432.scoutingapp.io.SDCard.MATCH_SCOUTING_DATA_FILE
 import org.team9432.scoutingapp.io.data.MatchScoutingData
 import org.team9432.scoutingapp.io.data.MatchScoutingFile
-import java.io.File
 
 object MatchScoutingFile {
     private val json = Json {
@@ -16,36 +17,33 @@ object MatchScoutingFile {
         encodeDefaults = true
     }
 
-    private val EVENT_DATA_DIR = File(SDCard.MAIN_FOLDER, config.eventID)
-    private val MATCH_SCOUTING_DATA_FILE = File(EVENT_DATA_DIR, "MatchScoutingData.json")
-
-    var dataFile by mutableStateOf(readData())
+    var data by mutableStateOf(readData())
         private set
 
     fun deleteMatchData(teamScouted: String, matchNumber: Int) {
-        val newData = dataFile.matches.toMutableMap()
+        val newData = data.matches.toMutableMap()
         val newMatchData = newData[matchNumber]?.toMutableMap() ?: mutableMapOf()
         newMatchData.remove(teamScouted)
         newData[matchNumber] = newMatchData
-        updateDataFile(dataFile.copy(matches = newData))
+        updateDataFile(data.copy(matches = newData))
     }
 
     fun addMatchData(matchData: MatchScoutingData) {
         val matchNumber = matchData.matchNumber.toInt()
-        val newData = dataFile.matches.toMutableMap()
+        val newData = data.matches.toMutableMap()
         val newMatchData = newData[matchNumber]?.toMutableMap() ?: mutableMapOf()
         newMatchData[matchData.teamNumber] = matchData
         newData[matchNumber] = newMatchData
-        updateDataFile(dataFile.copy(matches = newData))
+        updateDataFile(data.copy(matches = newData))
     }
 
     fun hasBeenScouted(matchNumber: Int, team: String): Boolean {
-        return dataFile.matches[matchNumber]?.get(team) != null
+        return data.matches[matchNumber]?.get(team) != null
     }
 
     private fun updateDataFile(data: MatchScoutingFile) {
         createFiles()
-        this.dataFile = data
+        this.data = data
         val jsonString = json.encodeToString(data)
         MATCH_SCOUTING_DATA_FILE.writeText(jsonString)
     }

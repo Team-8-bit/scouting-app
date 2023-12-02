@@ -25,7 +25,7 @@ fun MatchScoutingScreen(teamToScout: String, matchNumber: Int) {
     var currentScreen by remember { mutableStateOf(Screen.PRE_MATCH) }
     var saveDialogOpen by remember { mutableStateOf(false) }
 
-    var matchData by remember { mutableStateOf(MatchScoutingFile.dataFile.getMatchOrNew(matchNumber, teamToScout)) }
+    var matchData by remember { mutableStateOf(MatchScoutingFile.data.getMatchOrNew(matchNumber, teamToScout)) }
     val changeScreen = { screen: Screen -> currentScreen = screen }
     val updateData = { updateData: (MatchScoutingData) -> MatchScoutingData -> matchData = updateData(matchData) }
 
