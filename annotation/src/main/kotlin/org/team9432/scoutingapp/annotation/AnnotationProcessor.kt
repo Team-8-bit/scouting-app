@@ -23,7 +23,7 @@ class AnnotationProcessor(private val codeGenerator: CodeGenerator): SymbolProce
     )
 
     override fun process(resolver: Resolver): List<KSAnnotated> {
-        val annotatedClasses = resolver.getSymbolsWithAnnotation(DataScreen::class.qualifiedName!!).filterIsInstance<KSClassDeclaration>()
+        val annotatedClasses = resolver.getSymbolsWithAnnotation(InputBase::class.qualifiedName!!).filterIsInstance<KSClassDeclaration>()
         annotatedClasses.forEach { process(it) }
         return annotatedClasses.filterNot { it.validate() }.toList()
     }

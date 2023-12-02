@@ -13,7 +13,7 @@ data class MatchScoutingFile(
 }
 
 @Serializable
-@DataScreen
+@InputBase
 data class MatchScoutingData(
     @InlineTextInputField(numberOnly = true)
     val matchNumber: String,
