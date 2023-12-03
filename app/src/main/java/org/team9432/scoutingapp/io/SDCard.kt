@@ -4,57 +4,32 @@ import java.io.File
 import java.util.*
 import java.util.regex.Pattern
 
-typealias SpreadSheet = List<List<String>>
-
 object SDCard {
     private val cardID = getMagicNumbers()[0]
-    private val storageDir = File("/storage/$cardID")
 
-    fun getFile(predicate: (String) -> Boolean): File? {
-        val potentialFiles = storageDir.listFiles()?.filter { it.isFile } ?: return null
-        return potentialFiles.firstOrNull { predicate(it.name) }
+    val MAIN_FOLDER = File("/storage/$cardID")
+    val CONFIG_FILE = File(MAIN_FOLDER, "config.json")
+
+    val EVENT_DATA_DIR get() = File(MAIN_FOLDER, config.eventID)
+    val MATCH_SCOUTING_DATA_FILE get() = File(EVENT_DATA_DIR, "MatchScoutingData.json")
+
+    fun getMatchScheduleFile(): File {
+        return files.first { it.name.contains(config.eventID, ignoreCase = true) && it.name.contains("Match", ignoreCase = true) }
     }
 
-    fun getMatchSchedule(file: File): MatchScoutingSheet {
-        return parseSpreadsheet(file.readLines()).toMatchScoutingSheet()
+    fun getPitScheduleFile(): File {
+        return files.first { it.name.contains(config.eventID, ignoreCase = true) && it.name.contains("Pit", ignoreCase = true) }
     }
 
-    fun getPitSchedule(file: File): PitScoutingSheet {
-        return parseSpreadsheet(file.readLines()).toPitScoutingSheet()
+    private fun getFile(name: String): File {
+        return File(MAIN_FOLDER, name)
     }
 
-    private fun parseSpreadsheet(file: List<String>): SpreadSheet {
-        return file.map { it.split(",") }
-    }
+    private val files: List<File>
+        get() = MAIN_FOLDER.listFiles()!!.filter { it.isFile }.toList()
 
-    private fun SpreadSheet.toMatchScoutingSheet(): MatchScoutingSheet {
-        val matches = mutableListOf<Match>()
-        for (i in 1 until this.size) {
-            val row = this[i]
-            val teams = mutableListOf<Team>()
-
-            for (j in 1..6) {
-                teams.add(
-                    Team(
-                        scoutID = j,
-                        teamNumber = row[j].split("; ")[0],
-                        alliance = row[j].split("; ")[1],
-                    )
-                )
-            }
-
-            matches.add(Match(number = row[0].toInt(), teams = teams))
-        }
-        return MatchScoutingSheet(matches)
-    }
-
-    private fun SpreadSheet.toPitScoutingSheet(): PitScoutingSheet {
-        val teams = mutableListOf<String>()
-        for (i in 1 until this.size) {
-            teams.add(this[i][0])
-        }
-        return PitScoutingSheet(teams)
-    }
+    private val fileNames: List<String>
+        get() = files.map { it.name }
 
     private fun getMagicNumbers(): List<String> {
         val magicNumbers = mutableListOf<String>()
@@ -90,22 +65,3 @@ object SDCard {
         return magicNumbers
     }
 }
-
-data class MatchScoutingSheet(
-    val matches: List<Match>,
-)
-
-data class Match(
-    val number: Int,
-    val teams: List<Team>,
-)
-
-data class Team(
-    val scoutID: Int,
-    val alliance: String,
-    val teamNumber: String,
-)
-
-data class PitScoutingSheet(
-    val teams: List<String>,
-)
