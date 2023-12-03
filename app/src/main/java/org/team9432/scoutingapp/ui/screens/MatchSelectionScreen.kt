@@ -17,23 +17,22 @@ import org.team9432.scoutingapp.appScreen
 import org.team9432.scoutingapp.currentMatch
 import org.team9432.scoutingapp.io.MatchScoutingFile
 import org.team9432.scoutingapp.io.MatchScoutingFile.hasBeenScouted
-import org.team9432.scoutingapp.io.config
-import org.team9432.scoutingapp.io.data.ScheduledMatch
 
 @Composable
-fun MatchSelectionScreen(matches: Collection<ScheduledMatch>, scoutID: Int) {
-    val alreadyScoutedMatches = matches.filter { it.hasBeenScouted(it.teams[scoutID]!!.teamNumber) }
-    val toBeScoutedMatches = matches.filter { !alreadyScoutedMatches.contains(it) }
+fun MatchSelectionScreen(matches: Map<Int, String>) {
+    val alreadyScoutedMatches = matches.filter { hasBeenScouted(it.key, it.value) }
+    val toBeScoutedMatches = matches.filterNot { alreadyScoutedMatches.contains(it.key) }
 
     val scrollState = LazyListState(firstVisibleItemIndex = alreadyScoutedMatches.size + 1)
     LazyColumn(Modifier.fillMaxSize(), state = scrollState, horizontalAlignment = Alignment.CenterHorizontally) {
         alreadyScoutedMatches.forEach {
             item {
                 MatchDisplay(
-                    match = it,
+                    matchNumber = it.key,
+                    teamToScout = it.value,
                     hasBeenScouted = true,
                     onClick = {
-                        currentMatch = it.number
+                        currentMatch = it.key
                         appScreen = Screen.MATCH_SCOUTING_SCREEN
                     }
                 )
@@ -45,10 +44,11 @@ fun MatchSelectionScreen(matches: Collection<ScheduledMatch>, scoutID: Int) {
         toBeScoutedMatches.forEach {
             item {
                 MatchDisplay(
-                    match = it,
+                    matchNumber = it.key,
+                    teamToScout = it.value,
                     hasBeenScouted = false,
                     onClick = {
-                        currentMatch = it.number
+                        currentMatch = it.key
                         appScreen = Screen.MATCH_SCOUTING_SCREEN
                     }
                 )
@@ -59,7 +59,7 @@ fun MatchSelectionScreen(matches: Collection<ScheduledMatch>, scoutID: Int) {
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-private fun MatchDisplay(match: ScheduledMatch, onClick: () -> Unit, enabled: Boolean = true, hasBeenScouted: Boolean = false) {
+private fun MatchDisplay(matchNumber: Int, teamToScout: String, onClick: () -> Unit, enabled: Boolean = true, hasBeenScouted: Boolean = false) {
     var showMoreOptions by remember { mutableStateOf(false) }
     var showDeleteDialog by remember { mutableStateOf(false) }
 
@@ -67,12 +67,10 @@ private fun MatchDisplay(match: ScheduledMatch, onClick: () -> Unit, enabled: Bo
     val disabledColor = enabledColor.copy(0.6F)
     val contentColor = if (enabled && !hasBeenScouted) enabledColor else disabledColor
 
-    val teamToScout = match.teams[config.scoutID]!!.teamNumber
-
     ListItem(
         modifier = Modifier.clickable(enabled = enabled, onClick = onClick),
         headlineText = {
-            Text("Match Number ${match.number}")
+            Text("Match Number $matchNumber")
         },
         supportingText = {
             Text("Team to scout: $teamToScout")
@@ -102,7 +100,7 @@ private fun MatchDisplay(match: ScheduledMatch, onClick: () -> Unit, enabled: Bo
             title = { Text(text = "Delete Data") },
             text = { Text(text = "This will permanently delete any saved data for this match") },
             onDismissRequest = { showDeleteDialog = false },
-            confirmButton = { TextButton(onClick = { MatchScoutingFile.deleteMatchData(teamToScout, match.number); showDeleteDialog = false }) { Text("Confirm") } },
+            confirmButton = { TextButton(onClick = { MatchScoutingFile.deleteMatchData(teamToScout, matchNumber); showDeleteDialog = false }) { Text("Confirm") } },
             dismissButton = { TextButton(onClick = { showDeleteDialog = false }) { Text("Cancel") } }
         )
     }

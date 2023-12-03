@@ -20,4 +20,4 @@ annotation class SwitchInputField
 
 
 @Target(AnnotationTarget.CLASS)
-annotation class DataScreen
+annotation class InputBase

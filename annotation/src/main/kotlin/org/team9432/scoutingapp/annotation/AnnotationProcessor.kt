@@ -23,7 +23,7 @@ class AnnotationProcessor(private val codeGenerator: CodeGenerator): SymbolProce
     )
 
     override fun process(resolver: Resolver): List<KSAnnotated> {
-        val annotatedClasses = resolver.getSymbolsWithAnnotation(DataScreen::class.qualifiedName!!).filterIsInstance<KSClassDeclaration>()
+        val annotatedClasses = resolver.getSymbolsWithAnnotation(InputBase::class.qualifiedName!!).filterIsInstance<KSClassDeclaration>()
         annotatedClasses.forEach { process(it) }
         return annotatedClasses.filterNot { it.validate() }.toList()
     }
@@ -45,6 +45,7 @@ class AnnotationProcessor(private val codeGenerator: CodeGenerator): SymbolProce
             .addParameter("updateData", LambdaTypeName.get(returnType = ClassName("kotlin", "Unit"), parameters = arrayOf(LambdaTypeName.get(returnType = classType, parameters = arrayOf(classType)))))
             .addParameter("initialData", classType)
             .addParameter(ParameterSpec.builder("enabled", Boolean::class).defaultValue("true").build())
+            .addParameter(ParameterSpec.builder("defaultModifier", LambdaTypeName.get(returnType = modifierType, receiver = modifierType)).defaultValue("{ this }").build())
             .build()
 
         val type = TypeSpec.classBuilder(newClassName)
@@ -57,6 +58,7 @@ class AnnotationProcessor(private val codeGenerator: CodeGenerator): SymbolProce
             )
             .addProperty(PropertySpec.builder("initialData", classType).initializer("initialData").build())
             .addProperty(PropertySpec.builder("enabled", Boolean::class).initializer("enabled").build())
+            .addProperty(PropertySpec.builder("defaultModifier", LambdaTypeName.get(returnType = modifierType, receiver = modifierType)).initializer("defaultModifier").build())
             .addFunctions(functions)
 
 
@@ -72,8 +74,8 @@ class AnnotationProcessor(private val codeGenerator: CodeGenerator): SymbolProce
         val builder = FunSpec.builder(it.name!!.asString().capitalize())
         val parameterName = it.name!!.asString()
 
-        builder.addParameter(ParameterSpec.builder("modifier", modifierType).build())
-        builder.addParameter(ParameterSpec.builder("title", String::class).defaultValue(it.name!!.asString().capitalize().titleize().surroundWithQuotes()).build())
+        builder.addParameter(ParameterSpec.builder("modifier", modifierType).defaultValue("Modifier").build())
+        builder.addParameter(ParameterSpec.builder("title", String::class).defaultValue(CodeBlock.of("%S", it.name!!.asString().capitalize().titleize())).build())
         builder.addAnnotation(ClassName("androidx.compose.runtime", "Composable"))
 
         when (annotation.shortName.getShortName()) {
@@ -82,7 +84,7 @@ class AnnotationProcessor(private val codeGenerator: CodeGenerator): SymbolProce
                 builder.addCode(
                     """
                         TextInput(
-                            modifier = modifier,
+                            modifier = modifier.defaultModifier(),
                             title = title,
                             initialValue = initialData.$parameterName,
                             onChange = { newValue -> updateData { it.copy($parameterName = newValue) } },
@@ -99,7 +101,7 @@ class AnnotationProcessor(private val codeGenerator: CodeGenerator): SymbolProce
                 builder.addCode(
                     """
                         InlineTextInput(
-                            modifier = modifier,
+                            modifier = modifier.defaultModifier(),
                             title = title,
                             initialValue = initialData.$parameterName,
                             onChange = { newValue -> updateData { it.copy($parameterName = newValue) } },
@@ -116,7 +118,7 @@ class AnnotationProcessor(private val codeGenerator: CodeGenerator): SymbolProce
                 builder.addCode(
                     """
                         DropdownInput(
-                            modifier = modifier,
+                            modifier = modifier.defaultModifier(),
                             title = title,
                             initialValue = initialData.$parameterName,
                             options = listOf(${options.joinToString { it.surroundWithQuotes() }}),
@@ -134,7 +136,7 @@ class AnnotationProcessor(private val codeGenerator: CodeGenerator): SymbolProce
                 builder.addCode(
                     """
                         NumberInput(
-                            modifier = modifier,
+                            modifier = modifier.defaultModifier(),
                             title = title,
                             initialValue = initialData.$parameterName,
                             max = $max,
@@ -152,7 +154,7 @@ class AnnotationProcessor(private val codeGenerator: CodeGenerator): SymbolProce
                 builder.addCode(
                     """
                         CycleInput(
-                            modifier = modifier,
+                            modifier = modifier.defaultModifier(),
                             title = title,
                             initialOption = initialData.$parameterName,
                             options = listOf(${options.joinToString { it.surroundWithQuotes() }}),
@@ -168,7 +170,7 @@ class AnnotationProcessor(private val codeGenerator: CodeGenerator): SymbolProce
                 builder.addCode(
                     """
                         SwitchInput(
-                            modifier = modifier,
+                            modifier = modifier.defaultModifier(),
                             title = title,
                             initialState = initialData.$parameterName,
                             onChange = { newValue -> updateData { it.copy($parameterName = newValue) } },
