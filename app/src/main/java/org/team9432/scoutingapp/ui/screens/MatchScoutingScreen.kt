@@ -8,7 +8,7 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import org.team9432.scoutingapp.appScreen
+import org.team9432.scoutingapp.currentScreenType
 import org.team9432.scoutingapp.io.MatchScoutingFile
 import org.team9432.scoutingapp.io.json.MatchScoutingData
 import org.team9432.scoutingapp.io.json.MatchScoutingDataInputs
@@ -51,7 +51,13 @@ fun MatchScoutingScreen(teamToScout: String, matchNumber: Int) {
             title = { Text(text = "Save Data") },
             text = { Text(text = "This will overwrite any saved data for this match") },
             onDismissRequest = { saveDialogOpen = false },
-            confirmButton = { TextButton(onClick = { MatchScoutingFile.addMatchData(matchData); appScreen = org.team9432.scoutingapp.Screen.MATCH_SELECTION }) { Text("Confirm") } },
+            confirmButton = {
+                TextButton(onClick = {
+                    MatchScoutingFile.addMatchData(matchData)
+                    org.team9432.scoutingapp.currentScreen = { MatchSelectionScreen() }
+                    currentScreenType = org.team9432.scoutingapp.Screen.MATCH_SELECTION
+                }) { Text("Confirm") }
+            },
             dismissButton = { TextButton(onClick = { saveDialogOpen = false }) { Text("Cancel") } }
         )
     }

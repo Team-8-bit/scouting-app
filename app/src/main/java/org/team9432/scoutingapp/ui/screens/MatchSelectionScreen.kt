@@ -8,18 +8,22 @@ import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.MoreHoriz
+import androidx.compose.material.icons.filled.QrCode2
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import org.team9432.scoutingapp.Screen
-import org.team9432.scoutingapp.appScreen
-import org.team9432.scoutingapp.currentMatch
+import org.team9432.scoutingapp.currentScreen
+import org.team9432.scoutingapp.currentScreenType
 import org.team9432.scoutingapp.io.MatchScoutingFile
 import org.team9432.scoutingapp.io.MatchScoutingFile.hasBeenScouted
+import org.team9432.scoutingapp.io.ScheduleFiles
 
 @Composable
-fun MatchSelectionScreen(matches: Map<Int, String>) {
+fun MatchSelectionScreen() {
+    val matches = ScheduleFiles.getMatches()
+
     val alreadyScoutedMatches = matches.filter { hasBeenScouted(it.key, it.value) }
     val toBeScoutedMatches = matches.filterNot { alreadyScoutedMatches.contains(it.key) }
 
@@ -32,8 +36,8 @@ fun MatchSelectionScreen(matches: Map<Int, String>) {
                     teamToScout = it.value,
                     hasBeenScouted = true,
                     onClick = {
-                        currentMatch = it.key
-                        appScreen = Screen.MATCH_SCOUTING_SCREEN
+                        currentScreen = { MatchScoutingScreen(ScheduleFiles.getTeamToScout(it.key), it.key) }
+                        currentScreenType = Screen.MATCH_SCOUTING_SCREEN
                     }
                 )
             }
@@ -48,8 +52,8 @@ fun MatchSelectionScreen(matches: Map<Int, String>) {
                     teamToScout = it.value,
                     hasBeenScouted = false,
                     onClick = {
-                        currentMatch = it.key
-                        appScreen = Screen.MATCH_SCOUTING_SCREEN
+                        currentScreen = { MatchScoutingScreen(ScheduleFiles.getTeamToScout(it.key), it.key) }
+                        currentScreenType = Screen.MATCH_SCOUTING_SCREEN
                     }
                 )
             }
@@ -89,7 +93,16 @@ private fun MatchDisplay(matchNumber: Int, teamToScout: String, onClick: () -> U
                     DropdownMenuItem(
                         text = { Text("Delete") },
                         onClick = { showMoreOptions = false; showDeleteDialog = true },
-                        trailingIcon = { Icon(Icons.Filled.Delete, "Delete") }
+                        trailingIcon = { Icon(Icons.Filled.Delete, null) }
+                    )
+                    DropdownMenuItem(
+                        text = { Text("QR Code") },
+                        onClick = {
+                            showMoreOptions = false
+                            currentScreen = { QRCodeScreen(team = teamToScout, matchNumber = matchNumber) }
+                            currentScreenType = Screen.QR_CODE_SCREEN
+                        },
+                        trailingIcon = { Icon(Icons.Filled.QrCode2, null) }
                     )
                 }
             }

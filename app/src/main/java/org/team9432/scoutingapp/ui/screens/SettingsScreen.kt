@@ -12,7 +12,9 @@ import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.unit.dp
 import androidx.core.text.isDigitsOnly
 import org.team9432.scoutingapp.Screen
-import org.team9432.scoutingapp.appScreen
+import org.team9432.scoutingapp.currentScreen
+import org.team9432.scoutingapp.currentScreenType
+import org.team9432.scoutingapp.io.ScheduleFiles
 import org.team9432.scoutingapp.io.config
 import org.team9432.scoutingapp.io.updateConfig
 
@@ -25,7 +27,10 @@ fun SettingsScreen() {
                 style = MaterialTheme.typography.headlineLarge
             )
             Spacer(Modifier.weight(1F))
-            TextButton(onClick = { appScreen = Screen.DEBUG }) {
+            TextButton(onClick = {
+                currentScreen = { DebugScreen() }
+                currentScreenType = Screen.DEBUG
+            }) {
                 Text("debug screen")
             }
         }

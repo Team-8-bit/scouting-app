@@ -8,17 +8,14 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
+import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import org.team9432.scoutingapp.io.ScheduleFiles
 import org.team9432.scoutingapp.io.config
 import org.team9432.scoutingapp.ui.NavigationRail
-import org.team9432.scoutingapp.ui.screens.DebugScreen
-import org.team9432.scoutingapp.ui.screens.MatchScoutingScreen
-import org.team9432.scoutingapp.ui.screens.MatchSelectionScreen
-import org.team9432.scoutingapp.ui.screens.SettingsScreen
+import org.team9432.scoutingapp.ui.screens.*
 import org.team9432.scoutingapp.ui.theme.AppTheme
-
 
 class MainActivity: ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -31,15 +28,7 @@ class MainActivity: ComponentActivity() {
                             NavigationRail()
                         }
                         Surface(modifier = Modifier.padding(top = 10.dp, end = 10.dp, bottom = 10.dp), shape = MaterialTheme.shapes.large) {
-                            when (appScreen) {
-                                Screen.DEBUG -> DebugScreen()
-                                Screen.SETTINGS -> SettingsScreen()
-                                Screen.MATCH_SELECTION -> MatchSelectionScreen(ScheduleFiles.getMatches())
-                                Screen.MATCH_SCOUTING_SCREEN -> {
-                                    val matchNumber = currentMatch
-                                    MatchScoutingScreen(ScheduleFiles.getTeamToScout(matchNumber), matchNumber)
-                                }
-                            }
+                            currentScreen()
                         }
                     }
                 }

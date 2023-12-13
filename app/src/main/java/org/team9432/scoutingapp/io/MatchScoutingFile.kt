@@ -41,6 +41,10 @@ object MatchScoutingFile {
         return data.matches[matchNumber]?.get(team) != null
     }
 
+    fun getMatchJSON(matchNumber: Int, team: String): String {
+        return json.encodeToString(data.matches[matchNumber]?.get(team))
+    }
+
     private fun updateDataFile(data: MatchScoutingFile) {
         createFiles()
         this.data = data

@@ -1,16 +1,15 @@
 package org.team9432.scoutingapp
 
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableIntStateOf
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.setValue
+import androidx.compose.runtime.*
+import org.team9432.scoutingapp.ui.screens.QRCodeScreen
 
-var appScreen by mutableStateOf(Screen.MATCH_SELECTION)
-var currentMatch by mutableIntStateOf(-1)
+var currentScreen by mutableStateOf<@Composable () -> Unit>({ QRCodeScreen(team = "6656", matchNumber = 1) })
+var currentScreenType by mutableStateOf(Screen.QR_CODE_SCREEN)
 
 enum class Screen {
     SETTINGS,
     DEBUG,
     MATCH_SELECTION,
     MATCH_SCOUTING_SCREEN,
+    QR_CODE_SCREEN,
 }
