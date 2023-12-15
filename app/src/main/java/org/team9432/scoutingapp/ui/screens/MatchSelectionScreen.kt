@@ -1,23 +1,25 @@
 package org.team9432.scoutingapp.ui.screens
 
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.MoreHoriz
 import androidx.compose.material.icons.filled.QrCode2
+import androidx.compose.material.icons.filled.Search
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.unit.dp
 import org.team9432.scoutingapp.io.MatchScoutingFile
 import org.team9432.scoutingapp.io.MatchScoutingFile.hasBeenScouted
 import org.team9432.scoutingapp.io.ScheduleFiles
 import org.team9432.scoutingapp.setAppScreen
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun MatchSelectionScreen() {
     val matches = ScheduleFiles.getMatches()
@@ -26,31 +28,50 @@ fun MatchSelectionScreen() {
     val toBeScoutedMatches = matches.filterNot { alreadyScoutedMatches.contains(it.key) }
 
     val scrollState = LazyListState(firstVisibleItemIndex = alreadyScoutedMatches.size + 1)
-    LazyColumn(Modifier.fillMaxSize(), state = scrollState, horizontalAlignment = Alignment.CenterHorizontally) {
-        alreadyScoutedMatches.forEach {
-            item {
-                MatchDisplay(
-                    matchNumber = it.key,
-                    teamToScout = it.value,
-                    hasBeenScouted = true,
-                    onClick = { setAppScreen(fullscreen = true) { MatchScoutingScreen(ScheduleFiles.getTeamToScout(it.key), it.key) } }
-                )
+
+    var filter by remember { mutableStateOf("") }
+
+    fun Map<Int, String>.applyFilter(): Map<Int, String> {
+        return filter { it.key.toString().startsWith(filter) }
+    }
+
+    Column {
+        OutlinedTextField(
+            modifier = Modifier.fillMaxWidth().padding(10.dp),
+            value = filter,
+            singleLine = true,
+            onValueChange = {
+                filter = it
+            },
+            trailingIcon = { Icon(Icons.Filled.Search, null) }
+        )
+        LazyColumn(Modifier.fillMaxSize(), state = scrollState, horizontalAlignment = Alignment.CenterHorizontally) {
+            alreadyScoutedMatches.applyFilter().forEach {
+                item {
+                    MatchDisplay(
+                        matchNumber = it.key,
+                        teamToScout = it.value,
+                        hasBeenScouted = true,
+                        onClick = { setAppScreen(fullscreen = true) { MatchScoutingScreen(ScheduleFiles.getTeamToScout(it.key), it.key) } }
+                    )
+                }
             }
-        }
-        item {
-            Divider()
-        }
-        toBeScoutedMatches.forEach {
             item {
-                MatchDisplay(
-                    matchNumber = it.key,
-                    teamToScout = it.value,
-                    hasBeenScouted = false,
-                    onClick = { setAppScreen(fullscreen = true) { MatchScoutingScreen(ScheduleFiles.getTeamToScout(it.key), it.key) } }
-                )
+                Divider()
+            }
+            toBeScoutedMatches.applyFilter().forEach {
+                item {
+                    MatchDisplay(
+                        matchNumber = it.key,
+                        teamToScout = it.value,
+                        hasBeenScouted = false,
+                        onClick = { setAppScreen(fullscreen = true) { MatchScoutingScreen(ScheduleFiles.getTeamToScout(it.key), it.key) } }
+                    )
+                }
             }
         }
     }
+
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
