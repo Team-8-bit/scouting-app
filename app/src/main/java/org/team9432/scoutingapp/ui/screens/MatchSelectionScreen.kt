@@ -2,6 +2,7 @@ package org.team9432.scoutingapp.ui.screens
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyListState
@@ -81,32 +82,46 @@ private fun MatchDisplay(matchNumber: Int, teamToScout: String, onClick: () -> U
         },
         colors = ListItemDefaults.colors(supportingColor = contentColor, headlineColor = contentColor),
         trailingContent = {
-            Box {
-                IconButton(onClick = { showMoreOptions = true }) {
-                    Icon(Icons.Filled.MoreHoriz, "More Options", tint = contentColor)
-                }
-                DropdownMenu(
-                    modifier = Modifier,
-                    expanded = showMoreOptions,
-                    onDismissRequest = { showMoreOptions = false }
-                ) {
-                    DropdownMenuItem(
-                        text = { Text("Delete") },
-                        onClick = { showMoreOptions = false; showDeleteDialog = true },
-                        trailingIcon = { Icon(Icons.Filled.Delete, null) }
-                    )
-                    DropdownMenuItem(
-                        text = { Text("QR Code") },
+            Row {
+                if (hasBeenScouted) {
+                    IconButton(
                         onClick = {
-                            showMoreOptions = false
                             currentScreen = { QRCodeScreen(team = teamToScout, matchNumber = matchNumber) }
                             currentScreenType = Screen.QR_CODE_SCREEN
                         },
-                        trailingIcon = { Icon(Icons.Filled.QrCode2, null) }
-                    )
+                    ) {
+                        Icon(Icons.Filled.QrCode2, null)
+                    }
+                }
+                IconButton(onClick = {
+                    showMoreOptions = true
+                }) {
+                    Icon(Icons.Filled.MoreHoriz, "More Options", tint = contentColor)
                 }
             }
+
+            DropdownMenu(
+                modifier = Modifier,
+                expanded = showMoreOptions,
+                onDismissRequest = { showMoreOptions = false }
+            ) {
+                DropdownMenuItem(
+                    text = { Text("Delete") },
+                    onClick = { showMoreOptions = false; showDeleteDialog = true },
+                    trailingIcon = { Icon(Icons.Filled.Delete, null) }
+                )
+                DropdownMenuItem(
+                    text = { Text("QR Code") },
+                    onClick = {
+                        showMoreOptions = false
+                        currentScreen = { QRCodeScreen(team = teamToScout, matchNumber = matchNumber) }
+                        currentScreenType = Screen.QR_CODE_SCREEN
+                    },
+                    trailingIcon = { Icon(Icons.Filled.QrCode2, null) }
+                )
+            }
         }
+
     )
     if (showDeleteDialog) {
         AlertDialog(
