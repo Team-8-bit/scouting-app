@@ -13,10 +13,10 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import org.team9432.scoutingapp.currentScreen
 import org.team9432.scoutingapp.io.MatchScoutingFile
 import org.team9432.scoutingapp.io.MatchScoutingFile.hasBeenScouted
 import org.team9432.scoutingapp.io.ScheduleFiles
+import org.team9432.scoutingapp.setAppScreen
 
 @Composable
 fun MatchSelectionScreen() {
@@ -33,7 +33,7 @@ fun MatchSelectionScreen() {
                     matchNumber = it.key,
                     teamToScout = it.value,
                     hasBeenScouted = true,
-                    onClick = { currentScreen = { MatchScoutingScreen(ScheduleFiles.getTeamToScout(it.key), it.key) } }
+                    onClick = { setAppScreen(fullscreen = true) { MatchScoutingScreen(ScheduleFiles.getTeamToScout(it.key), it.key) } }
                 )
             }
         }
@@ -46,7 +46,7 @@ fun MatchSelectionScreen() {
                     matchNumber = it.key,
                     teamToScout = it.value,
                     hasBeenScouted = false,
-                    onClick = { currentScreen = { MatchScoutingScreen(ScheduleFiles.getTeamToScout(it.key), it.key) } }
+                    onClick = { setAppScreen(fullscreen = true) { MatchScoutingScreen(ScheduleFiles.getTeamToScout(it.key), it.key) } }
                 )
             }
         }
@@ -75,7 +75,7 @@ private fun MatchDisplay(matchNumber: Int, teamToScout: String, onClick: () -> U
         trailingContent = {
             Row {
                 if (hasBeenScouted) {
-                    IconButton(onClick = { currentScreen = { QRCodeScreen(team = teamToScout, matchNumber = matchNumber) } }) {
+                    IconButton(onClick = { setAppScreen { QRCodeScreen(team = teamToScout, matchNumber = matchNumber) } }) {
                         Icon(Icons.Filled.QrCode2, null)
                     }
                 }
@@ -98,7 +98,7 @@ private fun MatchDisplay(matchNumber: Int, teamToScout: String, onClick: () -> U
                     text = { Text("QR Code") },
                     onClick = {
                         showMoreOptions = false
-                        currentScreen = { QRCodeScreen(team = teamToScout, matchNumber = matchNumber) }
+                        setAppScreen { QRCodeScreen(team = teamToScout, matchNumber = matchNumber) }
                     },
                     trailingIcon = { Icon(Icons.Filled.QrCode2, null) }
                 )

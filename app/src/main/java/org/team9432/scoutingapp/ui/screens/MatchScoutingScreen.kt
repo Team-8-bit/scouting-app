@@ -11,6 +11,7 @@ import androidx.compose.ui.unit.dp
 import org.team9432.scoutingapp.io.MatchScoutingFile
 import org.team9432.scoutingapp.io.json.MatchScoutingData
 import org.team9432.scoutingapp.io.json.MatchScoutingDataInputs
+import org.team9432.scoutingapp.setAppScreen
 import org.team9432.scoutingapp.ui.BlankInput
 import org.team9432.scoutingapp.ui.PageChanger
 import org.team9432.scoutingapp.ui.SubmitButton
@@ -53,7 +54,7 @@ fun MatchScoutingScreen(teamToScout: String, matchNumber: Int) {
             confirmButton = {
                 TextButton(onClick = {
                     MatchScoutingFile.addMatchData(matchData)
-                    org.team9432.scoutingapp.currentScreen = { MatchSelectionScreen() }
+                    setAppScreen { MatchSelectionScreen() }
                 }) { Text("Confirm") }
             },
             dismissButton = { TextButton(onClick = { saveDialogOpen = false }) { Text("Cancel") } }
@@ -143,7 +144,7 @@ private fun PreMatch(inputs: MatchScoutingDataInputs, setScreen: (Screen) -> Uni
             BlankInput(Modifier.fillMaxHeight().fillMaxWidth(0.5F).padding(5.dp))
             Column(Modifier.fillMaxSize()) {
                 BlankInput(Modifier.fillMaxWidth().fillMaxHeight(0.5F).padding(5.dp))
-                PageChanger(Modifier.fillMaxSize().padding(5.dp), onNext = { setScreen(Screen.AUTO) }, onBack = {}, backEnabled = false)
+                PageChanger(Modifier.fillMaxSize().padding(5.dp), onNext = { setScreen(Screen.AUTO) }, onBack = { setAppScreen { MatchSelectionScreen() } })
             }
         }
     }

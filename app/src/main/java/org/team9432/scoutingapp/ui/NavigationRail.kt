@@ -5,7 +5,7 @@ import androidx.compose.material.icons.filled.GridView
 import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
-import org.team9432.scoutingapp.currentScreen
+import org.team9432.scoutingapp.setAppScreen
 import org.team9432.scoutingapp.ui.screens.MatchSelectionScreen
 import org.team9432.scoutingapp.ui.screens.SettingsScreen
 
@@ -17,7 +17,7 @@ fun NavigationRail() {
             icon = { Icon(Icons.Filled.GridView, contentDescription = "Matches") },
             selected = currentlySelected == 0,
             onClick = {
-                currentScreen = { MatchSelectionScreen() }
+                setAppScreen { MatchSelectionScreen() }
                 currentlySelected = 0
             },
             label = { Text(text = "Matches", style = MaterialTheme.typography.labelLarge) }
@@ -26,7 +26,7 @@ fun NavigationRail() {
             icon = { Icon(Icons.Filled.Settings, contentDescription = "Settings") },
             selected = currentlySelected == 1,
             onClick = {
-                currentScreen = { SettingsScreen() }
+                setAppScreen { SettingsScreen() }
                 currentlySelected = 1
             },
             label = { Text(text = "Config", style = MaterialTheme.typography.labelLarge) }

@@ -11,9 +11,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.unit.dp
 import androidx.core.text.isDigitsOnly
-import org.team9432.scoutingapp.currentScreen
 import org.team9432.scoutingapp.io.config
 import org.team9432.scoutingapp.io.updateConfig
+import org.team9432.scoutingapp.setAppScreen
 
 @Composable
 fun SettingsScreen() {
@@ -24,7 +24,7 @@ fun SettingsScreen() {
                 style = MaterialTheme.typography.headlineLarge
             )
             Spacer(Modifier.weight(1F))
-            TextButton(onClick = { currentScreen = { DebugScreen() } }) {
+            TextButton(onClick = { setAppScreen { DebugScreen() } }) {
                 Text("debug screen")
             }
         }
