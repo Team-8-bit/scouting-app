@@ -4,31 +4,30 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.GridView
 import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material3.*
-import androidx.compose.runtime.Composable
-import org.team9432.scoutingapp.Screen
+import androidx.compose.runtime.*
 import org.team9432.scoutingapp.currentScreen
-import org.team9432.scoutingapp.currentScreenType
 import org.team9432.scoutingapp.ui.screens.MatchSelectionScreen
 import org.team9432.scoutingapp.ui.screens.SettingsScreen
 
 @Composable
 fun NavigationRail() {
     NavigationRail {
+        var currentlySelected by remember { mutableIntStateOf(0) }
         NavigationRailItem(
             icon = { Icon(Icons.Filled.GridView, contentDescription = "Matches") },
-            selected = currentScreenType == Screen.MATCH_SELECTION,
+            selected = currentlySelected == 0,
             onClick = {
                 currentScreen = { MatchSelectionScreen() }
-                currentScreenType = Screen.MATCH_SELECTION
+                currentlySelected = 0
             },
             label = { Text(text = "Matches", style = MaterialTheme.typography.labelLarge) }
         )
         NavigationRailItem(
             icon = { Icon(Icons.Filled.Settings, contentDescription = "Settings") },
-            selected = currentScreenType == Screen.SETTINGS || currentScreenType == Screen.DEBUG,
+            selected = currentlySelected == 1,
             onClick = {
                 currentScreen = { SettingsScreen() }
-                currentScreenType = Screen.SETTINGS
+                currentlySelected = 1
             },
             label = { Text(text = "Config", style = MaterialTheme.typography.labelLarge) }
         )

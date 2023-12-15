@@ -8,9 +8,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import org.team9432.scoutingapp.Screen
 import org.team9432.scoutingapp.currentScreen
-import org.team9432.scoutingapp.currentScreenType
 import org.team9432.scoutingapp.io.SDCard
 
 @Composable
@@ -23,10 +21,7 @@ fun DebugScreen() {
                 textAlign = TextAlign.Start
             )
             Spacer(Modifier.weight(1F))
-            TextButton(onClick = {
-                currentScreen = { SettingsScreen() }
-                currentScreenType = Screen.SETTINGS
-            }) {
+            TextButton(onClick = { currentScreen = { SettingsScreen() } }) {
                 Text("back")
             }
         }

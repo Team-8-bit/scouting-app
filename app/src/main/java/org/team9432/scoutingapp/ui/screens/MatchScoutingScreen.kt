@@ -8,7 +8,6 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import org.team9432.scoutingapp.currentScreenType
 import org.team9432.scoutingapp.io.MatchScoutingFile
 import org.team9432.scoutingapp.io.json.MatchScoutingData
 import org.team9432.scoutingapp.io.json.MatchScoutingDataInputs
@@ -55,7 +54,6 @@ fun MatchScoutingScreen(teamToScout: String, matchNumber: Int) {
                 TextButton(onClick = {
                     MatchScoutingFile.addMatchData(matchData)
                     org.team9432.scoutingapp.currentScreen = { MatchSelectionScreen() }
-                    currentScreenType = org.team9432.scoutingapp.Screen.MATCH_SELECTION
                 }) { Text("Confirm") }
             },
             dismissButton = { TextButton(onClick = { saveDialogOpen = false }) { Text("Cancel") } }

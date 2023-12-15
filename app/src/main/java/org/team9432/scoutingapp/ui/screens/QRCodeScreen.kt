@@ -5,14 +5,11 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.material3.FilledTonalButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import org.team9432.scoutingapp.Screen
 import org.team9432.scoutingapp.currentScreen
-import org.team9432.scoutingapp.currentScreenType
 import org.team9432.scoutingapp.io.MatchScoutingFile
 import org.team9432.scoutingapp.io.QRCodes
 
@@ -27,10 +24,9 @@ fun QRCodeScreen(team: String, matchNumber: Int) {
             Text(text = "Team $team", style = MaterialTheme.typography.headlineLarge)
 
             Spacer(modifier = Modifier.weight(1F))
-            
+
             FilledTonalButton(onClick = {
                 currentScreen = { MatchSelectionScreen() }
-                currentScreenType = Screen.MATCH_SELECTION
             }) {
                 Text(text = "Back")
             }

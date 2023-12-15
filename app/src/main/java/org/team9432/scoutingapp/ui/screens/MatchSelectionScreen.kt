@@ -1,7 +1,6 @@
 package org.team9432.scoutingapp.ui.screens
 
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.lazy.LazyColumn
@@ -14,9 +13,7 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import org.team9432.scoutingapp.Screen
 import org.team9432.scoutingapp.currentScreen
-import org.team9432.scoutingapp.currentScreenType
 import org.team9432.scoutingapp.io.MatchScoutingFile
 import org.team9432.scoutingapp.io.MatchScoutingFile.hasBeenScouted
 import org.team9432.scoutingapp.io.ScheduleFiles
@@ -36,10 +33,7 @@ fun MatchSelectionScreen() {
                     matchNumber = it.key,
                     teamToScout = it.value,
                     hasBeenScouted = true,
-                    onClick = {
-                        currentScreen = { MatchScoutingScreen(ScheduleFiles.getTeamToScout(it.key), it.key) }
-                        currentScreenType = Screen.MATCH_SCOUTING_SCREEN
-                    }
+                    onClick = { currentScreen = { MatchScoutingScreen(ScheduleFiles.getTeamToScout(it.key), it.key) } }
                 )
             }
         }
@@ -52,10 +46,7 @@ fun MatchSelectionScreen() {
                     matchNumber = it.key,
                     teamToScout = it.value,
                     hasBeenScouted = false,
-                    onClick = {
-                        currentScreen = { MatchScoutingScreen(ScheduleFiles.getTeamToScout(it.key), it.key) }
-                        currentScreenType = Screen.MATCH_SCOUTING_SCREEN
-                    }
+                    onClick = { currentScreen = { MatchScoutingScreen(ScheduleFiles.getTeamToScout(it.key), it.key) } }
                 )
             }
         }
@@ -84,18 +75,11 @@ private fun MatchDisplay(matchNumber: Int, teamToScout: String, onClick: () -> U
         trailingContent = {
             Row {
                 if (hasBeenScouted) {
-                    IconButton(
-                        onClick = {
-                            currentScreen = { QRCodeScreen(team = teamToScout, matchNumber = matchNumber) }
-                            currentScreenType = Screen.QR_CODE_SCREEN
-                        },
-                    ) {
+                    IconButton(onClick = { currentScreen = { QRCodeScreen(team = teamToScout, matchNumber = matchNumber) } }) {
                         Icon(Icons.Filled.QrCode2, null)
                     }
                 }
-                IconButton(onClick = {
-                    showMoreOptions = true
-                }) {
+                IconButton(onClick = { showMoreOptions = true }) {
                     Icon(Icons.Filled.MoreHoriz, "More Options", tint = contentColor)
                 }
             }
@@ -115,7 +99,6 @@ private fun MatchDisplay(matchNumber: Int, teamToScout: String, onClick: () -> U
                     onClick = {
                         showMoreOptions = false
                         currentScreen = { QRCodeScreen(team = teamToScout, matchNumber = matchNumber) }
-                        currentScreenType = Screen.QR_CODE_SCREEN
                     },
                     trailingIcon = { Icon(Icons.Filled.QrCode2, null) }
                 )
