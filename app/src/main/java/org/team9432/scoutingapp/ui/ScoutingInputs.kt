@@ -35,7 +35,7 @@ fun SubmitButton(modifier: Modifier = Modifier, onPressed: () -> Unit, enabled: 
 @Composable
 fun PageChanger(modifier: Modifier = Modifier, onNext: () -> Unit, onBack: () -> Unit, nextEnabled: Boolean = true, backEnabled: Boolean = true) {
     val enabledBackground = MaterialTheme.colorScheme.tertiaryContainer
-    val disabledBackground = MaterialTheme.colorScheme.tertiaryContainer.copy(0.7F)
+    val disabledBackground = enabledBackground.copy(0.7F)
     val icon = MaterialTheme.colorScheme.contentColorFor(MaterialTheme.colorScheme.tertiaryContainer)
 
     Box(modifier.background(MaterialTheme.colorScheme.background, MaterialTheme.shapes.small)) {
@@ -193,6 +193,9 @@ fun NumberInput(modifier: Modifier = Modifier, title: String, onChange: (Int) ->
     assert(initialValue in min..max)
     var currentNumber by remember { mutableIntStateOf(initialValue) }
 
+    val enabledBackground = MaterialTheme.colorScheme.primaryContainer
+    val disabledBackground = enabledBackground.copy(0.7F)
+
     Box(modifier.background(MaterialTheme.colorScheme.background, MaterialTheme.shapes.small)) {
         Column(Modifier.align(Alignment.Center), horizontalAlignment = Alignment.CenterHorizontally) {
             Text(
@@ -206,30 +209,64 @@ fun NumberInput(modifier: Modifier = Modifier, title: String, onChange: (Int) ->
                 textAlign = TextAlign.Center,
                 fontWeight = FontWeight.Bold
             )
-            Row(Modifier.padding(start = 10.dp, end = 10.dp, bottom = 10.dp)) {
-                OutlinedIconButton(
-                    modifier = Modifier.fillMaxWidth(0.5F).padding(start = 7.dp, end = 7.dp),
-                    enabled = enabled,
-                    onClick = {
-                        if (currentNumber != min) {
-                            currentNumber -= 1
-                            onChange(currentNumber)
-                        }
-                    }) {
+            Row(Modifier.padding(start = 10.dp, end = 10.dp, bottom = 10.dp), verticalAlignment = Alignment.CenterVertically) {
+                Box(
+                    Modifier
+                        .fillMaxHeight()
+                        .fillMaxWidth(0.5F)
+                        .padding(top = 5.dp, end = 2.5.dp, bottom = 5.dp, start = 5.dp)
+                        .background(if (enabled) enabledBackground else disabledBackground, MaterialTheme.shapes.small)
+                        .clickable(onClick = {
+                            if (currentNumber != min) {
+                                currentNumber -= 1
+                                onChange(currentNumber)
+                            }
+                        }, enabled = enabled),
+                    contentAlignment = Alignment.Center
+                ) {
                     Icon(Icons.Filled.Remove, contentDescription = "Remove")
                 }
-                OutlinedIconButton(
-                    modifier = Modifier.fillMaxWidth().padding(start = 7.dp, end = 7.dp),
-                    enabled = enabled,
-                    onClick = {
-                        if (currentNumber != max) {
-                            currentNumber += 1
-                            onChange(currentNumber)
-                        }
-                    }) {
+                Box(
+                    Modifier
+                        .fillMaxHeight()
+                        .fillMaxWidth()
+                        .padding(top = 5.dp, end = 2.5.dp, bottom = 5.dp, start = 5.dp)
+                        .background(if (enabled) enabledBackground else disabledBackground, MaterialTheme.shapes.small)
+                        .clickable(onClick = {
+                            if (currentNumber != max) {
+                                currentNumber += 1
+                                onChange(currentNumber)
+                            }
+                        }, enabled = enabled),
+                    contentAlignment = Alignment.Center
+                ) {
                     Icon(Icons.Filled.Add, contentDescription = "Add")
                 }
             }
+//            Row(Modifier.padding(start = 10.dp, end = 10.dp, bottom = 10.dp)) {
+//                OutlinedIconButton(
+//                    modifier = Modifier.fillMaxWidth(0.5F).fillMaxHeight().padding(start = 7.dp, end = 7.dp),
+//                    enabled = enabled,
+//                    onClick = {
+//                        if (currentNumber != min) {
+//                            currentNumber -= 1
+//                            onChange(currentNumber)
+//                        }
+//                    }) {
+//                    Icon(Icons.Filled.Remove, contentDescription = "Remove")
+//                }
+//                OutlinedIconButton(
+//                    modifier = Modifier.fillMaxWidth().fillMaxHeight().padding(start = 7.dp, end = 7.dp),
+//                    enabled = enabled,
+//                    onClick = {
+//                        if (currentNumber != max) {
+//                            currentNumber += 1
+//                            onChange(currentNumber)
+//                        }
+//                    }) {
+//                    Icon(Icons.Filled.Add, contentDescription = "Add")
+//                }
+//            }
         }
     }
 }
