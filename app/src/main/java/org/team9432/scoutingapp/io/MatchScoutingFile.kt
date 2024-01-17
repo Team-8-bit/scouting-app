@@ -41,12 +41,8 @@ object MatchScoutingFile {
         return data.matches[matchNumber]?.get(team) != null
     }
 
-    private val QRjson = Json {
-        ignoreUnknownKeys = true
-    }
-
-    fun getMatchJSON(matchNumber: Int, team: String): String {
-        return QRjson.encodeToString(data.matches[matchNumber]?.get(team))
+    fun getMatchQRFormat(matchNumber: Int, team: String): String {
+        return data.matches[matchNumber]!![team]!!.qrString
     }
 
     private fun updateDataFile(data: MatchScoutingFile) {

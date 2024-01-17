@@ -48,4 +48,34 @@ data class MatchScoutingData(
     @NumberInputField val penalties: Int = 0,
     @SwitchInputField val disabled: Boolean = false,
     @TextInputField val notes: String = "",
-)
+) {
+    private val del = ";"
+    val qrString
+        get() = (
+                matchNumber + del +
+                        teamNumber + del +
+                        scoutID + del +
+                        alliance + del +
+                        autoStartingPosition + del +
+                        autoScoredSpeaker + del +
+                        autoScoredAmp + del +
+                        crossedAutoLine + del +
+                        pickupAutoNoteOne + del +
+                        pickupAutoNoteTwo + del +
+                        pickupAutoNoteThree + del +
+                        pickupAutoNoteFour + del +
+                        pickupAutoNoteFive + del +
+                        teleSpeakerNotes + del +
+                        teleSpeakerNotesMissed + del +
+                        teleAmpNotes + del +
+                        teleAmpNotesMissed + del +
+                        scoredTrap + del +
+                        spotlit + del +
+                        endgame + del +
+                        defenceQuality + del +
+                        drivingQuality + del +
+                        penalties + del +
+                        disabled + del
+                ).replace("true", "T").replace("false", "F") +
+                notes.trim()
+}

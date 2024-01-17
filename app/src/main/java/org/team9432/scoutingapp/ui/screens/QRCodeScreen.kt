@@ -15,7 +15,7 @@ import org.team9432.scoutingapp.setAppScreen
 
 @Composable
 fun QRCodeScreen(team: String, matchNumber: Int) {
-    val bitmap = QRCodes.fromString(MatchScoutingFile.getMatchJSON(matchNumber, team))
+    val bitmap = QRCodes.fromString(MatchScoutingFile.getMatchQRFormat(matchNumber, team))
 
     Row(Modifier.fillMaxSize().padding(10.dp), verticalAlignment = Alignment.CenterVertically) {
         Image(modifier = Modifier.padding(10.dp), bitmap = bitmap, contentDescription = null)
