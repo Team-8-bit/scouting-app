@@ -54,7 +54,7 @@ fun MatchScoutingScreen(teamToScout: String, matchNumber: Int) {
             confirmButton = {
                 TextButton(onClick = {
                     MatchScoutingFile.addMatchData(matchData)
-                    setAppScreen { MatchSelectionScreen() }
+                    setAppScreen { QRCodeScreen(teamToScout, matchNumber) }
                 }) { Text("Confirm") }
             },
             dismissButton = { TextButton(onClick = { saveDialogOpen = false }) { Text("Cancel") } }
