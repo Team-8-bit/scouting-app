@@ -28,7 +28,7 @@ fun QRCodeScreen(team: String, matchNumber: Int) {
             FilledTonalButton(onClick = {
                 setAppScreen { MatchSelectionScreen() }
             }) {
-                Text(text = "Back")
+                Text(text = "Done")
             }
         }
     }
