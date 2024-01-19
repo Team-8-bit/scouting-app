@@ -4,9 +4,10 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
+import org.team9432.scoutingapp.ui.screens.MatchSelectionScreen
 import org.team9432.scoutingapp.ui.screens.QRCodeScreen
 
-var currentScreen by mutableStateOf<@Composable () -> Unit>({ QRCodeScreen(team = "6656", matchNumber = 1) })
+var currentScreen by mutableStateOf<@Composable () -> Unit>({ MatchSelectionScreen() })
     private set
 var currentIsFullscreen by mutableStateOf(false)
     private set
