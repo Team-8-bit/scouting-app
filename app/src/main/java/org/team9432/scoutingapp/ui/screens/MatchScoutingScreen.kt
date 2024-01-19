@@ -12,7 +12,7 @@ import org.team9432.scoutingapp.io.MatchScoutingFile
 import org.team9432.scoutingapp.io.json.MatchScoutingData
 import org.team9432.scoutingapp.io.json.MatchScoutingDataInputs
 import org.team9432.scoutingapp.setAppScreen
-import org.team9432.scoutingapp.ui.BlankInput
+import org.team9432.scoutingapp.ui.NumberInput
 import org.team9432.scoutingapp.ui.PageChanger
 import org.team9432.scoutingapp.ui.SubmitButton
 
@@ -24,6 +24,7 @@ private enum class Screen {
 fun MatchScoutingScreen(teamToScout: String, matchNumber: Int) {
     var currentScreen by remember { mutableStateOf(Screen.PRE_MATCH) }
     var saveDialogOpen by remember { mutableStateOf(false) }
+    var exitDialogOpen by remember { mutableStateOf(false) }
 
     var matchData by remember { mutableStateOf(MatchScoutingFile.data.getMatchOrNew(matchNumber, teamToScout)) }
     val changeScreen = { screen: Screen -> currentScreen = screen }
@@ -40,7 +41,7 @@ fun MatchScoutingScreen(teamToScout: String, matchNumber: Int) {
     }
 
     when (currentScreen) {
-        Screen.PRE_MATCH -> PreMatch(inputs, changeScreen)
+        Screen.PRE_MATCH -> PreMatch(inputs, changeScreen) { exitDialogOpen = true }
         Screen.AUTO -> Auto(inputs, changeScreen)
         Screen.TELEOP -> Teleop(inputs, changeScreen)
         Screen.NOTES -> Notes(inputs, changeScreen) { saveDialogOpen = true }
@@ -58,6 +59,19 @@ fun MatchScoutingScreen(teamToScout: String, matchNumber: Int) {
                 }) { Text("Confirm") }
             },
             dismissButton = { TextButton(onClick = { saveDialogOpen = false }) { Text("Cancel") } }
+        )
+    }
+    if (exitDialogOpen) {
+        AlertDialog(
+            title = { Text(text = "Exit Match") },
+            text = { Text(text = "This will not store any input data") },
+            onDismissRequest = { exitDialogOpen = false },
+            confirmButton = {
+                TextButton(onClick = {
+                    setAppScreen { MatchSelectionScreen() }
+                }) { Text("Confirm") }
+            },
+            dismissButton = { TextButton(onClick = { exitDialogOpen = false }) { Text("Cancel") } }
         )
     }
 }
@@ -124,7 +138,7 @@ private fun Auto(inputs: MatchScoutingDataInputs, setScreen: (Screen) -> Unit) {
 }
 
 @Composable
-private fun PreMatch(inputs: MatchScoutingDataInputs, setScreen: (Screen) -> Unit) {
+private fun PreMatch(inputs: MatchScoutingDataInputs, setScreen: (Screen) -> Unit, onExit: () -> Unit) {
     Column(Modifier.fillMaxSize().padding(5.dp)) {
         inputs.MatchNumber(Modifier.fillMaxWidth())
         inputs.ScoutID(Modifier.fillMaxWidth(), title = "Scout ID")
@@ -132,7 +146,7 @@ private fun PreMatch(inputs: MatchScoutingDataInputs, setScreen: (Screen) -> Uni
 
         Row {
             inputs.Alliance(Modifier.fillMaxHeight().fillMaxWidth(0.5F).padding(5.dp))
-            PageChanger(Modifier.fillMaxSize().padding(5.dp), onNext = { setScreen(Screen.AUTO) }, onBack = {}, backEnabled = false)
+            PageChanger(Modifier.fillMaxSize().padding(5.dp), onNext = { setScreen(Screen.AUTO) }, onBack = onExit)
         }
     }
 }
