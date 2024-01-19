@@ -35,6 +35,7 @@ fun MatchScoutingScreen(teamToScout: String, matchNumber: Int) {
             MatchScoutingDataInputs(
                 updateData = updateData,
                 initialData = matchData,
+                getCurrentData = { matchData },
                 defaultModifier = { this.padding(5.dp) },
             )
         )
