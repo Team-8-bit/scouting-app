@@ -144,6 +144,7 @@ private fun PreMatch(inputs: MatchScoutingDataInputs, setScreen: (Screen) -> Uni
         inputs.MatchNumber(Modifier.fillMaxWidth())
         inputs.ScoutID(Modifier.fillMaxWidth(), title = "Scout ID")
         inputs.TeamNumber(Modifier.fillMaxWidth(), title = "Team to Scout")
+        inputs.ScoutName(Modifier.fillMaxWidth())
 
         Row {
             inputs.Alliance(Modifier.fillMaxHeight().fillMaxWidth(0.5F).padding(5.dp))
