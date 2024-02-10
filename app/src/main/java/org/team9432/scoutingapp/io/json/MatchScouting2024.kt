@@ -44,8 +44,8 @@ data class MatchScoutingData(
 
     @NumberInputField val scoredTrap: Int = 0,
     @CycleInputField("No Attempt", "Parked", "Single", "Harmony x1", "Harmony x2") val endgame: String = "N/A",
-    @CycleInputField("Excellent", "Acceptable", "Subpar", "Abysmal") val defenceQuality: String = "N/A",
-    @CycleInputField("good", "ok", "🤨", "no") val drivingQuality: String = "N/A",
+    @NumberInputField(max = 4, min = 1) val defenceQuality: Int = 1,
+    @NumberInputField(max = 4, min = 1) val drivingQuality: Int = 1,
     @NumberInputField val penalties: Int = 0,
     @SwitchInputField val disabled: Boolean = false,
     @TextInputField val notes: String = "",
