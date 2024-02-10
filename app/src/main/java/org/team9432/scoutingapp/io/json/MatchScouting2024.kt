@@ -19,6 +19,8 @@ data class MatchScoutingData(
     @InlineTextInputField(numberOnly = true) val teamNumber: String,
     @InlineTextInputField(numberOnly = true) val scoutID: String,
 
+    @InlineTextInputField(numberOnly = true) val scoutName: String = "",
+
     // This could potentially be done automatically based on team number + match number
     @CycleInputField("Red", "Blue") val alliance: String = "N/A",
 
@@ -41,7 +43,6 @@ data class MatchScoutingData(
     @NumberInputField val teleAmpNotesMissed: Int = 0,
 
     @SwitchInputField val scoredTrap: Boolean = false,
-    @SwitchInputField val spotlit: Boolean = false,
     @CycleInputField("No Attempt", "Parked", "Single", "Harmony x1", "Harmony x2") val endgame: String = "N/A",
     @CycleInputField("Excellent", "Acceptable", "Subpar", "Abysmal") val defenceQuality: String = "N/A",
     @CycleInputField("good", "ok", "🤨", "no") val drivingQuality: String = "N/A",
@@ -54,27 +55,30 @@ data class MatchScoutingData(
         get() = (
                 matchNumber + del +
                         teamNumber + del +
-                        scoutID + del +
                         alliance + del +
-                        autoStartingPosition + del +
+                        scoutName + del +
                         autoScoredSpeaker + del +
                         autoScoredAmp + del +
-                        crossedAutoLine + del +
+
                         pickupAutoNoteOne + del +
                         pickupAutoNoteTwo + del +
                         pickupAutoNoteThree + del +
                         pickupAutoNoteFour + del +
                         pickupAutoNoteFive + del +
-                        teleSpeakerNotes + del +
-                        teleSpeakerNotesMissed + del +
+
+                        autoStartingPosition + del +
+                        crossedAutoLine + del +
+
                         teleAmpNotes + del +
                         teleAmpNotesMissed + del +
-                        scoredTrap + del +
-                        spotlit + del +
+                        teleSpeakerNotes + del +
+                        teleSpeakerNotesMissed + del +
+
                         endgame + del +
+                        scoredTrap + del +
+                        penalties + del +
                         defenceQuality + del +
                         drivingQuality + del +
-                        penalties + del +
                         disabled + del
                 ).replace("true", "T").replace("false", "F") +
                 notes.trim()
