@@ -42,7 +42,7 @@ data class MatchScoutingData(
     @NumberInputField val teleAmpNotes: Int = 0,
     @NumberInputField val teleAmpNotesMissed: Int = 0,
 
-    @SwitchInputField val scoredTrap: Boolean = false,
+    @NumberInputField val scoredTrap: Int = 0,
     @CycleInputField("No Attempt", "Parked", "Single", "Harmony x1", "Harmony x2") val endgame: String = "N/A",
     @CycleInputField("Excellent", "Acceptable", "Subpar", "Abysmal") val defenceQuality: String = "N/A",
     @CycleInputField("good", "ok", "🤨", "no") val drivingQuality: String = "N/A",
