@@ -18,6 +18,7 @@ import org.team9432.scoutingapp.io.MatchScoutingFile
 import org.team9432.scoutingapp.io.MatchScoutingFile.hasBeenScouted
 import org.team9432.scoutingapp.io.ScheduleFiles
 import org.team9432.scoutingapp.setAppScreen
+import org.team9432.scoutingapp.ui.screens.scoutingscreens.MatchScoutingScreen
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
