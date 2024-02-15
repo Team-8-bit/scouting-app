@@ -82,8 +82,8 @@ private fun Notes(inputs: MatchScoutingDataInputs, setScreen: (Screen) -> Unit, 
     Column(Modifier.fillMaxSize()) {
         Row(Modifier.padding(5.dp).fillMaxHeight(0.6F).fillMaxWidth(), verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.SpaceEvenly) {
             inputs.Penalties(Modifier.fillMaxHeight().fillMaxWidth(0.2F))
-            inputs.DefenceQuality(Modifier.fillMaxHeight().fillMaxWidth(0.25F), title = "Defence:\n1 = Worst - 4 = Best")
-            inputs.DrivingQuality(Modifier.fillMaxHeight().fillMaxWidth(0.33F), title = "Driving:\n1 = Worst - 4 = Best")
+            inputs.DefenceQuality(Modifier.fillMaxHeight().fillMaxWidth(0.25F), title = "Defence:\n1 = Worst - 3 = Best")
+            inputs.DrivingQuality(Modifier.fillMaxHeight().fillMaxWidth(0.33F), title = "Driving:\n1 = Worst - 3 = Best")
             inputs.Disabled(Modifier.fillMaxHeight().fillMaxWidth(0.5F))
             SubmitButton(Modifier.fillMaxSize().padding(5.dp), onPressed = onSave)
         }
