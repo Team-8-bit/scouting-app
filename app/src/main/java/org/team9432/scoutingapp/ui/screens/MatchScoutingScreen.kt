@@ -98,8 +98,8 @@ private fun Notes(inputs: MatchScoutingDataInputs, setScreen: (Screen) -> Unit, 
 private fun Teleop(inputs: MatchScoutingDataInputs, setScreen: (Screen) -> Unit) {
     Row(Modifier.fillMaxSize()) {
         Column(Modifier.padding(5.dp).fillMaxHeight().fillMaxWidth(0.25F), verticalArrangement = Arrangement.SpaceEvenly, horizontalAlignment = Alignment.CenterHorizontally) {
-            inputs.TeleAmpNotes(Modifier.fillMaxWidth().fillMaxHeight(0.5F))
-            inputs.TeleAmpNotesMissed(Modifier.fillMaxWidth().fillMaxHeight())
+            inputs.TeleAmpNotesMissed(Modifier.fillMaxWidth().fillMaxHeight(0.5F))
+            inputs.TeleAmpNotes(Modifier.fillMaxWidth().fillMaxHeight())
         }
         Column(Modifier.padding(5.dp).fillMaxHeight().fillMaxWidth(0.33F), verticalArrangement = Arrangement.SpaceEvenly, horizontalAlignment = Alignment.CenterHorizontally) {
             inputs.TeleSpeakerNotesMissed(Modifier.fillMaxWidth().fillMaxHeight(0.5F))
