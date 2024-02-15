@@ -15,7 +15,6 @@ object SDCard {
     val SUPERSCOUTING_DATA_FILE get() = File(EVENT_DATA_DIR, "SuperScoutingData.json")
 
     fun getMatchScheduleFile() = files.first { it.name.contains(config.eventID, ignoreCase = true) && it.name.contains("Match", ignoreCase = true) }
-    fun getPitScheduleFile() = files.first { it.name.contains(config.eventID, ignoreCase = true) && it.name.contains("Pit", ignoreCase = true) }
 
     private fun getFile(name: String) = File(MAIN_FOLDER, name)
 

@@ -34,15 +34,5 @@ object ScheduleFiles {
         return matches
     }
 
-    private fun getPitSchedule(): PitScoutingTeams {
-        val lines = SDCard.getPitScheduleFile().readCSV()
-
-        val teams = mutableListOf<String>()
-        for (i in 1 until lines.size) {
-            teams.add(lines[i][0])
-        }
-        return teams
-    }
-
     private fun File.readCSV() = readLines().map { it.split(",") }
 }
