@@ -12,18 +12,12 @@ object SDCard {
 
     val EVENT_DATA_DIR get() = File(MAIN_FOLDER, config.eventID)
     val MATCH_SCOUTING_DATA_FILE get() = File(EVENT_DATA_DIR, "MatchScoutingData.json")
+    val SUPERSCOUTING_DATA_FILE get() = File(EVENT_DATA_DIR, "SuperScoutingData.json")
 
-    fun getMatchScheduleFile(): File {
-        return files.first { it.name.contains(config.eventID, ignoreCase = true) && it.name.contains("Match", ignoreCase = true) }
-    }
+    fun getMatchScheduleFile() = files.first { it.name.contains(config.eventID, ignoreCase = true) && it.name.contains("Match", ignoreCase = true) }
+    fun getPitScheduleFile() = files.first { it.name.contains(config.eventID, ignoreCase = true) && it.name.contains("Pit", ignoreCase = true) }
 
-    fun getPitScheduleFile(): File {
-        return files.first { it.name.contains(config.eventID, ignoreCase = true) && it.name.contains("Pit", ignoreCase = true) }
-    }
-
-    private fun getFile(name: String): File {
-        return File(MAIN_FOLDER, name)
-    }
+    private fun getFile(name: String) = File(MAIN_FOLDER, name)
 
     private val files: List<File>
         get() = MAIN_FOLDER.listFiles()!!.filter { it.isFile }.toList()
