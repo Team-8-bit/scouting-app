@@ -44,6 +44,11 @@ fun SettingsScreen() {
             title = "Scout ID",
             predicate = { it.isDigitsOnly() }
         )
+        ToggleOption(
+            initialState = config.isSuperscout,
+            onSet = { updateConfig(config.copy(isSuperscout = it)) },
+            title = "Superscouter",
+        )
     }
 }
 
