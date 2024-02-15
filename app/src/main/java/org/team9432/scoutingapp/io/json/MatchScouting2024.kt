@@ -44,7 +44,7 @@ data class MatchScoutingData(
 
     @NumberInputField val scoredTrap: Int = 0,
     @CycleInputField("No Attempt", "Parked", "Single", "Harmony x1", "Harmony x2") val endgame: String = "N/A",
-    @NumberInputField(max = 3, min = 1) val defenceQuality: Int = 2,
+    @NumberInputField(max = 3, min = 1) val defenseQuality: Int = 2,
     @NumberInputField(max = 3, min = 1) val drivingQuality: Int = 2,
     @NumberInputField val penalties: Int = 0,
     @SwitchInputField val disabled: Boolean = false,
@@ -77,7 +77,7 @@ data class MatchScoutingData(
                         endgame + del +
                         scoredTrap + del +
                         penalties + del +
-                        defenceQuality + del +
+                        defenseQuality + del +
                         drivingQuality + del +
                         disabled + del
                 ).replace("true", "T").replace("false", "F") +
