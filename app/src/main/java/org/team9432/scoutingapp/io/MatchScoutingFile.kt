@@ -41,6 +41,10 @@ object MatchScoutingFile {
         return data.matches[matchNumber]?.get(team) != null
     }
 
+    fun getMatchQRFormat(matchNumber: Int, team: String): String {
+        return data.matches[matchNumber]!![team]!!.qrString
+    }
+
     private fun updateDataFile(data: MatchScoutingFile) {
         createFiles()
         this.data = data

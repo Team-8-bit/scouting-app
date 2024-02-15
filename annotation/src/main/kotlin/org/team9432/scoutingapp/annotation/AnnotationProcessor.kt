@@ -45,6 +45,7 @@ class AnnotationProcessor(private val codeGenerator: CodeGenerator): SymbolProce
             .addParameter("updateData", LambdaTypeName.get(returnType = ClassName("kotlin", "Unit"), parameters = arrayOf(LambdaTypeName.get(returnType = classType, parameters = arrayOf(classType)))))
             .addParameter("initialData", classType)
             .addParameter(ParameterSpec.builder("enabled", Boolean::class).defaultValue("true").build())
+            .addParameter(ParameterSpec.builder("getCurrentData", LambdaTypeName.get(returnType = classType)).build())
             .addParameter(ParameterSpec.builder("defaultModifier", LambdaTypeName.get(returnType = modifierType, receiver = modifierType)).defaultValue("{ this }").build())
             .build()
 
@@ -57,6 +58,7 @@ class AnnotationProcessor(private val codeGenerator: CodeGenerator): SymbolProce
                 ).initializer("updateData").build()
             )
             .addProperty(PropertySpec.builder("initialData", classType).initializer("initialData").build())
+            .addProperty(PropertySpec.builder("getCurrentData", LambdaTypeName.get(returnType = classType)).initializer("getCurrentData").build())
             .addProperty(PropertySpec.builder("enabled", Boolean::class).initializer("enabled").build())
             .addProperty(PropertySpec.builder("defaultModifier", LambdaTypeName.get(returnType = modifierType, receiver = modifierType)).initializer("defaultModifier").build())
             .addFunctions(functions)
@@ -86,7 +88,7 @@ class AnnotationProcessor(private val codeGenerator: CodeGenerator): SymbolProce
                         TextInput(
                             modifier = modifier.defaultModifier(),
                             title = title,
-                            initialValue = initialData.$parameterName,
+                            initialValue = getCurrentData().$parameterName,
                             onChange = { newValue -> updateData { it.copy($parameterName = newValue) } },
                             enabled = enabled,
                             predicate = ${if (isNumberOnly) "{ it.isDigitsOnly() && it.isNotBlank() }" else "{ true }"}
@@ -103,7 +105,7 @@ class AnnotationProcessor(private val codeGenerator: CodeGenerator): SymbolProce
                         InlineTextInput(
                             modifier = modifier.defaultModifier(),
                             title = title,
-                            initialValue = initialData.$parameterName,
+                            initialValue = getCurrentData().$parameterName,
                             onChange = { newValue -> updateData { it.copy($parameterName = newValue) } },
                             enabled = enabled,
                             predicate = ${if (isNumberOnly) "{ it.isDigitsOnly() && it.isNotBlank() }" else "{ true }"}
@@ -120,7 +122,7 @@ class AnnotationProcessor(private val codeGenerator: CodeGenerator): SymbolProce
                         DropdownInput(
                             modifier = modifier.defaultModifier(),
                             title = title,
-                            initialValue = initialData.$parameterName,
+                            initialValue = getCurrentData().$parameterName,
                             options = listOf(${options.joinToString { it.surroundWithQuotes() }}),
                             onChange = { newValue -> updateData { it.copy($parameterName = newValue) } },
                             enabled = enabled
@@ -138,7 +140,7 @@ class AnnotationProcessor(private val codeGenerator: CodeGenerator): SymbolProce
                         NumberInput(
                             modifier = modifier.defaultModifier(),
                             title = title,
-                            initialValue = initialData.$parameterName,
+                            initialValue = getCurrentData().$parameterName,
                             max = $max,
                             min = $min,
                             onChange = { newValue -> updateData { it.copy($parameterName = newValue) } },
@@ -156,7 +158,7 @@ class AnnotationProcessor(private val codeGenerator: CodeGenerator): SymbolProce
                         CycleInput(
                             modifier = modifier.defaultModifier(),
                             title = title,
-                            initialOption = initialData.$parameterName,
+                            initialOption = getCurrentData().$parameterName,
                             options = listOf(${options.joinToString { it.surroundWithQuotes() }}),
                             onChange = { newValue -> updateData { it.copy($parameterName = newValue) } },
                             enabled = enabled
@@ -172,7 +174,7 @@ class AnnotationProcessor(private val codeGenerator: CodeGenerator): SymbolProce
                         SwitchInput(
                             modifier = modifier.defaultModifier(),
                             title = title,
-                            initialState = initialData.$parameterName,
+                            initialState = getCurrentData().$parameterName,
                             onChange = { newValue -> updateData { it.copy($parameterName = newValue) } },
                             enabled = enabled
                         )

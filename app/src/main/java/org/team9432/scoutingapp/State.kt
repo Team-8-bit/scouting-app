@@ -1,16 +1,18 @@
 package org.team9432.scoutingapp
 
+import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
+import org.team9432.scoutingapp.ui.screens.MatchSelectionScreen
+import org.team9432.scoutingapp.ui.screens.QRCodeScreen
 
-var appScreen by mutableStateOf(Screen.MATCH_SELECTION)
-var currentMatch by mutableIntStateOf(-1)
+var currentScreen by mutableStateOf<@Composable () -> Unit>({ MatchSelectionScreen() })
+    private set
+var currentIsFullscreen by mutableStateOf(false)
+    private set
 
-enum class Screen {
-    SETTINGS,
-    DEBUG,
-    MATCH_SELECTION,
-    MATCH_SCOUTING_SCREEN,
+fun setAppScreen(fullscreen: Boolean = false, screen: @Composable () -> Unit) {
+    currentScreen = screen
+    currentIsFullscreen = fullscreen
 }

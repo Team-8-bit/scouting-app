@@ -1,30 +1,34 @@
 package org.team9432.scoutingapp.ui
 
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.DarkMode
 import androidx.compose.material.icons.filled.GridView
-import androidx.compose.material.icons.filled.LightMode
 import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
-import org.team9432.scoutingapp.Screen
-import org.team9432.scoutingapp.appScreen
-import org.team9432.scoutingapp.io.config
-import org.team9432.scoutingapp.io.updateConfig
+import org.team9432.scoutingapp.setAppScreen
+import org.team9432.scoutingapp.ui.screens.MatchSelectionScreen
+import org.team9432.scoutingapp.ui.screens.SettingsScreen
 
 @Composable
 fun NavigationRail() {
     NavigationRail {
+        var currentlySelected by remember { mutableIntStateOf(0) }
         NavigationRailItem(
             icon = { Icon(Icons.Filled.GridView, contentDescription = "Matches") },
-            selected = appScreen == Screen.MATCH_SELECTION,
-            onClick = { appScreen = Screen.MATCH_SELECTION },
+            selected = currentlySelected == 0,
+            onClick = {
+                setAppScreen { MatchSelectionScreen() }
+                currentlySelected = 0
+            },
             label = { Text(text = "Matches", style = MaterialTheme.typography.labelLarge) }
         )
         NavigationRailItem(
             icon = { Icon(Icons.Filled.Settings, contentDescription = "Settings") },
-            selected = appScreen == Screen.SETTINGS || appScreen == Screen.DEBUG,
-            onClick = { appScreen = Screen.SETTINGS },
+            selected = currentlySelected == 1,
+            onClick = {
+                setAppScreen { SettingsScreen() }
+                currentlySelected = 1
+            },
             label = { Text(text = "Config", style = MaterialTheme.typography.labelLarge) }
         )
     }

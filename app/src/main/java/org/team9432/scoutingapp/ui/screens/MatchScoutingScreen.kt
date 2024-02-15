@@ -8,10 +8,11 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import org.team9432.scoutingapp.appScreen
 import org.team9432.scoutingapp.io.MatchScoutingFile
 import org.team9432.scoutingapp.io.json.MatchScoutingData
 import org.team9432.scoutingapp.io.json.MatchScoutingDataInputs
+import org.team9432.scoutingapp.setAppScreen
+import org.team9432.scoutingapp.ui.NumberInput
 import org.team9432.scoutingapp.ui.PageChanger
 import org.team9432.scoutingapp.ui.SubmitButton
 
@@ -23,6 +24,7 @@ private enum class Screen {
 fun MatchScoutingScreen(teamToScout: String, matchNumber: Int) {
     var currentScreen by remember { mutableStateOf(Screen.PRE_MATCH) }
     var saveDialogOpen by remember { mutableStateOf(false) }
+    var exitDialogOpen by remember { mutableStateOf(false) }
 
     var matchData by remember { mutableStateOf(MatchScoutingFile.data.getMatchOrNew(matchNumber, teamToScout)) }
     val changeScreen = { screen: Screen -> currentScreen = screen }
@@ -33,13 +35,14 @@ fun MatchScoutingScreen(teamToScout: String, matchNumber: Int) {
             MatchScoutingDataInputs(
                 updateData = updateData,
                 initialData = matchData,
+                getCurrentData = { matchData },
                 defaultModifier = { this.padding(5.dp) },
             )
         )
     }
 
     when (currentScreen) {
-        Screen.PRE_MATCH -> PreMatch(inputs, changeScreen)
+        Screen.PRE_MATCH -> PreMatch(inputs, changeScreen) { exitDialogOpen = true }
         Screen.AUTO -> Auto(inputs, changeScreen)
         Screen.TELEOP -> Teleop(inputs, changeScreen)
         Screen.NOTES -> Notes(inputs, changeScreen) { saveDialogOpen = true }
@@ -50,8 +53,26 @@ fun MatchScoutingScreen(teamToScout: String, matchNumber: Int) {
             title = { Text(text = "Save Data") },
             text = { Text(text = "This will overwrite any saved data for this match") },
             onDismissRequest = { saveDialogOpen = false },
-            confirmButton = { TextButton(onClick = { MatchScoutingFile.addMatchData(matchData); appScreen = org.team9432.scoutingapp.Screen.MATCH_SELECTION }) { Text("Confirm") } },
+            confirmButton = {
+                TextButton(onClick = {
+                    MatchScoutingFile.addMatchData(matchData)
+                    setAppScreen { QRCodeScreen(teamToScout, matchNumber) }
+                }) { Text("Confirm") }
+            },
             dismissButton = { TextButton(onClick = { saveDialogOpen = false }) { Text("Cancel") } }
+        )
+    }
+    if (exitDialogOpen) {
+        AlertDialog(
+            title = { Text(text = "Exit Match") },
+            text = { Text(text = "This will not store any input data") },
+            onDismissRequest = { exitDialogOpen = false },
+            confirmButton = {
+                TextButton(onClick = {
+                    setAppScreen { MatchSelectionScreen() }
+                }) { Text("Confirm") }
+            },
+            dismissButton = { TextButton(onClick = { exitDialogOpen = false }) { Text("Cancel") } }
         )
     }
 }
@@ -61,8 +82,8 @@ private fun Notes(inputs: MatchScoutingDataInputs, setScreen: (Screen) -> Unit, 
     Column(Modifier.fillMaxSize()) {
         Row(Modifier.padding(5.dp).fillMaxHeight(0.6F).fillMaxWidth(), verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.SpaceEvenly) {
             inputs.Penalties(Modifier.fillMaxHeight().fillMaxWidth(0.2F))
-            inputs.DefenceQuality(Modifier.fillMaxHeight().fillMaxWidth(0.25F))
-            inputs.DrivingQuality(Modifier.fillMaxHeight().fillMaxWidth(0.33F))
+            inputs.DefenceQuality(Modifier.fillMaxHeight().fillMaxWidth(0.25F), title = "Defence:\n1 = Worst - 4 = Best")
+            inputs.DrivingQuality(Modifier.fillMaxHeight().fillMaxWidth(0.33F), title = "Driving:\n1 = Worst - 4 = Best")
             inputs.Disabled(Modifier.fillMaxHeight().fillMaxWidth(0.5F))
             SubmitButton(Modifier.fillMaxSize().padding(5.dp), onPressed = onSave)
         }
@@ -118,15 +139,16 @@ private fun Auto(inputs: MatchScoutingDataInputs, setScreen: (Screen) -> Unit) {
 }
 
 @Composable
-private fun PreMatch(inputs: MatchScoutingDataInputs, setScreen: (Screen) -> Unit) {
+private fun PreMatch(inputs: MatchScoutingDataInputs, setScreen: (Screen) -> Unit, onExit: () -> Unit) {
     Column(Modifier.fillMaxSize().padding(5.dp)) {
         inputs.MatchNumber(Modifier.fillMaxWidth())
         inputs.ScoutID(Modifier.fillMaxWidth(), title = "Scout ID")
         inputs.TeamNumber(Modifier.fillMaxWidth(), title = "Team to Scout")
+        inputs.ScoutName(Modifier.fillMaxWidth())
 
         Row {
             inputs.Alliance(Modifier.fillMaxHeight().fillMaxWidth(0.5F).padding(5.dp))
-            PageChanger(Modifier.fillMaxSize().padding(5.dp), onNext = { setScreen(Screen.AUTO) }, onBack = {}, backEnabled = false)
+            PageChanger(Modifier.fillMaxSize().padding(5.dp), onNext = { setScreen(Screen.AUTO) }, onBack = onExit)
         }
     }
 }
