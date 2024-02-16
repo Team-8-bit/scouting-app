@@ -119,14 +119,16 @@ private fun MatchDisplay(matchNumber: String, teamToScout: String, dataType: Dat
                     onClick = { showMoreOptions = false; showDeleteDialog = true },
                     trailingIcon = { Icon(Icons.Filled.Delete, null) }
                 )
-                DropdownMenuItem(
-                    text = { Text("QR Code") },
-                    onClick = {
-                        showMoreOptions = false
-                        setAppScreen { QRCodeScreen(teamToScout, matchNumber, dataType) }
-                    },
-                    trailingIcon = { Icon(Icons.Filled.QrCode2, null) }
-                )
+                if (hasBeenScouted) {
+                    DropdownMenuItem(
+                        text = { Text("QR Code") },
+                        onClick = {
+                            showMoreOptions = false
+                            setAppScreen { QRCodeScreen(teamToScout, matchNumber, dataType) }
+                        },
+                        trailingIcon = { Icon(Icons.Filled.QrCode2, null) }
+                    )
+                }
             }
         }
 
