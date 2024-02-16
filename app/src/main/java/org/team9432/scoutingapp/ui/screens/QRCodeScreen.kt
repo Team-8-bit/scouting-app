@@ -11,12 +11,14 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import org.team9432.scoutingapp.io.MatchStorageInterface
 import org.team9432.scoutingapp.io.QRCodes
+import org.team9432.scoutingapp.io.config
 import org.team9432.scoutingapp.io.json.DataType
 import org.team9432.scoutingapp.setAppScreen
 
 @Composable
 fun QRCodeScreen(team: String, matchNumber: String, dataType: DataType) {
-    val bitmap = QRCodes.fromString(MatchStorageInterface.getMatchData(team, matchNumber, dataType).getSerializedQROutput())
+    val QRString = MatchStorageInterface.getMatchData(team, matchNumber, dataType).getSerializedQROutput()
+    val bitmap = QRCodes.fromString(QRString)
 
     Row(Modifier.fillMaxSize().padding(10.dp), verticalAlignment = Alignment.CenterVertically) {
         Image(modifier = Modifier.padding(10.dp), bitmap = bitmap, contentDescription = null)
@@ -31,6 +33,8 @@ fun QRCodeScreen(team: String, matchNumber: String, dataType: DataType) {
             }) {
                 Text(text = "Done")
             }
+
+            if (config.debugMode) Text(QRString)
         }
     }
 }

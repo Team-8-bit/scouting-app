@@ -40,4 +40,5 @@ data class Config(
     val eventID: String = "2023azgl",
     val scoutID: Int = -1,
     val isSuperscout: Boolean = false,
+    val debugMode: Boolean = false,
 )
