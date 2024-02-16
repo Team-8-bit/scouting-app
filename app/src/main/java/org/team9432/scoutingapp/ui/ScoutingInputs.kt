@@ -102,9 +102,9 @@ fun InlineTextInput(modifier: Modifier = Modifier, title: String, initialValue: 
                 singleLine = true,
                 isError = isError,
                 onValueChange = {
-                    currentText = it
                     if (predicate(it)) {
                         isError = false
+                        currentText = it
                         onChange(it)
                     } else {
                         isError = true
