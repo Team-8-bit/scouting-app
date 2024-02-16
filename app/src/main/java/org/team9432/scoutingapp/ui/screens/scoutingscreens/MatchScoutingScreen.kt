@@ -6,12 +6,13 @@ import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import org.team9432.scoutingapp.io.config
 import org.team9432.scoutingapp.ui.screens.scoutingscreens.matchscouting.MatchScouting
+import org.team9432.scoutingapp.ui.screens.scoutingscreens.superscouting.Superscouting
 
 
 @Composable
 fun MatchScoutingScreen(teamToScout: String, matchNumber: String) {
     if (config.isSuperscout) {
-        MatchScouting(teamToScout, matchNumber)
+        Superscouting(teamToScout, matchNumber)
     } else {
         MatchScouting(teamToScout, matchNumber)
     }

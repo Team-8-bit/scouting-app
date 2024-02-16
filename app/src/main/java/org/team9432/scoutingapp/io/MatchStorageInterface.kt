@@ -46,9 +46,8 @@ object MatchStorageInterface {
 
     fun writeData(data: MatchData) {
         val fileName = getFileName(data.metadata.teamNumber, data.metadata.matchNumber, data.metadata.dataType)
-
         val fileInput = json.encodeToString(data)
-
+        println("Writing data to $fileName")
         StorageInterface.writeText("${config.eventID}/$fileName", fileInput)
     }
 

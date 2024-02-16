@@ -18,7 +18,7 @@ data class SuperscoutingData(
     @SwitchInputField val coopActivated: Boolean = false,
 
     @CycleInputField("Primary Scorer", "Amp Scorer", "Speaker Scorer", "Defense") val robotRole: String = "N/A",
-    @SwitchInputField val wasDefended: Boolean = true,
+    @SwitchInputField val wasDefended: Boolean = false,
 
     @NumberInputField val cycles: Int = 0,
 
