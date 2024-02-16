@@ -6,7 +6,7 @@ import androidx.compose.runtime.setValue
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
-import org.team9432.scoutingapp.io.SDCard.CONFIG_FILE
+import org.team9432.scoutingapp.io.kindle.StorageInterface
 
 private val json = Json {
     ignoreUnknownKeys = true
@@ -17,18 +17,18 @@ private val json = Json {
 var config by mutableStateOf(readData())
     private set
 
+private const val fileName = "config.json"
+
 fun updateConfig(newConfig: Config) {
     config = newConfig
-    if (!CONFIG_FILE.exists()) CONFIG_FILE.createNewFile()
     val jsonString = json.encodeToString(newConfig)
-    CONFIG_FILE.writeText(jsonString)
+    StorageInterface.writeText(fileName, jsonString)
 }
 
 private fun readData(): Config {
-    if (!CONFIG_FILE.exists()) CONFIG_FILE.createNewFile()
-    val jsonString = CONFIG_FILE.readText()
+    val jsonString = StorageInterface.readText(fileName)
     return if (jsonString.isNotBlank()) {
-        json.decodeFromString<Config>(jsonString)
+        json.decodeFromString(jsonString)
     } else {
         Config()
     }

@@ -5,20 +5,8 @@ import org.team9432.scoutingapp.annotation.*
 import org.team9432.scoutingapp.io.config
 
 @Serializable
-data class MatchScoutingFile(
-    val matches: Map<Int, Map<String, MatchScoutingData>>, // Match number to (team number to data)
-) {
-    fun getMatchOrNull(matchNumber: Int, team: String) = matches[matchNumber]?.get(team)
-    fun getMatchOrNew(matchNumber: Int, team: String) = getMatchOrNull(matchNumber, team) ?: MatchScoutingData(matchNumber.toString(), team, config.scoutID.toString())
-}
-
-@Serializable
 @InputBase
 data class MatchScoutingData(
-    @InlineTextInputField(numberOnly = true) val matchNumber: String,
-    @InlineTextInputField(numberOnly = true) val teamNumber: String,
-    @InlineTextInputField(numberOnly = true) val scoutID: String,
-
     @InlineTextInputField(numberOnly = true) val scoutName: String = "",
 
     // This could potentially be done automatically based on team number + match number
@@ -49,12 +37,10 @@ data class MatchScoutingData(
     @NumberInputField val penalties: Int = 0,
     @SwitchInputField val disabled: Boolean = false,
     @TextInputField val notes: String = "",
-) {
+): ScoutingData {
     private val del = ";"
     val qrString
         get() = (
-                matchNumber + del +
-                        teamNumber + del +
                         alliance + del +
                         scoutName + del +
                         autoScoredSpeaker + del +
@@ -82,4 +68,8 @@ data class MatchScoutingData(
                         disabled + del
                 ).replace("true", "T").replace("false", "F") +
                 notes.trim()
+
+    override fun getSerializedQROutput(): String {
+        TODO("Not yet implemented")
+    }
 }

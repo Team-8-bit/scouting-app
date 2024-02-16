@@ -2,23 +2,10 @@ package org.team9432.scoutingapp.io.json
 
 import kotlinx.serialization.Serializable
 import org.team9432.scoutingapp.annotation.*
-import org.team9432.scoutingapp.io.config
-
-@Serializable
-data class SuperscoutingFile(
-    val matches: Map<Int, Map<String, MatchScoutingData>>, // Match number to (team number to data)
-) {
-    fun getMatchOrNull(matchNumber: Int, team: String) = matches[matchNumber]?.get(team)
-    fun getMatchOrNew(matchNumber: Int, team: String) = getMatchOrNull(matchNumber, team) ?: SuperscoutingData(matchNumber.toString(), team, config.scoutID.toString())
-}
 
 @Serializable
 @InputBase
 data class SuperscoutingData(
-    @InlineTextInputField(numberOnly = true) val matchNumber: String,
-    @InlineTextInputField(numberOnly = true) val teamNumber: String,
-    @InlineTextInputField(numberOnly = true) val scoutID: String,
-
     @InlineTextInputField(numberOnly = true) val scoutName: String = "",
 
     @CycleInputField("Red", "Blue") val alliance: String = "N/A",
@@ -41,12 +28,10 @@ data class SuperscoutingData(
     @NumberInputField val penalties: Int = 0,
     @SwitchInputField val disabled: Boolean = false,
     @TextInputField val notes: String = "",
-) {
+): ScoutingData {
     private val del = ";"
     val qrString
         get() = (
-                matchNumber + del +
-                        teamNumber + del +
                         alliance + del +
                         scoutName + del +
 
@@ -66,4 +51,8 @@ data class SuperscoutingData(
                         disabled + del
                 ).replace("true", "T").replace("false", "F") +
                 notes.trim()
+
+    override fun getSerializedQROutput(): String {
+        TODO("Not yet implemented")
+    }
 }

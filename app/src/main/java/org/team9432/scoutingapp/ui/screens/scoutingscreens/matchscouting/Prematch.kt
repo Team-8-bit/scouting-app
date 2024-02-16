@@ -10,9 +10,6 @@ import org.team9432.scoutingapp.ui.PageChanger
 @Composable
 fun PreMatch(inputs: MatchScoutingDataInputs, onNext: () -> Unit, onBack: () -> Unit) {
     Column(Modifier.fillMaxSize().padding(5.dp)) {
-        inputs.MatchNumber(Modifier.fillMaxWidth())
-        inputs.ScoutID(Modifier.fillMaxWidth(), title = "Scout ID")
-        inputs.TeamNumber(Modifier.fillMaxWidth(), title = "Team to Scout")
         inputs.ScoutName(Modifier.fillMaxWidth())
 
         Row {

@@ -14,9 +14,10 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import org.team9432.scoutingapp.io.MatchScoutingFile
-import org.team9432.scoutingapp.io.MatchScoutingFile.hasBeenScouted
+import org.team9432.scoutingapp.io.MatchStorageInterface
 import org.team9432.scoutingapp.io.ScheduleFiles
+import org.team9432.scoutingapp.io.config
+import org.team9432.scoutingapp.io.json.DataType
 import org.team9432.scoutingapp.setAppScreen
 import org.team9432.scoutingapp.ui.screens.scoutingscreens.MatchScoutingScreen
 
@@ -25,16 +26,16 @@ import org.team9432.scoutingapp.ui.screens.scoutingscreens.MatchScoutingScreen
 fun MatchSelectionScreen() {
     val matches = ScheduleFiles.getMatches()
 
-    val alreadyScoutedMatches = matches.filter { hasBeenScouted(it.key, it.value) }
+    val dataType = if (config.isSuperscout) DataType.SUPERSCOUT else DataType.MATCH_SCOUT
+
+    val alreadyScoutedMatches = matches.filter { MatchStorageInterface.matchDataExists(it.value, it.key, dataType) }
     val toBeScoutedMatches = matches.filterNot { alreadyScoutedMatches.contains(it.key) }
 
     val scrollState = LazyListState(firstVisibleItemIndex = alreadyScoutedMatches.size + 1)
 
     var filter by remember { mutableStateOf("") }
 
-    fun Map<Int, String>.applyFilter(): Map<Int, String> {
-        return filter { it.key.toString().startsWith(filter) }
-    }
+    fun Map<String, String>.applyFilter() = filterKeys { it.startsWith(filter) }
 
     Column {
         OutlinedTextField(
@@ -52,6 +53,7 @@ fun MatchSelectionScreen() {
                     MatchDisplay(
                         matchNumber = it.key,
                         teamToScout = it.value,
+                        dataType = dataType,
                         hasBeenScouted = true,
                         onClick = { setAppScreen(fullscreen = true) { MatchScoutingScreen(ScheduleFiles.getTeamToScout(it.key), it.key) } }
                     )
@@ -65,6 +67,7 @@ fun MatchSelectionScreen() {
                     MatchDisplay(
                         matchNumber = it.key,
                         teamToScout = it.value,
+                        dataType = dataType,
                         hasBeenScouted = false,
                         onClick = { setAppScreen(fullscreen = true) { MatchScoutingScreen(ScheduleFiles.getTeamToScout(it.key), it.key) } }
                     )
@@ -77,7 +80,7 @@ fun MatchSelectionScreen() {
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-private fun MatchDisplay(matchNumber: Int, teamToScout: String, onClick: () -> Unit, enabled: Boolean = true, hasBeenScouted: Boolean = false) {
+private fun MatchDisplay(matchNumber: String, teamToScout: String, dataType: DataType, onClick: () -> Unit, enabled: Boolean = true, hasBeenScouted: Boolean = false) {
     var showMoreOptions by remember { mutableStateOf(false) }
     var showDeleteDialog by remember { mutableStateOf(false) }
 
@@ -97,7 +100,7 @@ private fun MatchDisplay(matchNumber: Int, teamToScout: String, onClick: () -> U
         trailingContent = {
             Row {
                 if (hasBeenScouted) {
-                    IconButton(onClick = { setAppScreen { QRCodeScreen(team = teamToScout, matchNumber = matchNumber) } }) {
+                    IconButton(onClick = { setAppScreen { QRCodeScreen(teamToScout, matchNumber, dataType) } }) {
                         Icon(Icons.Filled.QrCode2, null)
                     }
                 }
@@ -120,7 +123,7 @@ private fun MatchDisplay(matchNumber: Int, teamToScout: String, onClick: () -> U
                     text = { Text("QR Code") },
                     onClick = {
                         showMoreOptions = false
-                        setAppScreen { QRCodeScreen(team = teamToScout, matchNumber = matchNumber) }
+                        setAppScreen { QRCodeScreen(teamToScout, matchNumber, dataType) }
                     },
                     trailingIcon = { Icon(Icons.Filled.QrCode2, null) }
                 )
@@ -133,7 +136,7 @@ private fun MatchDisplay(matchNumber: Int, teamToScout: String, onClick: () -> U
             title = { Text(text = "Delete Data") },
             text = { Text(text = "This will permanently delete any saved data for this match") },
             onDismissRequest = { showDeleteDialog = false },
-            confirmButton = { TextButton(onClick = { MatchScoutingFile.deleteMatchData(teamToScout, matchNumber); showDeleteDialog = false }) { Text("Confirm") } },
+            confirmButton = { TextButton(onClick = { MatchStorageInterface.deleteMatch(teamToScout, matchNumber, dataType); showDeleteDialog = false }) { Text("Confirm") } },
             dismissButton = { TextButton(onClick = { showDeleteDialog = false }) { Text("Cancel") } }
         )
     }

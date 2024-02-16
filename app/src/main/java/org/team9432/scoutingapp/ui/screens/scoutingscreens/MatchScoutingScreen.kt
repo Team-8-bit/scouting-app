@@ -9,7 +9,7 @@ import org.team9432.scoutingapp.ui.screens.scoutingscreens.matchscouting.MatchSc
 
 
 @Composable
-fun MatchScoutingScreen(teamToScout: String, matchNumber: Int) {
+fun MatchScoutingScreen(teamToScout: String, matchNumber: String) {
     if (config.isSuperscout) {
         MatchScouting(teamToScout, matchNumber)
     } else {

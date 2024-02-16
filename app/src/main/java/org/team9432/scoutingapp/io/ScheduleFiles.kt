@@ -1,25 +1,24 @@
 package org.team9432.scoutingapp.io
 
+import org.team9432.scoutingapp.io.kindle.StorageInterface
 import java.io.File
 
-typealias MatchScoutingSchedule = Map<Int, Map<Int, String>> // Match number to (scout ID to team)
-typealias PitScoutingTeams = List<String>
+typealias MatchScoutingSchedule = Map<String, Map<Int, String>> // Match number to (scout ID to team)
 
 object ScheduleFiles {
-
-    fun getTeamToScout(matchNumber: Int): String {
+    fun getTeamToScout(matchNumber: String): String {
         return getMatchSchedule()[matchNumber]!![config.scoutID]!!
     }
 
-    fun getMatches(): Map<Int, String> {
+    fun getMatches(): Map<String, String> {
         val scoutID = config.scoutID
         return getMatchSchedule().filterValues { it.containsKey(scoutID) }.mapValues { it.value[scoutID]!! }
     }
 
     private fun getMatchSchedule(): MatchScoutingSchedule {
-        val lines = SDCard.getMatchScheduleFile().readCSV()
+        val lines = StorageInterface.readText("${config.eventID}/MatchSchedule.csv").lines().toCSV()
 
-        val matches = mutableMapOf<Int, Map<Int, String>>()
+        val matches = mutableMapOf<String, Map<Int, String>>()
         for (i in 1 until lines.size) {
             val row = lines[i]
             val scoutsToTeams = mutableMapOf<Int, String>()
@@ -28,11 +27,11 @@ object ScheduleFiles {
                 scoutsToTeams[j] = row[j]
             }
 
-            val matchNumber = row[0].toInt()
+            val matchNumber = row[0]
             matches[matchNumber] = scoutsToTeams
         }
         return matches
     }
 
-    private fun File.readCSV() = readLines().map { it.split(",") }
+    private fun List<String>.toCSV() = map { it.split(",") }
 }
