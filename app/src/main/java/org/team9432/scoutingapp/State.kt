@@ -5,7 +5,6 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import org.team9432.scoutingapp.ui.screens.MatchSelectionScreen
-import org.team9432.scoutingapp.ui.screens.QRCodeScreen
 
 var currentScreen by mutableStateOf<@Composable () -> Unit>({ MatchSelectionScreen() })
     private set

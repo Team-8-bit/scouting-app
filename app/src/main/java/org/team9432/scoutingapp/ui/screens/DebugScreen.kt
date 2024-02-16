@@ -8,7 +8,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import org.team9432.scoutingapp.io.SDCard
 import org.team9432.scoutingapp.setAppScreen
 
 @Composable
@@ -26,12 +25,7 @@ fun DebugScreen() {
             }
         }
         Column(Modifier.padding(10.dp)) {
-            Text(text = "Match Scouting File", style = MaterialTheme.typography.labelLarge)
-            Text(text = SDCard.getMatchScheduleFile().absolutePath)
-        }
-        Column(Modifier.padding(10.dp)) {
-            Text(text = "Pit Scouting File", style = MaterialTheme.typography.labelLarge)
-            Text(text = SDCard.getPitScheduleFile().absolutePath)
+            Text(text = "Event Data Directory", style = MaterialTheme.typography.labelLarge)
         }
     }
 }

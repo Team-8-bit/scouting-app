@@ -1,35 +1,53 @@
-package org.team9432.scoutingapp.io
+package org.team9432.scoutingapp.io.kindle
 
 import java.io.File
 import java.util.*
 import java.util.regex.Pattern
 
-object SDCard {
+object SDCard: StorageIO {
     private val cardID = getMagicNumbers()[0]
 
-    val MAIN_FOLDER = File("/storage/$cardID")
-    val CONFIG_FILE = File(MAIN_FOLDER, "config.json")
+    private val ROOT_FOLDER = File("/storage/$cardID")
 
-    val EVENT_DATA_DIR get() = File(MAIN_FOLDER, config.eventID)
-    val MATCH_SCOUTING_DATA_FILE get() = File(EVENT_DATA_DIR, "MatchScoutingData.json")
-
-    fun getMatchScheduleFile(): File {
-        return files.first { it.name.contains(config.eventID, ignoreCase = true) && it.name.contains("Match", ignoreCase = true) }
+    override fun writeText(filePath: String, string: String) {
+        val file = getFile(filePath)
+        if (!file.exists()) {
+            file.createNewFile()
+            file.mkdirs()
+        }
+        file.writeText(string)
     }
 
-    fun getPitScheduleFile(): File {
-        return files.first { it.name.contains(config.eventID, ignoreCase = true) && it.name.contains("Pit", ignoreCase = true) }
+    override fun readText(filePath: String): String {
+        val file = getFile(filePath)
+        return if (file.exists()) file.readText() else ""
     }
 
-    private fun getFile(name: String): File {
-        return File(MAIN_FOLDER, name)
+    override fun deleteFile(filePath: String) {
+        val file = getFile(filePath, createIfMissing = false)
+        if (file.exists()) file.delete()
     }
 
-    private val files: List<File>
-        get() = MAIN_FOLDER.listFiles()!!.filter { it.isFile }.toList()
+    override fun checkExistence(filePath: String) = getFile(filePath, createIfMissing = false).exists()
 
-    private val fileNames: List<String>
-        get() = files.map { it.name }
+    private fun getFile(filePath: String, createIfMissing: Boolean = true): File {
+        val dir = filePath.dropLastWhile { it != '/' }.dropLast(1)
+        val name = filePath.takeLastWhile { it != '/' }
+
+        if (dir.isNotBlank()) {
+            val dirFile = File(ROOT_FOLDER, dir)
+            val file = File(dirFile, name)
+            if (createIfMissing) {
+                if (!dirFile.exists()) dirFile.mkdirs()
+                if (!file.exists()) file.createNewFile()
+            }
+            return file
+        } else {
+            val file = File(ROOT_FOLDER, name)
+            if (createIfMissing && !file.exists()) file.createNewFile()
+            return file
+        }
+    }
 
     private fun getMagicNumbers(): List<String> {
         val magicNumbers = mutableListOf<String>()

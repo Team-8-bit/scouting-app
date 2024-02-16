@@ -44,6 +44,17 @@ fun SettingsScreen() {
             title = "Scout ID",
             predicate = { it.isDigitsOnly() }
         )
+        ToggleOption(
+            initialState = config.isSuperscout,
+            onSet = { updateConfig(config.copy(isSuperscout = it)) },
+            enabled = config.debugMode,
+            title = "Superscouter",
+        )
+        ToggleOption(
+            initialState = config.debugMode,
+            onSet = { updateConfig(config.copy(debugMode = it)) },
+            title = "Debug Mode",
+        )
     }
 }
 
