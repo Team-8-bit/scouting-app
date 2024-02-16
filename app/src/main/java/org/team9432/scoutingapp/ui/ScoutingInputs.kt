@@ -102,9 +102,9 @@ fun InlineTextInput(modifier: Modifier = Modifier, title: String, initialValue: 
                 singleLine = true,
                 isError = isError,
                 onValueChange = {
-                    currentText = it
                     if (predicate(it)) {
                         isError = false
+                        currentText = it
                         onChange(it)
                     } else {
                         isError = true
@@ -243,30 +243,6 @@ fun NumberInput(modifier: Modifier = Modifier, title: String, onChange: (Int) ->
                     Icon(Icons.Filled.Add, contentDescription = "Add")
                 }
             }
-//            Row(Modifier.padding(start = 10.dp, end = 10.dp, bottom = 10.dp)) {
-//                OutlinedIconButton(
-//                    modifier = Modifier.fillMaxWidth(0.5F).fillMaxHeight().padding(start = 7.dp, end = 7.dp),
-//                    enabled = enabled,
-//                    onClick = {
-//                        if (currentNumber != min) {
-//                            currentNumber -= 1
-//                            onChange(currentNumber)
-//                        }
-//                    }) {
-//                    Icon(Icons.Filled.Remove, contentDescription = "Remove")
-//                }
-//                OutlinedIconButton(
-//                    modifier = Modifier.fillMaxWidth().fillMaxHeight().padding(start = 7.dp, end = 7.dp),
-//                    enabled = enabled,
-//                    onClick = {
-//                        if (currentNumber != max) {
-//                            currentNumber += 1
-//                            onChange(currentNumber)
-//                        }
-//                    }) {
-//                    Icon(Icons.Filled.Add, contentDescription = "Add")
-//                }
-//            }
         }
     }
 }
