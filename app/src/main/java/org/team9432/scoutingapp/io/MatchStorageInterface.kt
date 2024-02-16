@@ -1,20 +1,10 @@
 package org.team9432.scoutingapp.io
 
 import kotlinx.serialization.encodeToString
-import kotlinx.serialization.json.Json
-import org.team9432.scoutingapp.io.json.DataType
-import org.team9432.scoutingapp.io.json.MatchData
-import org.team9432.scoutingapp.io.json.MatchScoutingData
-import org.team9432.scoutingapp.io.json.SuperscoutingData
+import org.team9432.scoutingapp.io.json.*
 import org.team9432.scoutingapp.io.kindle.StorageInterface
 
 object MatchStorageInterface {
-    private val json = Json {
-//        ignoreUnknownKeys = true
-        prettyPrint = true
-        encodeDefaults = true
-    }
-
     fun getMatchDataOrNew(team: String, matchNumber: String): MatchScoutingData {
         val file = getFileName(team, matchNumber, DataType.MATCH_SCOUT)
 

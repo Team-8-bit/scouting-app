@@ -5,14 +5,8 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.encodeToString
-import kotlinx.serialization.json.Json
+import org.team9432.scoutingapp.io.json.json
 import org.team9432.scoutingapp.io.kindle.StorageInterface
-
-private val json = Json {
-    ignoreUnknownKeys = true
-    prettyPrint = true
-    encodeDefaults = true
-}
 
 var config by mutableStateOf(readData())
     private set

@@ -15,7 +15,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import org.team9432.scoutingapp.io.MatchStorageInterface
-import org.team9432.scoutingapp.io.ScheduleFiles
+import org.team9432.scoutingapp.io.ScheduleInterface
 import org.team9432.scoutingapp.io.config
 import org.team9432.scoutingapp.io.json.DataType
 import org.team9432.scoutingapp.setAppScreen
@@ -24,7 +24,7 @@ import org.team9432.scoutingapp.ui.screens.scoutingscreens.MatchScoutingScreen
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun MatchSelectionScreen() {
-    val matches = ScheduleFiles.getMatches()
+    val matches = ScheduleInterface.getMatches()
 
     val dataType = if (config.isSuperscout) DataType.SUPERSCOUT else DataType.MATCH_SCOUT
 
@@ -55,7 +55,7 @@ fun MatchSelectionScreen() {
                         teamToScout = it.value,
                         dataType = dataType,
                         hasBeenScouted = true,
-                        onClick = { setAppScreen(fullscreen = true) { MatchScoutingScreen(ScheduleFiles.getTeamToScout(it.key), it.key) } }
+                        onClick = { setAppScreen(fullscreen = true) { MatchScoutingScreen(ScheduleInterface.getTeamToScout(it.key), it.key) } }
                     )
                 }
             }
@@ -69,7 +69,7 @@ fun MatchSelectionScreen() {
                         teamToScout = it.value,
                         dataType = dataType,
                         hasBeenScouted = false,
-                        onClick = { setAppScreen(fullscreen = true) { MatchScoutingScreen(ScheduleFiles.getTeamToScout(it.key), it.key) } }
+                        onClick = { setAppScreen(fullscreen = true) { MatchScoutingScreen(ScheduleInterface.getTeamToScout(it.key), it.key) } }
                     )
                 }
             }
