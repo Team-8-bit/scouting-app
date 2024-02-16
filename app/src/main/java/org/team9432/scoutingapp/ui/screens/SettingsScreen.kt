@@ -47,6 +47,7 @@ fun SettingsScreen() {
         ToggleOption(
             initialState = config.isSuperscout,
             onSet = { updateConfig(config.copy(isSuperscout = it)) },
+            enabled = config.debugMode,
             title = "Superscouter",
         )
         ToggleOption(

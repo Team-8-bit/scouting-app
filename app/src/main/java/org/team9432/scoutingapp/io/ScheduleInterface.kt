@@ -16,7 +16,7 @@ object ScheduleInterface {
 
     private fun getMatchSchedule(): ScoutingSchedule {
         val schedule = json.decodeFromString<Schedule>(StorageInterface.readText("${config.eventID}/schedule.json"))
-
+        updateConfig(config.copy(isSuperscout = schedule.superscoutIDs.contains(config.scoutID)))
         return schedule.scoutingSchedule.getValue(config.scoutID)
     }
 }
