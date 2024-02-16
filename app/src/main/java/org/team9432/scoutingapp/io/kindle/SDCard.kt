@@ -24,21 +24,28 @@ object SDCard: StorageIO {
     }
 
     override fun deleteFile(filePath: String) {
-        val file = getFile(filePath)
+        val file = getFile(filePath, createIfMissing = false)
         if (file.exists()) file.delete()
     }
 
-    override fun checkExistence(filePath: String) = getFile(filePath).exists()
+    override fun checkExistence(filePath: String) = getFile(filePath, createIfMissing = false).exists()
 
-    private fun getFile(filePath: String): File {
+    private fun getFile(filePath: String, createIfMissing: Boolean = true): File {
         val dir = filePath.dropLastWhile { it != '/' }.dropLast(1)
         val name = filePath.takeLastWhile { it != '/' }
 
         if (dir.isNotBlank()) {
             val dirFile = File(ROOT_FOLDER, dir)
-            return File(dirFile, name)
+            val file = File(dirFile, name)
+            if (createIfMissing) {
+                if (!dirFile.exists()) dirFile.mkdirs()
+                if (!file.exists()) file.createNewFile()
+            }
+            return file
         } else {
-            return File(ROOT_FOLDER, name)
+            val file = File(ROOT_FOLDER, name)
+            if (createIfMissing && !file.exists()) file.createNewFile()
+            return file
         }
     }
 
