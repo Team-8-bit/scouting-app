@@ -25,7 +25,6 @@ fun Teleop(inputs: MatchScoutingDataInputs, onNext: () -> Unit, onBack: () -> Un
             inputs.ScoredTrap(Modifier.fillMaxWidth().fillMaxHeight())
         }
         Column(Modifier.padding(5.dp).fillMaxHeight().fillMaxWidth(), horizontalAlignment = Alignment.CenterHorizontally, verticalArrangement = Arrangement.SpaceEvenly) {
-            inputs.Penalties(Modifier.fillMaxHeight(0.5F).fillMaxWidth())
             PageChanger(Modifier.fillMaxSize().padding(5.dp), onNext = onNext, onBack = onBack)
         }
     }
