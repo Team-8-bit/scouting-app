@@ -10,7 +10,6 @@ data class SuperscoutingData(
 
     @CycleInputField("Red", "Blue") val alliance: String = "N/A",
 
-
     @CycleInputField("Amp", "Speaker", "Both") val primaryScoringLocation: String = "N/A",
     @CycleInputField("Source", "Ground", "Both") val primaryPickupLocation: String = "N/A",
 
@@ -30,6 +29,20 @@ data class SuperscoutingData(
     @TextInputField val notes: String = "",
 ): ScoutingData {
     override fun getSerializedQROutput(): String {
-        TODO("Not yet implemented")
+        return listOf(
+            scoutName,
+            alliance,
+            primaryScoringLocation,
+            primaryPickupLocation,
+            amplifierActivated,
+            coopActivated,
+            robotRole,
+            wasDefended,
+            cycles,
+            defenseQuality,
+            drivingQuality,
+            penalties,
+            disabled,
+        ).process() + notes.trim()
     }
 }

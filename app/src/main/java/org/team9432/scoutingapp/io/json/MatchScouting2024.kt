@@ -34,6 +34,24 @@ data class MatchScoutingData(
     @TextInputField val notes: String = "",
 ): ScoutingData {
     override fun getSerializedQROutput(): String {
-        TODO("Not yet implemented")
+        return listOf(
+            scoutName,
+            alliance,
+            autoStartingPosition,
+            autoScoredSpeaker,
+            autoScoredAmp,
+            crossedAutoLine,
+            pickupAutoNoteOne,
+            pickupAutoNoteTwo,
+            pickupAutoNoteThree,
+            pickupAutoNoteFour,
+            pickupAutoNoteFive,
+            teleSpeakerNotes,
+            teleSpeakerNotesMissed,
+            teleAmpNotes,
+            teleAmpNotes,
+            scoredTrap,
+            endgame,
+        ).process() + notes.trim()
     }
 }
