@@ -6,7 +6,7 @@ import org.team9432.scoutingapp.annotation.*
 @Serializable
 @InputBase
 data class SuperscoutingData(
-    @InlineTextInputField(numberOnly = true) val scoutName: String = "",
+    @InlineTextInputField val scoutName: String = "",
 
     @CycleInputField("Red", "Blue") val alliance: String = "N/A",
 

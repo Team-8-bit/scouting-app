@@ -6,7 +6,7 @@ import org.team9432.scoutingapp.annotation.*
 @Serializable
 @InputBase
 data class MatchScoutingData(
-    @InlineTextInputField(numberOnly = true) val scoutName: String = "",
+    @InlineTextInputField val scoutName: String = "",
 
     // This could potentially be done automatically based on team number + match number
     @CycleInputField("Red", "Blue") val alliance: String = "N/A",
