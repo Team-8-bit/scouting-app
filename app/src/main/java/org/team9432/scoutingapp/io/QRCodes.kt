@@ -4,7 +4,6 @@ import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import androidx.compose.ui.graphics.ImageBitmap
 import androidx.compose.ui.graphics.asImageBitmap
-import org.team9432.scoutingapp.io.json.MatchScoutingData
 import qrcode.QRCode
 
 object QRCodes {

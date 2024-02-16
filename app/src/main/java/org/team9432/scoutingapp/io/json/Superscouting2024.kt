@@ -29,29 +29,6 @@ data class SuperscoutingData(
     @SwitchInputField val disabled: Boolean = false,
     @TextInputField val notes: String = "",
 ): ScoutingData {
-    private val del = ";"
-    val qrString
-        get() = (
-                        alliance + del +
-                        scoutName + del +
-
-                        primaryScoringLocation + del +
-                        primaryPickupLocation + del +
-
-                        amplifierActivated + del +
-                        coopActivated + del +
-
-                        robotRole + del +
-                        wasDefended + del +
-
-                        cycles + del +
-                        penalties + del +
-                        defenseQuality + del +
-                        drivingQuality + del +
-                        disabled + del
-                ).replace("true", "T").replace("false", "F") +
-                notes.trim()
-
     override fun getSerializedQROutput(): String {
         TODO("Not yet implemented")
     }

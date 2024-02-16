@@ -1,7 +1,6 @@
 package org.team9432.scoutingapp.io
 
 import org.team9432.scoutingapp.io.kindle.StorageInterface
-import java.io.File
 
 typealias MatchScoutingSchedule = Map<String, Map<Int, String>> // Match number to (scout ID to team)
 

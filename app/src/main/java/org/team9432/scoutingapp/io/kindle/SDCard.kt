@@ -17,6 +17,7 @@ object SDCard: StorageIO {
         }
         file.writeText(string)
     }
+
     override fun readText(filePath: String): String {
         val file = getFile(filePath)
         return if (file.exists()) file.readText() else ""
@@ -40,9 +41,6 @@ object SDCard: StorageIO {
             return File(ROOT_FOLDER, name)
         }
     }
-
-    private val files: List<File>
-        get() = ROOT_FOLDER.listFiles()!!.filter { it.isFile }.toList()
 
     private fun getMagicNumbers(): List<String> {
         val magicNumbers = mutableListOf<String>()

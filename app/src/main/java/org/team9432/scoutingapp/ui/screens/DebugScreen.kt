@@ -8,7 +8,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import org.team9432.scoutingapp.io.MatchStorageInterface
 import org.team9432.scoutingapp.setAppScreen
 
 @Composable
@@ -27,7 +26,6 @@ fun DebugScreen() {
         }
         Column(Modifier.padding(10.dp)) {
             Text(text = "Event Data Directory", style = MaterialTheme.typography.labelLarge)
-//            Text(text = MatchStorageInterface.EVENT_DATA_DIR.absolutePath)
         }
     }
 }

@@ -4,7 +4,6 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import org.team9432.scoutingapp.io.json.MatchScoutingDataInputs
 import org.team9432.scoutingapp.io.json.SuperscoutingDataInputs
 import org.team9432.scoutingapp.ui.PageChanger
 

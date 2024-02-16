@@ -1,6 +1,5 @@
 package org.team9432.scoutingapp.ui.screens.scoutingscreens.superscouting
 
-import android.service.autofill.FieldClassification
 import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.*
 import androidx.compose.ui.unit.dp

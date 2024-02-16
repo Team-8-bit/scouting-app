@@ -2,7 +2,6 @@ package org.team9432.scoutingapp.io.json
 
 import kotlinx.serialization.Serializable
 import org.team9432.scoutingapp.annotation.*
-import org.team9432.scoutingapp.io.config
 
 @Serializable
 @InputBase
@@ -34,33 +33,6 @@ data class MatchScoutingData(
     @CycleInputField("No Attempt", "Parked", "Single", "Harmony x1", "Harmony x2") val endgame: String = "N/A",
     @TextInputField val notes: String = "",
 ): ScoutingData {
-    private val del = ";"
-    val qrString
-        get() = (
-                        alliance + del +
-                        scoutName + del +
-                        autoScoredSpeaker + del +
-                        autoScoredAmp + del +
-
-                        pickupAutoNoteOne + del +
-                        pickupAutoNoteTwo + del +
-                        pickupAutoNoteThree + del +
-                        pickupAutoNoteFour + del +
-                        pickupAutoNoteFive + del +
-
-                        autoStartingPosition + del +
-                        crossedAutoLine + del +
-
-                        teleAmpNotes + del +
-                        teleAmpNotesMissed + del +
-                        teleSpeakerNotes + del +
-                        teleSpeakerNotesMissed + del +
-
-                        endgame + del +
-                        scoredTrap + del
-                ).replace("true", "T").replace("false", "F") +
-                notes.trim()
-
     override fun getSerializedQROutput(): String {
         TODO("Not yet implemented")
     }
