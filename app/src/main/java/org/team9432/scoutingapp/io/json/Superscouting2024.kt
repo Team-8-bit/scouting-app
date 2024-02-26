@@ -21,7 +21,7 @@ data class SuperscoutingData(
 
     @NumberInputField val cycles: Int = 0,
 
-    @NumberInputField(max = 3, min = 1) val defenseQuality: Int = 2,
+    @NumberInputField(max = 3, min = 0) val defenseQuality: Int = 2,
     @NumberInputField(max = 3, min = 1) val drivingQuality: Int = 2,
 
     @NumberInputField val penalties: Int = 0,
@@ -39,9 +39,9 @@ data class SuperscoutingData(
             robotRole,
             wasDefended,
             cycles,
+            penalties,
             defenseQuality,
             drivingQuality,
-            penalties,
             disabled,
         ).process() + notes.trim()
     }

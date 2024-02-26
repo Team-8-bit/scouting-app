@@ -21,7 +21,7 @@ data class MatchMetadata(
     val teamNumber: String,
     val scoutID: String,
 ): QRSerializable {
-    override fun getSerializedQROutput() = listOf(dataType, matchNumber, teamNumber, scoutID).process()
+    override fun getSerializedQROutput() = listOf(matchNumber, teamNumber).process()
 }
 
 @Serializable
@@ -43,7 +43,7 @@ fun List<Any>.process(): String {
             "Blue" -> "B"
             else -> it.toString()
         }
-    }
+    } + OUTPUT_DELIMITER
 }
 
 enum class DataType {
