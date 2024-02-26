@@ -25,7 +25,6 @@ data class SuperscoutingData(
     @NumberInputField(max = 3, min = 1) val drivingQuality: Int = 2,
 
     @NumberInputField val penalties: Int = 0,
-    @SwitchInputField val disabled: Boolean = false,
     @TextInputField val notes: String = "",
 ): ScoutingData {
     override fun getSerializedQROutput(): String {
@@ -42,7 +41,6 @@ data class SuperscoutingData(
             penalties,
             defenseQuality,
             drivingQuality,
-            disabled,
         ).process() + notes.trim()
     }
 }

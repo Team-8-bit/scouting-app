@@ -31,6 +31,7 @@ data class MatchScoutingData(
 
     @NumberInputField val scoredTrap: Int = 0,
     @CycleInputField("No Attempt", "Parked", "Single", "Harmony x1", "Harmony x2") val endgame: String = "N/A",
+    @SwitchInputField val disabled: Boolean = false,
     @TextInputField val notes: String = "",
 ): ScoutingData {
     override fun getSerializedQROutput(): String {
@@ -52,6 +53,7 @@ data class MatchScoutingData(
             teleSpeakerNotesMissed,
             endgame,
             scoredTrap,
+            disabled,
         ).process() + notes.trim()
     }
 }

@@ -13,10 +13,9 @@ import org.team9432.scoutingapp.ui.SubmitButton
 fun Notes(inputs: SuperscoutingDataInputs, onNext: () -> Unit, onBack: () -> Unit) {
     Column(Modifier.fillMaxSize()) {
         Row(Modifier.padding(5.dp).fillMaxHeight(0.5F).fillMaxWidth(), verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.SpaceEvenly) {
-            inputs.DrivingQuality(Modifier.fillMaxHeight().fillMaxWidth(0.33F), title = "Driving:\n1 = Worst - 3 = Best")
-            inputs.RobotRole(Modifier.fillMaxHeight().fillMaxWidth(0.25F))
-            inputs.WasDefended(Modifier.fillMaxHeight().fillMaxWidth(0.33F))
-            inputs.Disabled(Modifier.fillMaxHeight().fillMaxWidth(0.5F))
+            inputs.DrivingQuality(Modifier.fillMaxHeight().fillMaxWidth(0.25F), title = "Driving:\n1 = Worst - 3 = Best")
+            inputs.RobotRole(Modifier.fillMaxHeight().fillMaxWidth(0.33F))
+            inputs.WasDefended(Modifier.fillMaxHeight().fillMaxWidth(0.5F))
             SubmitButton(Modifier.fillMaxSize().padding(5.dp), onPressed = onNext)
         }
         Row(Modifier.padding(5.dp).fillMaxHeight().fillMaxWidth(), verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.SpaceEvenly) {
