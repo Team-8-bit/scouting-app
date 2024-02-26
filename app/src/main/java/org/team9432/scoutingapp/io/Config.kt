@@ -32,7 +32,7 @@ private fun readData(): Config {
 data class Config(
     val darkMode: Boolean = true,
     val eventID: String = "2023azgl",
-    val scoutID: Int = -1,
+    val scoutID: Int = 1,
     val isSuperscout: Boolean = false,
     val debugMode: Boolean = false,
 )
