@@ -24,9 +24,9 @@ fun SettingsScreen() {
                 style = MaterialTheme.typography.headlineLarge
             )
             Spacer(Modifier.weight(1F))
-            TextButton(onClick = { setAppScreen { DebugScreen() } }) {
-                Text("debug screen")
-            }
+//            TextButton(onClick = { setAppScreen { DebugScreen() } }) {
+//                Text("debug screen")
+//            }
         }
         ToggleOption(
             initialState = config.darkMode,
