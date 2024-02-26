@@ -34,8 +34,7 @@ object StorageInterface: StorageIO {
         }
 
         val hashes = outputs.map { it.md5() }.toSet()
-        println(hashes.size)
-        println(hashes.elementAt(0))
+
         if (hashes.size == 1) return outputs[0]
 
         throw IOException("Hashes do not match! $hashes")
