@@ -35,23 +35,23 @@ data class MatchScoutingData(
 ): ScoutingData {
     override fun getSerializedQROutput(): String {
         return listOf(
-            scoutName,
             alliance,
-            autoStartingPosition,
+            scoutName,
             autoScoredSpeaker,
             autoScoredAmp,
-            crossedAutoLine,
             pickupAutoNoteOne,
             pickupAutoNoteTwo,
             pickupAutoNoteThree,
             pickupAutoNoteFour,
             pickupAutoNoteFive,
+            autoStartingPosition,
+            crossedAutoLine,
+            teleAmpNotes,
+            teleAmpNotesMissed,
             teleSpeakerNotes,
             teleSpeakerNotesMissed,
-            teleAmpNotes,
-            teleAmpNotes,
-            scoredTrap,
             endgame,
+            scoredTrap,
         ).process() + notes.trim()
     }
 }

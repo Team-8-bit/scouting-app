@@ -24,9 +24,9 @@ fun SettingsScreen() {
                 style = MaterialTheme.typography.headlineLarge
             )
             Spacer(Modifier.weight(1F))
-            TextButton(onClick = { setAppScreen { DebugScreen() } }) {
-                Text("debug screen")
-            }
+//            TextButton(onClick = { setAppScreen { DebugScreen() } }) {
+//                Text("debug screen")
+//            }
         }
         ToggleOption(
             initialState = config.darkMode,
@@ -48,12 +48,12 @@ fun SettingsScreen() {
             initialState = config.isSuperscout,
             onSet = { updateConfig(config.copy(isSuperscout = it)) },
             enabled = config.debugMode,
-            title = "Superscouter",
+            title = "Subjective Scouter",
         )
         ToggleOption(
             initialState = config.debugMode,
             onSet = { updateConfig(config.copy(debugMode = it)) },
-            title = "Debug Mode",
+            title = "Debug Mode (probably don't touch this)",
         )
     }
 }
