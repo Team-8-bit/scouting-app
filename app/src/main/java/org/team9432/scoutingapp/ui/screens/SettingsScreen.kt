@@ -53,7 +53,7 @@ fun SettingsScreen() {
         ToggleOption(
             initialState = config.debugMode,
             onSet = { updateConfig(config.copy(debugMode = it)) },
-            title = "Debug Mode",
+            title = "Debug Mode (probably don't touch this)",
         )
     }
 }
