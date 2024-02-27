@@ -10,13 +10,13 @@ import org.team9432.scoutingapp.ui.PageChanger
 import org.team9432.scoutingapp.ui.SubmitButton
 
 @Composable
-fun Notes(inputs: MatchScoutingDataInputs, onNext: () -> Unit, onBack: () -> Unit) {
+fun Comments(inputs: MatchScoutingDataInputs, onNext: () -> Unit, onBack: () -> Unit) {
     Column(Modifier.fillMaxSize()) {
         Row(Modifier.padding(5.dp).fillMaxHeight(0.5F).fillMaxWidth(), verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.SpaceEvenly) {
             inputs.Disabled(Modifier.fillMaxHeight().fillMaxWidth(0.33F))
             SubmitButton(Modifier.fillMaxHeight().fillMaxWidth(0.5F).padding(5.dp), onPressed = onNext)
             PageChanger(Modifier.fillMaxSize().padding(5.dp), onNext = {}, onBack = onBack, nextEnabled = false)
         }
-        inputs.Notes(Modifier.fillMaxHeight().fillMaxWidth())
+        inputs.Comments(Modifier.fillMaxHeight().fillMaxWidth())
     }
 }

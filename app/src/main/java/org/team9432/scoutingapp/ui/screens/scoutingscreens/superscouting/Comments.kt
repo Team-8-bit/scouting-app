@@ -10,7 +10,7 @@ import org.team9432.scoutingapp.ui.PageChanger
 import org.team9432.scoutingapp.ui.SubmitButton
 
 @Composable
-fun Notes(inputs: SuperscoutingDataInputs, onNext: () -> Unit, onBack: () -> Unit) {
+fun Comments(inputs: SuperscoutingDataInputs, onNext: () -> Unit, onBack: () -> Unit) {
     Column(Modifier.fillMaxSize()) {
         Row(Modifier.padding(5.dp).fillMaxHeight(0.5F).fillMaxWidth(), verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.SpaceEvenly) {
             inputs.DrivingQuality(Modifier.fillMaxHeight().fillMaxWidth(0.25F), title = "Driving:\n1 = Worst - 3 = Best")
@@ -21,7 +21,7 @@ fun Notes(inputs: SuperscoutingDataInputs, onNext: () -> Unit, onBack: () -> Uni
         Row(Modifier.padding(5.dp).fillMaxHeight().fillMaxWidth(), verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.SpaceEvenly) {
             inputs.DefenseQuality(Modifier.fillMaxHeight().fillMaxWidth(0.33F), title = "Defense:\n1 = Worst - 3 = Best")
 
-            inputs.Notes(Modifier.fillMaxHeight().fillMaxWidth(0.75F))
+            inputs.Comments(Modifier.fillMaxHeight().fillMaxWidth(0.75F))
             PageChanger(Modifier.fillMaxSize().padding(5.dp), onNext = {}, onBack = onBack, nextEnabled = false)
         }
     }

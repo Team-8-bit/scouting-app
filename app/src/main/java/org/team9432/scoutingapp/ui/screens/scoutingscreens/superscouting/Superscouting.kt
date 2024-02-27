@@ -42,7 +42,7 @@ fun Superscouting(teamToScout: String, matchNumber: String) {
     when (currentScreen) {
         Screen.PRE_MATCH -> PreMatch(inputs, { changeScreen(Screen.MATCH) }, { exitDialogOpen = true })
         Screen.MATCH -> Match(inputs, { changeScreen(Screen.NOTES) }, { changeScreen(Screen.PRE_MATCH) })
-        Screen.NOTES -> Notes(inputs, { saveDialogOpen = true }, { changeScreen(Screen.MATCH) })
+        Screen.NOTES -> Comments(inputs, { saveDialogOpen = true }, { changeScreen(Screen.MATCH) })
     }
 
     if (saveDialogOpen) {

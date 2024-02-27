@@ -25,7 +25,7 @@ data class SuperscoutingData(
     @NumberInputField(max = 3, min = 1) val drivingQuality: Int = 2,
 
     @NumberInputField val penalties: Int = 0,
-    @TextInputField val notes: String = "",
+    @TextInputField val comments: String = "",
 ): ScoutingData {
     override fun getSerializedQROutput(): String {
         return listOf(
@@ -41,6 +41,6 @@ data class SuperscoutingData(
             penalties,
             defenseQuality,
             drivingQuality,
-        ).process() + notes.trim()
+        ).process() + comments.trim()
     }
 }

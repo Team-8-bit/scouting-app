@@ -43,7 +43,7 @@ fun MatchScouting(teamToScout: String, matchNumber: String) {
         Screen.PRE_MATCH -> PreMatch(inputs, { changeScreen(Screen.AUTO) }, { exitDialogOpen = true })
         Screen.AUTO -> Auto(inputs, { changeScreen(Screen.TELEOP) }, { changeScreen(Screen.PRE_MATCH) })
         Screen.TELEOP -> Teleop(inputs, { currentScreen = Screen.NOTES }, { currentScreen = Screen.AUTO })
-        Screen.NOTES -> Notes(inputs, { saveDialogOpen = true }, { changeScreen(Screen.TELEOP) })
+        Screen.NOTES -> Comments(inputs, { saveDialogOpen = true }, { changeScreen(Screen.TELEOP) })
     }
 
     if (saveDialogOpen) {
