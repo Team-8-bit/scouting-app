@@ -13,12 +13,12 @@ import org.team9432.scoutingapp.ui.PageChanger
 fun Teleop(inputs: MatchScoutingDataInputs, onNext: () -> Unit, onBack: () -> Unit) {
     Row(Modifier.fillMaxSize()) {
         Column(Modifier.padding(5.dp).fillMaxHeight().fillMaxWidth(0.25F), verticalArrangement = Arrangement.SpaceEvenly, horizontalAlignment = Alignment.CenterHorizontally) {
-            inputs.TeleAmpNotesMissed(Modifier.fillMaxWidth().fillMaxHeight(0.5F))
-            inputs.TeleAmpNotes(Modifier.fillMaxWidth().fillMaxHeight())
+            inputs.TeleAmpNotes(Modifier.fillMaxWidth().fillMaxHeight(0.5F))
+            inputs.TeleAmpNotesMissed(Modifier.fillMaxWidth().fillMaxHeight())
         }
         Column(Modifier.padding(5.dp).fillMaxHeight().fillMaxWidth(0.33F), verticalArrangement = Arrangement.SpaceEvenly, horizontalAlignment = Alignment.CenterHorizontally) {
-            inputs.TeleSpeakerNotesMissed(Modifier.fillMaxWidth().fillMaxHeight(0.5F))
-            inputs.TeleSpeakerNotes(Modifier.fillMaxWidth().fillMaxHeight())
+            inputs.TeleSpeakerNotes(Modifier.fillMaxWidth().fillMaxHeight(0.5F))
+            inputs.TeleSpeakerNotesMissed(Modifier.fillMaxWidth().fillMaxHeight())
         }
         Column(Modifier.padding(5.dp).fillMaxHeight().fillMaxWidth(0.5F), verticalArrangement = Arrangement.SpaceEvenly, horizontalAlignment = Alignment.CenterHorizontally) {
             inputs.Endgame(Modifier.fillMaxWidth().fillMaxHeight(0.5F))
