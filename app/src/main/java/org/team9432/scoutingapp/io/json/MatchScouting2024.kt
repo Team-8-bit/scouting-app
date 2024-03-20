@@ -37,7 +37,7 @@ data class MatchScoutingData(
     override fun getSerializedQROutput(): String {
         return listOf(
             alliance,
-            scoutName.replace(";", ","),
+            scoutName.replace(";", ",").ifBlank { "No Name" },
             autoScoredSpeaker,
             autoScoredAmp,
             pickupAutoNoteOne,
@@ -54,6 +54,6 @@ data class MatchScoutingData(
             endgame,
             scoredTrap,
             disabled,
-        ).process() + comments.trim().replace(";", ",")
+        ).process() + comments.trim().replace(";", ",").ifBlank { "No Comments" }
     }
 }

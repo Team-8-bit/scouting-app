@@ -29,7 +29,7 @@ data class SuperscoutingData(
 ): ScoutingData {
     override fun getSerializedQROutput(): String {
         return listOf(
-            scoutName.replace(";", ","),
+            scoutName.replace(";", ",").ifBlank { "No Name" },
             alliance,
             primaryScoringLocation,
             primaryPickupLocation,
@@ -41,6 +41,6 @@ data class SuperscoutingData(
             penalties,
             defenseQuality,
             drivingQuality,
-        ).process() + comments.trim().replace(";", ",")
+        ).process() + comments.trim().replace(";", ",").ifBlank { "No Comments" }
     }
 }
